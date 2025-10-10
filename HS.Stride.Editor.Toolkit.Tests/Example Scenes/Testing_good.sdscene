@@ -1,0 +1,142 @@
+!SceneAsset
+Id: 2ec64b87-a887-4371-b746-6bfda53a057e
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+ChildrenIds: []
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
+Hierarchy:
+    RootParts:
+        - ref!! f92fe801-cd37-4ee1-8362-be679fc1979e
+        - ref!! 5725c424-f60c-4642-9059-536d4aea49b4
+        - ref!! 479d3b06-7ad8-429a-9edf-e30000301c9a
+    Parts:
+        -   Entity:
+                Id: 1e677fe2-7dea-4171-8cc3-2342675eb8b8
+                Name: CollisionWall
+                Components:
+                    81e049a26ff49a468daa04fa529c1955: !TransformComponent
+                        Id: 9c5b5d8e-540a-44f7-95be-bf3e4c73e346
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    b5c346a60c652a4b9b497d243845df03: !StaticColliderComponent
+                        Id: 2724aca9-0269-4ace-9adf-4eb9f70bdb81
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d1515cec847a6046ab7daa4368a533f7: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+            Base:
+                BasePartAsset: 1c3eb155-b98b-4977-b089-6ef8ad8e3447:LootBox
+                BasePartId: 9e2837fb-0640-4774-9d3b-bbf81562d9aa
+                InstanceId: 5faeb0fe-d3cd-40fc-bc42-156ed9fa6eb7
+        -   Entity:
+                Id: 479d3b06-7ad8-429a-9edf-e30000301c9a
+                Name: LootBox
+                Components:
+                    87d05333e1efefbce296f5bd6bbd4f9c: !TransformComponent
+                        Id: 0051070c-7f07-4a21-bd8e-0a5200b28f1b
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            51917bf7fe8706fc4749098a18a71658: ref!! f44ee4d4-0239-42d7-a132-9d93acc987a0
+        -   Entity:
+                Id: 5725c424-f60c-4642-9059-536d4aea49b4
+                Name: Skybox
+                Components:
+                    6e987687711b70418c85dff5a9bbc2ec: !TransformComponent
+                        Id: e14baa9e-1ac8-4088-a0a0-caa45a9a7805
+                        Position: {X: 0.0, Y: 15.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    197b9ba9a8d24847a1b8d7261d35f329: !LightComponent
+                        Id: cc258953-7ec2-4819-93d9-ce3c9c0f7c73
+                        Type: !LightSkybox
+                            Skybox: 8fcfb37e-5475-48e4-89b3-7026fa5f84f9:Skybox
+                        Intensity: 1.5
+                    aa0620582b7241f8b026bafcf0a07f05: !BackgroundComponent
+                        Id: be5c57d4-1cf7-4b4b-9a23-604ea9979204
+                        Texture: 0eb4854a-3114-4ea8-9707-245be245e628:Skybox Texture
+                        Intensity: 3.0
+        -   Entity:
+                Id: 97065dea-98a7-438e-9d3b-3b20d70e5f33
+                Name: LootBox
+                Components:
+                    4bfa77cbdae1aa40aeba86b0b487ad99: !TransformComponent
+                        Id: f44ee4d4-0239-42d7-a132-9d93acc987a0
+                        Position: {X: 0.0, Y: 0.5, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            81e049a26ff49a468daa04fa529c1955: ref!! 9c5b5d8e-540a-44f7-95be-bf3e4c73e346
+                    92a01d27b6aa2e49b6f4555de61f78e4: !ModelComponent
+                        Id: f2e90cd7-1112-4f55-be79-98152e42b8e3
+                        Model: 75180ab2-1195-4530-83f3-d9e1ce609790:Models/BoxF
+                        Materials: {}
+                    9ff39e9a53a90d49bb7faec06f6d32ca: !StaticColliderComponent
+                        Id: 8f174723-8c71-4522-9193-cf116fbe8e43
+                        CollisionGroup: CustomFilter2
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: true
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            42588de189ce0146b55493835f755fe8: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                    4e93d2aaca7cd64e9e2cdb87b6dea8c1: !TopDownRPG.Gameplay.CrateScript,TopDownRPG.Game
+                        Id: 3b942a96-1afb-47e7-907e-5d7091fd899f
+                        CoinGetEffect: 0728b818-ab18-42f3-aa67-7f2ed9cc88cd:VFXPrefabs/vfx-Dustcloud
+                        CoinSpawnModel: 55259b28-5339-4142-a4a9-fe6a574d9cb7:LootGoldCoin
+                        SoundEffect: 73dbcf5b-10da-4471-97d9-140f695e2fc5:Audio/crate_breaking
+                        Trigger: ref!! 12711fc5-e03d-4d7d-8ea9-a5319b7ca66e
+                    28cbe91f2b1efd4a865067a932c54649: !TopDownRPG.Gameplay.Trigger,TopDownRPG.Game
+                        Id: 12711fc5-e03d-4d7d-8ea9-a5319b7ca66e
+                        TriggerCondition: StartOnly
+            Base:
+                BasePartAsset: 1c3eb155-b98b-4977-b089-6ef8ad8e3447:LootBox
+                BasePartId: 7482eb0c-78ea-4a3c-8d85-8133ed9d63b2
+                InstanceId: 5faeb0fe-d3cd-40fc-bc42-156ed9fa6eb7
+        -   Entity:
+                Id: f92fe801-cd37-4ee1-8362-be679fc1979e
+                Name: Directional light
+                Components:
+                    5ab3300ae74fa14a9efcaa1f506407ce: !TransformComponent
+                        Id: e9c75fd6-2b5c-4409-90a8-b842fc0af62f
+                        Position: {X: 1.0, Y: 15.0, Z: 0.0}
+                        Rotation: {X: -0.5540323, Y: 0.21201216, Z: 0.1484525, W: 0.7912401}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    209f95c46d53de41a3dfff661934ae6c: !LightComponent
+                        Id: 0d779f80-dca1-4943-af90-7891a71c7146
+                        Type: !LightDirectional
+                            Color: !ColorRgbProvider
+                                Value: {R: 1.0, G: 1.0, B: 1.0}
+                            Shadow:
+                                Enabled: true
+                                Filter: !LightShadowMapFilterTypePcf
+                                    FilterSize: Filter5x5
+                                Size: XLarge
+                                DepthRange: {}
+                                PartitionMode: !LightDirectionalShadowMap.PartitionLogarithmic {}
+                                ComputeTransmittance: false
+                                BiasParameters: {}
+                        Intensity: 5.0

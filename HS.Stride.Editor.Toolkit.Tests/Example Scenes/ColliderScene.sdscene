@@ -1,0 +1,111 @@
+!SceneAsset
+Id: ceb82cfc-0f42-4964-9e0e-acace003f35f
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+ChildrenIds: []
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
+Hierarchy:
+    RootParts:
+        - ref!! a7af4f00-16de-4930-93f0-4102121e36c7
+        - ref!! 6da3023d-7a9a-451a-89c4-42a702bcda5b
+    Parts:
+        -   Folder: null
+            Entity:
+                Id: 6da3023d-7a9a-451a-89c4-42a702bcda5b
+                Name: Box1x1x1 - Rigi
+                Components:
+                    230429c6aa74ddac9d2b33e2e1f9c108: !TransformComponent
+                        Id: 821b9a90-dd32-4058-bfa8-eef4c206b5d3
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    2d6e79805e9fe96d040ae77f27f72b9e: !ModelComponent
+                        Id: 9b92383c-dc7e-4e6a-9ad5-b54cb2d77430
+                        Model: 8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1
+                        Materials: {}
+                    84e03b15334d442ebeb6ec9d3f4fd84d: !RigidbodyComponent
+                        Id: 19b1f19a-ebd7-4dcf-a15e-8616868a8ff6
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        IsKinematic: false
+                        Mass: 1.0
+                        LinearDamping: 0.0
+                        AngularDamping: 0.0
+                        OverrideGravity: false
+                        Gravity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        NodeName: null
+                        ColliderShapes:
+                            0dc27f326dd6aed8745aa58034e3915c: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            0ccbe2e04ad6b4310d12016b4cf3af30: !CapsuleColliderShapeDesc
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            092f46856ab9dadcdb12bbcbda6bff0a: !ConeColliderShapeDesc
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            cc22c6cf2500466750bf84823036a3dd: !ColliderShapeAssetDesc
+                                Shape: null
+                            b533bf7bcf92c54a0747f4f058f5fe45: !CylinderColliderShapeDesc
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            8fd911f99a3f5cc3c96ee78501ee7d3e: !SphereColliderShapeDesc
+                                Is2D: false
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                            7fce2a23e2946a823497ac64a84d2a22: !StaticMeshColliderShapeDesc
+                                Model: 8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1
+        -   Folder: null
+            Entity:
+                Id: a7af4f00-16de-4930-93f0-4102121e36c7
+                Name: Box1x1x1
+                Components:
+                    230429c6aa74ddac9d2b33e2e1f9c108: !TransformComponent
+                        Id: 29e4ed8d-7752-4647-83ef-5472afc9a7c2
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    2d6e79805e9fe96d040ae77f27f72b9e: !ModelComponent
+                        Id: c11ce0b3-1d46-4366-89ae-334144bc5f55
+                        Model: 8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1
+                        Materials: {}
+                    3f0b12d5c6fa781da390ef33428e65cd: !StaticColliderComponent
+                        Id: 9a10151a-3d0f-4b75-bc3c-28f2beb34ab8
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            e5046ef3c0e108792e3797f091689f76: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            badbeed6c8fb41059d9c5c9961edb1e2: !CapsuleColliderShapeDesc
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            c0a9439fc5dab43ca079b6039fb9bd5e: !ConeColliderShapeDesc
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            679ab16cef75cf0708a63326925425a4: !CylinderColliderShapeDesc
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                            50a59976d8666aeedfd5f01f1ec79f0e: !SphereColliderShapeDesc
+                                Is2D: false
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                            57fc3efc9a696a4c06f6506333191590: !StaticMeshColliderShapeDesc
+                                Model: 8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1
+                            929fd296454315ee95c6055bc7b3161f: !ColliderShapeAssetDesc
+                                Shape: null

@@ -1,0 +1,2295 @@
+!SceneAsset
+Id: f2173c5a-0880-4332-b9aa-f80aef52dd73
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+ChildrenIds: []
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
+Hierarchy:
+    RootParts:
+        - ref!! b1380226-58c6-4747-8b74-4f6a866a0568
+        - ref!! 742d559d-ce53-4a89-a5cb-051f5e84e9c3
+        - ref!! 709ab4ce-cd76-4afc-be37-9d6f0f922b7d
+        - ref!! b2281596-d13c-4210-a426-0c03707dc0c7
+        - ref!! 6fb6f28f-7bae-49e8-9804-0a1dd1c5efd6
+        - ref!! 676951a1-09f2-4d7a-9390-e0bd6ffc3183
+        - ref!! 75399de9-d60b-4f81-a3f5-375c87573fb4
+        - ref!! 4e4f1baf-50bf-42e1-9f87-a805253a8200
+        - ref!! 69d0a04f-78e3-485a-86f1-1286f904bd8b
+        - ref!! a36a5f13-f793-49dd-9891-904c5941758a
+        - ref!! 9dd6583c-c7e9-4718-87dc-e4bd5f984e29
+        - ref!! 7e962bac-dc93-4aa3-9587-11b6eb4dff15
+        - ref!! 5f8913bf-3be6-48cf-8128-75e0c7ccbef1
+        - ref!! 330db453-b02b-4f09-99b1-6fdf454e6149
+        - ref!! c93c2cf8-c8f5-4711-8fb4-5dc672344cd6
+        - ref!! 222077c3-19d5-4916-b92d-c8bc2c79a2c1
+        - ref!! c8b57bb4-0baf-4166-b2d8-0469af4c671f
+        - ref!! dfd05921-200d-4f01-928f-481c0dc61548
+        - ref!! 77295315-927f-4c53-ab46-d4ded00d1cdc
+        - ref!! b5dd3aa4-ac78-43d0-bdf6-750fa86aab3b
+        - ref!! 4c4cc6c0-5bd9-4722-bf75-68e2095a40aa
+        - ref!! 2f6b8a48-8ba3-42ec-8c94-6ec7bb7ccfe3
+        - ref!! 5e3a4450-2dda-4ed3-ada1-9f7da8a40004
+        - ref!! b6b586cc-8584-4cbd-92f9-9557740d4906
+        - ref!! b787b318-df81-419d-95ae-a313ba207794
+        - ref!! 9d9f900f-6d3f-4fdb-aa10-9a503e118766
+        - ref!! 672f7b87-db3c-4b5a-b5b4-6b80c7aad015
+        - ref!! 4e4d5eab-3420-4373-b794-3e650f856101
+        - ref!! cd23e136-52a8-4dac-9b06-de68c3bac0f7
+        - ref!! 316b57be-064a-42b8-90c7-1a443e589224
+        - ref!! 64b705fe-5f57-41d0-85a8-a96f89a71208
+        - ref!! 4b82c3ef-b124-44bf-ad25-d0b02138757b
+        - ref!! aab20544-748f-4ce4-8bb1-b963e5958e5f
+        - ref!! 372fbaea-43eb-4ac5-8316-e7cf89434726
+        - ref!! 266611a6-fea4-46c5-b7a6-cd7f224d19a1
+        - ref!! 4f894638-1b62-4b82-8d28-6452cd4385ba
+        - ref!! 91c46d66-b73b-4da7-9ecf-baef75046061
+        - ref!! 93aa2046-78cb-4c2f-b117-279b37ce0b91
+        - ref!! 70c12ac3-ffa7-44c8-90cd-52cc8e7197a7
+        - ref!! ee5dc891-af26-4336-82ef-96738ef43f39
+        - ref!! c4ffee7e-d14e-4926-9bd5-8a2cfdda2ae7
+        - ref!! 357aff1b-529a-4f04-bb32-c342dbbadcd3
+        - ref!! 3b6487bc-5299-4bfb-9b8c-5c92422f1715
+        - ref!! 9db9f364-8bf1-461f-83f4-21f23f9e9478
+        - ref!! a9058c32-072f-4a7d-93b1-982363216d30
+        - ref!! 9ba15ea9-f2ff-4ab9-b474-3a27685669ee
+        - ref!! e9df36e2-72e0-4452-9a31-c648a8550eb6
+        - ref!! ff627e01-5bb2-434a-bf97-40a048412b70
+        - ref!! 0901c2df-4fc3-4de3-9ce7-a6ba7468e8b2
+        - ref!! 65d282f7-665b-4149-b945-f2414f25332e
+    Parts:
+        -   Entity:
+                Id: 06ea6e27-af78-40bf-8d86-720dd54fde2b
+                Name: Hitmarker
+                Components:
+                    d8c185445b1b693059c2b99a57f7b6ab: !TransformComponent
+                        Id: 3af13a7a-7921-4565-b258-f70f65b658cb
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    27f22707b310e3ff2e97a5b798619490: !SpriteComponent
+                        Id: 8702fe34-b12c-4780-a02a-c82445d0e33d
+                        Enabled: false
+                        SpriteProvider: !SpriteFromTexture
+                            Texture: 676bf183-96ba-4b5c-b32e-ae78db9f8901:Happenstance/Player Controller/First Person Player/Textures/crosshair
+                            Center: {X: 0.0, Y: 0.0}
+                        Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: 3a3e9fcb-6a9e-453e-a969-d65288b463a4
+                InstanceId: ca5d7927-7fd0-47da-99e4-ab9962b0c399
+        -   Folder: null
+            Entity:
+                Id: 0901c2df-4fc3-4de3-9ce7-a6ba7468e8b2
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: c31b3bfb-e5d2-4401-bdbc-3e2f523265d6
+                        Position: {X: 15.087538, Y: 4.441436, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: ea09d6b9-dd7a-47f3-a7f5-03818df53b15
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Entity:
+                Id: 0d9c17ec-5a8c-4f96-a814-b31d104b375f
+                Name: stand_001_008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: e5de1563-6f89-4673-9683-fc512fdbf2db
+                        Position: {X: -1.6259067, Y: 0.726911, Z: 4.4173775}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 26a2acad-97bb-4006-8175-ea1c4d2c1a79
+                        Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+                        Materials: {}
+                    7c6c65352fbc4ba61c966e41b8eb6ab4: !StaticColliderComponent
+                        Id: 2c56d8a8-59ad-41da-99e5-11ed06f130f6
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d0341660a63eff18841ef7b303e25e73: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Folder: null
+            Entity:
+                Id: 15854cd0-2a1c-4c6f-b4c7-bbe90a113d5a
+                Name: stand_001_008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: d094009f-65a5-4291-8c45-5167db19b959
+                        Position: {X: -3.8758862, Y: 0.56961155, Z: 12.584147}
+                        Rotation: {X: 0.0, Y: 1.0, Z: 0.0, W: -4.371139E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: ee46a4bb-c7e5-4f05-8862-49db0c874393
+                        Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+                        Materials: {}
+                    7c6c65352fbc4ba61c966e41b8eb6ab4: !StaticColliderComponent
+                        Id: a13a8ca3-41a1-44cf-9192-d86ee7e50cc2
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d0341660a63eff18841ef7b303e25e73: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Entity:
+                Id: 1a9cb71b-e26e-49a5-b3d2-e2b706f0725e
+                Name: blocker_002_006
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a19f092d-994c-462b-978e-e2e9a055b882
+                        Position: {X: -2.7076406, Y: 2.000201, Z: 4.4124994}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 24af6f15-5840-4f3e-a132-4c728109d235
+                        Model: b6aea0f2-dd27-43e4-851e-b41306acf029:Scenes/Prototyping/Shooting Range/shooting_range/blocker_002_006
+                        Materials: {}
+                    4ad83f2bf113a138f654da1348b7a4f5: !StaticColliderComponent
+                        Id: 92bf2d4e-d9be-4abe-b947-1e63c2684f88
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            897fdbe8ba730806eb3869034dd371b7: !StaticMeshColliderShapeDesc
+                                Model: 000bdf08-bbff-42ad-9be7-b1160211cda8:Scenes/Prototyping/Shooting Range/shooting_range/blocker_001_007
+        -   Entity:
+                Id: 1d8d7804-c92e-4dc9-9e9b-50489efff1fe
+                Name: blocker_013
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1b5cbe26-e7c7-46a1-a368-cf0e81dc26c3
+                        Position: {X: 3.8290899, Y: 2.000201, Z: 4.4124994}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: aee7c9d9-cbfc-48af-b964-9fc9dcfbb94e
+                        Model: d5a3afdb-3685-4740-932e-249f40862240:Scenes/Prototyping/Shooting Range/shooting_range/blocker_013
+                        Materials: {}
+                    6e450d2739280114ff3b22752c5c6bbc: !StaticColliderComponent
+                        Id: dff4b9ae-1677-4548-9a8c-4ac7e1cf1426
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            2be5659e911b6c63b4b88c349fdf3922: !StaticMeshColliderShapeDesc
+                                Model: 000bdf08-bbff-42ad-9be7-b1160211cda8:Scenes/Prototyping/Shooting Range/shooting_range/blocker_001_007
+        -   Entity:
+                Id: 1e546f3f-e3ea-459a-8bc0-d74e27ad0071
+                Name: back_wall_002
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 0ed917f3-e073-4c4c-8fb8-6a61e8f3ece5
+                        Position: {X: 0.007800467, Y: 2.358733, Z: -7.7789974}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0715599, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 7610e223-a565-4004-a774-005406697598
+                        Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+                        Materials: {}
+                    129c4dab6b1608d48cc68997bfa424de: !StaticColliderComponent
+                        Id: 00c729ab-d2a2-4d6e-981d-3465f31b666f
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            2b59bf5a793ec13bef1fd079f9224e26: !StaticMeshColliderShapeDesc
+                                Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+        -   Entity:
+                Id: 1ee26e1a-3287-49e4-93ca-5b09efc5d6a3
+                Name: blocker_001_007
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1bd047c0-4a2f-4c22-b51d-8661f85590c6
+                        Position: {X: -4.9069076, Y: 2.000201, Z: 4.4124994}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 84f1bb4c-904f-403f-ad2d-2c1a43fa831a
+                        Model: 000bdf08-bbff-42ad-9be7-b1160211cda8:Scenes/Prototyping/Shooting Range/shooting_range/blocker_001_007
+                        Materials: {}
+                    2b754fb60fd1c94207d7e422dc720971: !StaticColliderComponent
+                        Id: 94d95ee2-5ee0-49d2-960b-281ba1abbafa
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            aa97aa58702aab56b369940d43254b13: !StaticMeshColliderShapeDesc
+                                Model: 000bdf08-bbff-42ad-9be7-b1160211cda8:Scenes/Prototyping/Shooting Range/shooting_range/blocker_001_007
+        -   Entity:
+                Id: 1f70b0b1-d658-4bbb-b043-29b00b4a5994
+                Name: proto_cube_gun
+                Components:
+                    c5e81594dbf8e2e90a5063be916db984: !TransformComponent
+                        Id: b369550f-e3cd-4e2b-90d4-3f4cc8efa44c
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            54b9d8cec4e31bd36d1ab2274b9c6871: ref!! 2d3b207c-216e-4e07-ad79-e4155a9dc015
+        -   Folder: null
+            Entity:
+                Id: 222077c3-19d5-4916-b92d-c8bc2c79a2c1
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: c846d846-bd2b-49c7-9056-7a30405236d6
+                        Position: {X: 4.071762, Y: 0.77355194, Z: 12.27567}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 01bb8a1b-9c86-4900-8f9f-cbc245d385f7
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 2522e505-5d6d-4a52-8d19-eb4d56e8fc8b
+                Name: stand_support_014
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 62d80c6f-129d-436a-afad-d56ac3a3a28e
+                        Position: {X: 0.0029659867, Y: 3.4156048, Z: 4.8458557}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 5ccd5ae6-faf6-465e-a25b-8776a660adac
+                        Model: e801081e-057f-423e-b4f7-9918dd5d1399:Scenes/Prototyping/Shooting Range/shooting_range/stand_support_014
+                        Materials:
+                            3b088292109d81b77ce3773f410eb0d9~0: 7c01be79-4fdc-452d-b650-d6d9e1383356:DevTextures/Materials/Prefab_Grey50_Mat
+        -   Folder: null
+            Entity:
+                Id: 266611a6-fea4-46c5-b7a6-cd7f224d19a1
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 6ae7991e-e7ce-440e-9fc5-f1f6b610a22f
+                        Position: {X: 3.9391508, Y: 0.77355194, Z: 12.541189}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 3d6dea12-f974-40ef-b6bf-a91ffef5c7cf
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 26f591a7-33be-4009-9227-9acb997501e7
+                Name: proto_cube_gun
+                Components:
+                    3ea7ca2b43f7688320380155a0661319: !TransformComponent
+                        Id: 2d3b207c-216e-4e07-ad79-e4155a9dc015
+                        Position: {X: 0.16, Y: -0.17, Z: -0.17}
+                        Rotation: {X: -0.0001918955, Y: -0.9997873, Z: -0.017451352, W: 0.0109936865}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            5038a5ad47dcdb2fda70f558d008b834: ref!! a2ac5560-8930-466f-b91f-1dbe6b546bfd
+                    2a9c1cb300a0e025f49a032b99c395f9: !ModelComponent
+                        Id: a9d5c878-6736-4454-ba31-62cf5f43d37d
+                        Model: 55ea978f-a7e5-4bde-89a1-c5a7749b417d:Models/Prototype Weapons/proto_cube_gun
+                        Materials: {}
+                    8460373164b1db71548bc77ddab2fb1c: !Happenstance.SE.FPS.Weapon.Weapon,dysector
+                        Id: b179f06c-7485-43bc-8b63-ab38f0e56904
+                        StartDisabled: false
+                        CollisionDetection: false
+                        damage: 25.0
+                        fireRate: 600.0
+                        spread: 1.0
+                        range: 1000.0
+                        useSprayGrowth: true
+                        sprayGrowthRate: 0.1
+                        maxSprayMultiplier: 3.0
+                        sprayDecayRate: 2.0
+                        useDamageFalloff: true
+                        minDamagePercent: 0.5
+                        falloffStartDistance: 10.0
+                        falloffType: Linear
+                        useProjectiles: false
+                        projectileSpeed: 1000.0
+                        sightAttachment: null
+                        muzzleAttachment: null
+                        gripAttachment: null
+                        stockAttachment: null
+                        weaponEffects: null
+                        WeaponName: Cube Gun
+                        ProjectilePooler: null
+                    9e10392a69a3212e65adf903a5f31999: !Happenstance.SE.FPS.Weapon.WeaponHandling,dysector
+                        Id: 61ab7cf0-6ca0-43cf-a114-2e2c367f9291
+                        StartDisabled: false
+                        CollisionDetection: false
+                        adsPosition: {X: 0.0, Y: -0.11, Z: -0.22}
+                        adsRotation: {X: -1.0, Y: -179.96, Z: 0.0}
+                        aimSpeed: 10.0
+                        step: 0.01
+                        maxStepDistance: 0.06
+                        swayPost: {X: 0.0, Y: 0.0, Z: 0.0}
+                        rotationStep: 4.0
+                        maxRotationStep: 5.0
+                        smooth: 10.0
+                        smoothRot: 12.0
+                        verticalRecoil: 2.0
+                        horizontalRecoil*: 1.0
+                        recoilStrength*: 3.0
+                        adsRecoilReduction: 0.5
+                        cameraShakeMultiplier: 1.0
+                        positionRecoilSpeed: 8.0
+                        hipFirePosRecoil: {X: 0.0, Y: 0.005, Z: 0.005}
+                        adsPosRecoil: {X: 0.0, Y: 0.003, Z: 0.002}
+                        rotationRecoilSpeed: 8.0
+                        hipFireRotRecoil: {X: -1.0, Y: 0.3, Z: 0.0}
+                        adsRotRecoil: {X: -0.5, Y: 0.1, Z: 0.0}
+                        recoilRandomness: 1.0
+                    e21e4efab2e7449b13e50a27cd021644: !Happenstance.SE.FPS.Weapon.WeaponEffects,dysector
+                        Id: c98be199-dc7f-40f8-9071-8a4ef63e2e22
+                        StartDisabled: false
+                        CollisionDetection: false
+                        EjectionSpot: null
+                        muzzleTransform: ref!! 7fe31dcc-5f9f-4980-8c60-d4a184ee3a28
+                        MuzzleFlashPrefab: 91a17444-8dc3-436e-b0ed-0f56e9386a3c:VFXPrefabs/vfx-Muzzleflash
+                        VfxDuration: 0.05
+                        BloodEffectPrefab: null
+                        ImpactEffectPrefab: 8d422cf3-1148-4a1e-b04a-cb5f274e1709:VFXPrefabs/vfx-RichBulletImpact
+                        HitMarkerEntity: null
+                        HitMarkerDuration: 0.2
+                        HitEffectDuration: 2.0
+                        FireSound: null
+                        ReloadSound: null
+                        ImpactSound: null
+                        HitSound: null
+            Base:
+                BasePartAsset: ea7937ac-889b-4906-812e-47d025806aa6:Prefabs/proto_cube_gun
+                BasePartId: 7986e5f1-ebbc-4352-b581-61360f6cacd5
+                InstanceId: f2d68e66-48d5-41a6-821d-dd74b79d4eea
+        -   Entity:
+                Id: 2bdb9ac8-1e6e-44be-8246-5e06885fc1bb
+                Name: rail_mover_001_023
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 99606f5a-9653-4556-9925-2a60757f3ff5
+                        Position: {X: -3.837, Y: 3.082, Z: -2.30611}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            5cf2ac0a2345d5d4f9d9e6a81478033e: ref!! 15b3f7d9-ac4e-4671-be74-72b647be82a8
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: c88dc258-4de6-4a44-831e-eea1310eebb3
+                        Model: 854a6b9b-f790-47e1-a399-2f86d82f90c8:Scenes/Prototyping/Shooting Range/shooting_range/rail_mover_001_023
+                        Materials: {}
+                    92409a7a80ed3b06705967f310d008e8: !.RangeTargetCarrier,dysector
+                        Id: ae14b526-3ef0-47ab-a01e-b120ad136229
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MinMovementSpeed: 2.0
+                        MaxMovementSpeed: 3.5
+                        StartPosition: {X: -3.837, Y: 3.082, Z: -7.313}
+                        EndPosition: {X: -3.837, Y: 3.082, Z: 1.869}
+                        HideTime: 3.0
+        -   Folder: null
+            Entity:
+                Id: 2f6b8a48-8ba3-42ec-8c94-6ec7bb7ccfe3
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: e41f0bdc-e70f-4a2e-8b8a-18197cd8cc7d
+                        Position: {X: 4.0097575, Y: 0.77355194, Z: 12.411625}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: ebb7afd3-8712-49c2-8dfb-473fa6eb8c69
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 316b57be-064a-42b8-90c7-1a443e589224
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 99bdcb66-e08f-4da7-9700-27887d37e42f
+                        Position: {X: 4.2774334, Y: 0.77355194, Z: 12.411625}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 89a6dc14-2feb-432f-aa0a-28aa91de76a6
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 330db453-b02b-4f09-99b1-6fdf454e6149
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: aa7555d8-307f-4a10-a2a9-c009603ecbab
+                        Position: {X: 4.071762, Y: 0.77355194, Z: 12.411625}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 8faed970-c2c9-4e22-bab4-908c74d1818e
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 33159419-fe0c-49ab-9051-00af541bda56
+                Name: rail_mover_019
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 15897759-88c8-4abc-8e39-67aaf64c53b1
+                        Position: {X: 0.519, Y: 3.082, Z: -3.7126093}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            1589973f590d35e8990c9d8365819697: ref!! 1c4c6b6f-977f-4e76-a32a-5c54cafffb27
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: e57aabae-b8ed-4906-83ba-315662441d75
+                        Model: 94b0f885-cc9a-41db-9759-0104fd7e157d:Scenes/Prototyping/Shooting Range/shooting_range/rail_mover_019
+                        Materials: {}
+                    9665d510a5187d4f54bb9b9daa88715b: !.RangeTargetCarrier,dysector
+                        Id: 962031db-856d-4b45-ba62-ed37d3a3e8de
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MinMovementSpeed: 2.0
+                        MaxMovementSpeed: 3.5
+                        StartPosition: {X: 0.519, Y: 3.082, Z: -7.313}
+                        EndPosition: {X: 0.519, Y: 3.082, Z: 1.869}
+                        HideTime: 3.0
+        -   Entity:
+                Id: 357aff1b-529a-4f04-bb32-c342dbbadcd3
+                Name: proto_frag
+                Components:
+                    c14d699d4266a8916001b1ed01f859cc: !TransformComponent
+                        Id: 7d234c29-1f5d-4b8e-a114-5c2aab0fa4ba
+                        Position: {X: 14.421238, Y: -2.3841858E-07, Z: 10.960002}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    7d407e9551c57f12bd9aa262e23df9e8: !ModelComponent
+                        Id: b073c674-0555-4d45-bf84-1f564437a367
+                        Model: 774fe34b-8d53-49c4-bb2f-c61c56e7f660:Models/Prototype Enemies/Proto Fragbyte/proto_frag
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 372fbaea-43eb-4ac5-8316-e7cf89434726
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 5036174e-9034-43eb-9c09-7d3f111e9983
+                        Position: {X: 3.9391508, Y: 0.77355194, Z: 12.411625}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: f96fed54-7375-4d6f-b852-71b48d90ddd9
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 38638211-5411-4c1a-ab3c-2be0738ec24d
+                Name: auto_mover_002_015
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1cbb6794-335b-406d-8eb2-746b55106a34
+                        Position: {X: 0.5267673, Y: 3.4790468, Z: 3.9509957}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 3f4a16bd-12b8-4357-a45b-685e9a00be88
+                        Model: cb3e81a1-4ed2-4acc-8610-4c3ca41c4f52:Scenes/Prototyping/Shooting Range/shooting_range/auto_mover_002_015
+                        Materials: {}
+        -   Entity:
+                Id: 3b6487bc-5299-4bfb-9b8c-5c92422f1715
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: d79abaa6-3745-43fe-85f0-51c8761a4fe9
+                        Position: {X: 6.6051617, Y: 2.4708786, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: ba2e168e-dd40-4fc2-a1b2-2680cf45fa0e
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 3d7beaac-534c-47e1-a761-f25601058f1b
+                Name: stand_001_008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 8a2190d6-3bf5-4f82-b0c0-84452006d572
+                        Position: {X: 0.10590966, Y: 0.56961155, Z: 12.584147}
+                        Rotation: {X: 0.0, Y: 1.0, Z: 0.0, W: -4.371139E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: feade7be-c678-48f2-9ed8-8b0b57a58656
+                        Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+                        Materials: {}
+                    7c6c65352fbc4ba61c966e41b8eb6ab4: !StaticColliderComponent
+                        Id: 4a8db162-e643-4e8d-808c-4697474d5c8b
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d0341660a63eff18841ef7b303e25e73: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Folder: null
+            Entity:
+                Id: 407a1431-1fe6-4081-87f5-6f20e910a90c
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 9005bd9a-a6d0-4e7e-a820-a197fc92f5cd
+                        Position: {X: 5.549, Y: 2.7482262, Z: 11.231288}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.1321713, Z: 0.31283495}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 8d777493-a153-49a9-b0e7-33ad715f2eb6
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: f0692cc2-5846-4b59-b34a-de14334cf957
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Entity:
+                Id: 43242f5c-2d75-438a-b890-20d359a29ce8
+                Name: roof_004
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 756b1424-9106-4f3c-b5e0-65690675ce1e
+                        Position: {X: 0.0078005265, Y: 5.110942, Z: -4.028997}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 6685ea78-08a7-47c2-a62f-6bf796dabbdd
+                        Model: c96815b7-7ebf-4f90-ab7c-37c30cdef430:Scenes/Prototyping/Shooting Range/shooting_range/roof_004
+                        Materials: {}
+        -   Entity:
+                Id: 43889900-31f7-45cd-b5ab-24935939515c
+                Name: Camera
+                Components:
+                    d1b3c0cf7088e3571be76f69eb018683: !TransformComponent
+                        Id: 1b589898-e020-43d5-bbbf-6ea78663662c
+                        Position: {X: 0.0, Y: 1.6642183, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            15ad6759e688ad063804cbad865f3802: ref!! 0a895ceb-8118-460b-b47e-feaf383cbcb6
+                            c8bd4a02919082499fc375a9c5560174: ref!! 3af13a7a-7921-4565-b258-f70f65b658cb
+                            eba1b75607195e02e0ca24b68f4f87b7: ref!! b369550f-e3cd-4e2b-90d4-3f4cc8efa44c
+                    cb0332682d728d0e48b7291cc8b623ec: !CameraComponent
+                        Id: 1afd0f80-d63c-4d9c-ae55-536751d89353
+                        Name: null
+                        Projection: Perspective
+                        Slot: caa4bb38-461e-4aa2-8904-6495aa8251e7
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: d1087fd4-46a2-4f71-9057-d5a51da3aa28
+                InstanceId: ca5d7927-7fd0-47da-99e4-ab9962b0c399
+        -   Entity:
+                Id: 443c2009-d35f-4afa-9f43-5702628b0bf4
+                Name: HS Logger
+                Components:
+                    a3b52bfd2eb37eb41853ce163b9e9c85: !TransformComponent
+                        Id: 21428c9a-0c64-4b6b-a218-0732c64630af
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    207cd703606101cb4d1a3e149d454d7d: !Happenstance.SE.Logger.Core.HSLogger,dysector
+                        Id: 21aa47db-1638-46d6-bc1b-d916e8da64cc
+                        Priority*: -10
+                        DebugMode*: true
+            Base:
+                BasePartAsset: 635c6872-af44-468f-9082-540cd47b8a92:Prefabs/HS Logger
+                BasePartId: 583373c8-5770-4f81-8d57-82923d601b8c
+                InstanceId: b6d6ed9b-88ac-4f91-ac50-6344d62a6e7c
+        -   Folder: null
+            Entity:
+                Id: 4b82c3ef-b124-44bf-ad25-d0b02138757b
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 12408eef-fa53-49af-9d1f-9ee7ccb1954a
+                        Position: {X: 4.2774334, Y: 0.77355194, Z: 12.27567}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 864ccbeb-ab6f-4732-b385-c5e8f1c653e1
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 4c4cc6c0-5bd9-4722-bf75-68e2095a40aa
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 19ba2da1-4462-4cd3-99b4-e3d2efe90b69
+                        Position: {X: 4.1330423, Y: 0.77355194, Z: 12.675485}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 98352c10-bb72-451d-a6a4-052b72ef286f
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 4d3c3bd4-3591-4f8d-a904-327e9ed2888c
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a77a12e9-222e-4cf8-bf0b-82a32c8c6573
+                        Position: {X: 5.55, Y: 4.590571, Z: 7.737551}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 0.60238373, Z: 0.31283495}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 61e45e73-dd10-4f83-88dc-b9047eb5f646
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: 28267cd2-0927-4b64-bee3-7b5b344846a6
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Folder: null
+            Entity:
+                Id: 4e4d5eab-3420-4373-b794-3e650f856101
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: ed7af830-ea7e-4c60-8108-777f5eea1d84
+                        Position: {X: 4.202088, Y: 0.77355194, Z: 12.27567}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 87830d6b-ce20-4326-ad47-c059deff3296
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 4e4f1baf-50bf-42e1-9f87-a805253a8200
+                Name: Skybox light
+                Components:
+                    0a563cd9f98ca895c9e8bf7fa6b82d43: !TransformComponent
+                        Id: ca66ecd5-a7d8-47f1-9501-7a3b1a474e46
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    cbeeee12e4d6784fed6fb7dfc359b9da: !LightComponent
+                        Id: 1535c318-49e4-4b14-b27b-0883193203ef
+                        Type: !LightSkybox
+                            Skybox: 89321b68-d44e-409d-901e-e241532e6d40:Scenes/Prototyping/Shooting Range/Skybox
+                    3767c9b083db447d9b1ad9dfc44dcb84: !BackgroundComponent
+                        Id: b65fdadd-9e7c-4eb5-8526-cba8389ea57b
+                        Texture: 2a0193bf-fcf1-42b4-92d8-dbde51d42cad:Textures/Skybox texture
+        -   Folder: null
+            Entity:
+                Id: 4f894638-1b62-4b82-8d28-6452cd4385ba
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 617e8eff-1ce4-4329-8283-508f5048c55d
+                        Position: {X: 3.9391508, Y: 0.77355194, Z: 12.27567}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 1ce355dc-54ee-40bb-b031-c30491724355
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 516ad0f4-a2e7-45ac-bade-830fd24098da
+                Name: stand_001_008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: b604497d-5deb-4a98-88ad-b79436c70ed0
+                        Position: {X: 2.1040165, Y: 0.56961155, Z: 12.584147}
+                        Rotation: {X: 0.0, Y: 1.0, Z: 0.0, W: -4.371139E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: a78ea7fe-a264-4eac-8574-0d9c65174527
+                        Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+                        Materials: {}
+                    7c6c65352fbc4ba61c966e41b8eb6ab4: !StaticColliderComponent
+                        Id: 834d4bcd-dfc2-480f-bccb-cea884d36db1
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d0341660a63eff18841ef7b303e25e73: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Entity:
+                Id: 58d9c21f-c78c-4d49-846e-805fe4c5259f
+                Name: rail_mover_003_025
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 2b2517a7-9350-48f4-8696-201c9f90d9b4
+                        Position: {X: 2.734, Y: 3.082, Z: -7.313}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            5a280ba3131d146ba7192936a4035f58: ref!! a1755349-2150-4d57-be1a-6e60f28e9ddb
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: a86f01ca-69bb-4fe2-a477-d6ea254f742f
+                        Model: f853792b-d80c-40df-94cf-c849e0ef56a3:Scenes/Prototyping/Shooting Range/shooting_range/rail_mover_003_025
+                        Materials: {}
+                    56d373cecbfdacb922e0df07e5096f64: !.RangeTargetCarrier,dysector
+                        Id: 2a0aa8c4-e72a-45b2-8485-8f19da446087
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MinMovementSpeed: 2.0
+                        MaxMovementSpeed: 3.5
+                        StartPosition: {X: 2.734, Y: 3.082, Z: -7.313}
+                        EndPosition: {X: 2.734, Y: 3.082, Z: 1.869}
+                        HideTime: 3.0
+        -   Entity:
+                Id: 59314532-c8dc-46c1-9a8b-b683244180e8
+                Name: Input Manager
+                Components:
+                    c0e97f038c3a7e30fb1258e7da4c26f4: !TransformComponent
+                        Id: 9b9c3280-ad20-4f81-a8d7-1f61851b9231
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    8379947803f74c35b199e03155efedf5: !Happenstance.SE.Input.HSInputManager,dysector
+                        Id: 7b94bcf1-ac45-4f3d-9b87-59d6ff83aea6
+                        Priority*: -9
+                        StartDisabled: false
+                        CollisionDetection: false
+            Base:
+                BasePartAsset: 8b228509-ae3d-4998-bd1b-92856874e94a:Prefabs/Input Manager
+                BasePartId: 6d364991-7f74-49a6-89a7-6970c05e4304
+                InstanceId: d12c1dfd-9a4f-4493-b30d-52a427f8776e
+        -   Folder: null
+            Entity:
+                Id: 5a47d3f0-40a1-42eb-84a3-3f434f6b2f78
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 943a3d59-f7ac-49f2-8f88-f6b8f393cc23
+                        Position: {X: 16.373894, Y: 2.6313148, Z: -0.2026146}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.1095446, Z: 1.6788555}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 4159d30d-68ee-468f-ac5a-3824100d2cc7
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: 99087574-765d-4a34-94dc-431321313aab
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Folder: null
+            Entity:
+                Id: 5e3a4450-2dda-4ed3-ada1-9f7da8a40004
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: f34cf182-bf9a-4b06-b39f-ca5861ed6555
+                        Position: {X: 4.0097575, Y: 0.77355194, Z: 12.541189}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 135a50a0-ea0a-4b97-9b80-9fa68c3dff3f
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 5f8913bf-3be6-48cf-8128-75e0c7ccbef1
+                Name: proto_packet_blaster
+                Components:
+                    8f1377c8ff5322a1921c92afa34e281b: !TransformComponent
+                        Id: a11e5e23-be53-4bd2-9edc-a683b36dd60e
+                        Position: {X: 0.07875497, Y: 0.83, Z: 12.441047}
+                        Rotation: {X: 0.0, Y: 0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    dcea9d9d0175e4c43e0e19fb23b46a35: !ModelComponent
+                        Id: d009c5b4-710c-45f2-86c0-dd0d2b6ddf68
+                        Model: a6eaead0-872a-4254-b1dc-2541aebc599f:Models/Prototype Weapons/proto_packet_blaster
+                        Materials: {}
+        -   Entity:
+                Id: 62e0853f-cc39-4090-908a-ea3dee58a702
+                Name: Crosshair
+                Components:
+                    11af2092ec6588a425357f150eef8b01: !TransformComponent
+                        Id: 0a895ceb-8118-460b-b47e-feaf383cbcb6
+                        Position: {X: 0.0, Y: 0.0, Z: -3.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 0.05, Y: 0.05, Z: 0.05}
+                        Children: {}
+                    f7aea1534db0c81fd763bd311fb06a54: !SpriteComponent
+                        Id: 0f81c9f5-ef38-4343-b9d7-6a1503b32c96
+                        SpriteProvider: !SpriteFromTexture
+                            Texture: 676bf183-96ba-4b5c-b32e-ae78db9f8901:Happenstance/Player Controller/First Person Player/Textures/crosshair
+                            Center: {X: 0.0, Y: 0.0}
+                        Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+                        Intensity: 2.0
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: eb5c00e2-5a39-447b-95e4-5ac762222f3d
+                InstanceId: ca5d7927-7fd0-47da-99e4-ab9962b0c399
+        -   Entity:
+                Id: 63bd9951-7f8d-4f73-95f0-2b3b1333a873
+                Name: stand_005
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 721633de-e56a-4441-b1e5-96af14cdd3a2
+                        Position: {X: -3.805119, Y: 0.726911, Z: 4.4173775}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: e46c014f-5b25-4377-a90a-bc3df034da6f
+                        Model: 66fed29b-a2f0-4aa0-acdc-2592e26bbf5e:Scenes/Prototyping/Shooting Range/shooting_range/stand_005
+                        Materials: {}
+                    9f3337c9a5f51103dd8c3f7fba7c5ad7: !StaticColliderComponent
+                        Id: d27726bb-5987-4afa-9dfe-cb752e58c5b0
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            1d70272e6a5322271541456d4c08784e: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Folder: null
+            Entity:
+                Id: 641c64ce-e2f7-4433-a806-a6ff09669618
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 59da20f2-94a8-462a-b7e1-f7a8d51a21a3
+                        Position: {X: -5.368216, Y: 2.6313148, Z: -0.028997421}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.1095446, Z: 1.6788555}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 555626c0-327b-4dd5-8656-ddd57ccbc20f
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: bc8b7d7d-b7d9-4285-bef1-3257621c623d
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Folder: null
+            Entity:
+                Id: 64b705fe-5f57-41d0-85a8-a96f89a71208
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: cb2a55c3-4289-4807-95f4-e89e6ca17ae2
+                        Position: {X: 4.2774334, Y: 0.77355194, Z: 12.541189}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: cec553ca-9200-4ec3-8f10-180368647a89
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 65d282f7-665b-4149-b945-f2414f25332e
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: b62d655d-2bb5-4b79-ad71-276230246508
+                        Position: {X: 14.997064, Y: 1.026175, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: 83daa09e-8a1e-43d4-8d7f-0769dbb92851
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 672f7b87-db3c-4b5a-b5b4-6b80c7aad015
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 7f048320-ae2c-47a9-8226-21129edbab48
+                        Position: {X: 4.202088, Y: 0.77355194, Z: 12.541189}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: c6c68de8-1128-4dbd-89d1-8252c304d0b8
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 676951a1-09f2-4d7a-9390-e0bd6ffc3183
+                Name: shooting_range
+                Components:
+                    961ae8a7666cc3785b61a3ec150b76ed: !TransformComponent
+                        Id: f2bac9ca-83b3-44ae-bfbd-324b7b31323a
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            251f00e184a047b5acf5f373f85a0e3d: ref!! 53731610-858d-41f8-9438-3cfa3dae2550
+                            07d5211c50204ed3a8f8743ee76b8ddf: ref!! 0ed917f3-e073-4c4c-8fb8-6a61e8f3ece5
+                            7ee0a0c6518c865dce2111b6811caf65: ref!! 26b09919-6d0c-4a17-a2c0-44e625a311fc
+                            4c3812d4e99709b02e4dc25c0e8c7611: ref!! 3e774c2a-116f-4813-89a4-87d844c157da
+                            ecad04821c865a80270445a796d9eae1: ref!! 06d40f2c-e722-417f-82d4-edf93f9edd81
+                            8cbd6fbd22e0aa2550dc09dda9f4c1c4: ref!! 97d9cb73-9719-4697-9778-3bf869f96df9
+                            09db4267fc06641e5b479b56f55fb7e1: ref!! 9005bd9a-a6d0-4e7e-a820-a197fc92f5cd
+                            fa9019694caf2bcc522d8a1bbc7b9c4a: ref!! a77a12e9-222e-4cf8-bf0b-82a32c8c6573
+                            60f40a4634e0f0b09241c98eeb9bca42: ref!! 59da20f2-94a8-462a-b7e1-f7a8d51a21a3
+                            38508e1a1b408d8581f2b4fe40f37566: ref!! 943a3d59-f7ac-49f2-8f88-f6b8f393cc23
+                            4495943dabfad588f83653ebefeb37f4: ref!! fe5ce831-c54a-426a-b47a-f4deb8c06801
+                            478a68b51d018e2397152fafbb60bbfb: ref!! 924f3f4d-00d0-4c0e-9f7a-af39901be78d
+                            a7bf8f5d5fd340bb82bff09e5c41bb15: ref!! 756b1424-9106-4f3c-b5e0-65690675ce1e
+                            3bc8ea2ccbc14e2a9eaeb5e544044d41: ref!! 721633de-e56a-4441-b1e5-96af14cdd3a2
+                            19793b3080ee43199f76340ae8950cf8: ref!! a19f092d-994c-462b-978e-e2e9a055b882
+                            c5555f9fbec24054af5fa7a5c1d4cda3: ref!! 1bd047c0-4a2f-4c22-b51d-8661f85590c6
+                            9eb6317006e94e61ae26cf7cc462baa5: ref!! e5de1563-6f89-4673-9683-fc512fdbf2db
+                            9810d6ab612a6ad3803f8867e2b03bb3: ref!! 7349920f-9f7c-4367-aea4-a6dcec6a0876
+                            e373480c0a18542ec30137c55d462b4d: ref!! b604497d-5deb-4a98-88ad-b79436c70ed0
+                            711b4bc5905a90cd0f2e3144278d5479: ref!! 2ed9390a-640d-47e2-95e2-6d031fa0e098
+                            4234ead4924ff2c36dcbebf8bcc81b2f: ref!! d094009f-65a5-4291-8c45-5167db19b959
+                            fed95135c12c0d8cf92ea38f8823584b: ref!! 8a2190d6-3bf5-4f82-b0c0-84452006d572
+                            bf15756f47024bd8a8112986ab77a7b9: ref!! 6b1c974c-887e-41ee-aa5f-34f56ab0c20b
+                            59167c721fa64ca79a236f272496991d: ref!! 8b0de175-3893-428e-b187-6d610537be55
+                            f9d2805f853f440d8882aaac30722bd1: ref!! 5b73e192-5e47-44de-9ab0-17494f26af3d
+                            7dd189e94def475cbf5aad7b23edf455: ref!! a5155238-fecd-4f81-9430-7f09eb6d8173
+                            caf2a8d1b7224ecfb3eb8f3ae41e3b66: ref!! 1b5cbe26-e7c7-46a1-a368-cf0e81dc26c3
+                            ab4c8f8c00984a708a0fb0ef6e8b5bb0: ref!! 62d80c6f-129d-436a-afad-d56ac3a3a28e
+                            a03e61fadbeb4018a6f54504e1783ab4: ref!! 1cbb6794-335b-406d-8eb2-746b55106a34
+                            d948c92a0d604a17a9e1ee342eb2b9da: ref!! 0052a246-8173-4df1-89f7-0fa786b5ccb6
+                            627977bd039c4867852404a2a1c7d655: ref!! a24a8a80-0590-4f16-9fed-3e181e78623d
+                            c22712a717884198911bb3b80a4e181a: ref!! 1c108aa7-7577-470d-b8ba-92bdacb83268
+                            89638c5c4f7243aaae81dd2a267d2406: ref!! 15897759-88c8-4abc-8e39-67aaf64c53b1
+                            e6e46244905b4b43af32bdf0bc291394: ref!! 61a12a78-a81d-4a86-9428-7b9910a7bb85
+                            94640bf21037487e84bbf07ac0875cc5: ref!! 99606f5a-9653-4556-9925-2a60757f3ff5
+                            1eec02e3a4b34e4692036bd841bbb870: ref!! 2b2517a7-9350-48f4-8696-201c9f90d9b4
+                    0e7a20d1c66e2eb1091c64bfcc118938: !.RangeManager,dysector
+                        Id: 1c02c420-ad02-4f0f-ad27-7014fa793219
+                        StartDisabled: false
+                        CollisionDetection: false
+                        AutoStartRanges: false
+                        GlobalMovementSpeed: 2.0
+                        GlobalHideTime: 3.0
+        -   Entity:
+                Id: 69d0a04f-78e3-485a-86f1-1286f904bd8b
+                Name: Range Booth interaction
+                Components:
+                    4de3335359994a673db0ee716915398d: !TransformComponent
+                        Id: 475f0179-737d-44cb-8bdf-cdd8b9dca3c4
+                        Position: {X: 0.540799, Y: 1.27941, Z: 4.888053}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.7575307, Y: 2.5313637, Z: 1.7575307}
+                        Children: {}
+                    6a7694d2decdf17e9ad80aaed7cf1d80: !ModelComponent
+                        Id: 59391566-ed44-4ffd-98c2-ed8b78f8b379
+                        Enabled: false
+                        Model: b36be3fb-1496-44c7-97ea-2d523feff017:Box1x1x1
+                        Materials: {}
+                    54f469136b21a37fe3359554c2859543: !StaticColliderComponent
+                        Id: 014510a8-51da-42cc-89fb-91d5a32697e5
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: true
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            709f6b27bac1145a92284e15b8371283: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                    9ad3818102867cbb0d580b2f594d6144: !Dysector.RangeInteraction,dysector
+                        Id: 289b122a-11e4-4f6e-87bd-87b5f315a7ef
+                        StartDisabled: false
+                        CollisionDetection: true
+                        ShowPromptWhenInRange: true
+        -   Entity:
+                Id: 6f354b32-63da-4d20-90ce-958f2e72a327
+                Name: auto_mover_001_017
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a24a8a80-0590-4f16-9fed-3e181e78623d
+                        Position: {X: -3.857463, Y: 3.4790468, Z: 3.9509957}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 99413b65-7363-441d-9ab4-d693761e7621
+                        Model: 89f1c37d-16d4-4d22-a341-4c5c0a7254fb:Scenes/Prototyping/Shooting Range/shooting_range/auto_mover_001_017
+                        Materials: {}
+        -   Entity:
+                Id: 6fb6f28f-7bae-49e8-9804-0a1dd1c5efd6
+                Name: dive_ui
+                Components:
+                    5c0fb7f27363d916d6b331d94b653cdd: !TransformComponent
+                        Id: 59a26a46-3896-48fc-88ca-8af0c92d18a9
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    55b515cc6c7ec502203cd04321b18d03: !UIComponent
+                        Id: 66945b2a-7ae1-49fa-baaf-456346c33c60
+                        Page: b4b911f2-2b35-44ec-9fb2-a59f08bfbce9:UI/dive_ui
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    2ce0bdabf9308ca1ab8afa2ee73684b7: !Dysector.UI.DiveHUD,dysector
+                        Id: 9fd19373-cb94-404f-b16e-5363d3e66fe6
+                        StartDisabled: false
+                        CollisionDetection: false
+                        EnableAmmoColorCoding: false
+                        EnableHealthColorCoding: true
+        -   Entity:
+                Id: 709ab4ce-cd76-4afc-be37-9d6f0f922b7d
+                Name: Dev Editor Manager
+                Components:
+                    28fc7039e242c61bbacfacc211b31b14: !TransformComponent
+                        Id: 4a5552e8-3439-46c7-89cd-4d764e0acec8
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            d14058379a3d0a3ba4cb4e994e2ef7f9: ref!! 111b3349-486b-4c14-a33d-07c8a8be669a
+        -   Entity:
+                Id: 70c12ac3-ffa7-44c8-90cd-52cc8e7197a7
+                Name: proto_sentinel
+                Components:
+                    4a6b933e5f9c67c6952eb0de0816b300: !TransformComponent
+                        Id: 0721e193-fe12-4ec4-b34e-63eb8426ef4a
+                        Position: {X: 14.914594, Y: 0.0, Z: -2.9129212}
+                        Rotation: {X: 0.0, Y: -0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    48359f73bf750aac3510b4ff8d462630: !ModelComponent
+                        Id: 9fc725ae-57b8-4241-8621-fafc55717b7a
+                        Model: a9bee528-2c3e-416e-a0ab-8b9c620a97f1:Models/Prototype Enemies/Proto Sentinel/proto_sentinel
+                        Materials: {}
+        -   Entity:
+                Id: 7329b796-395c-4cfd-bb49-7cf8f0c90093
+                Name: blocker_004_011
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 5b73e192-5e47-44de-9ab0-17494f26af3d
+                        Position: {X: 1.6538624, Y: 2.000201, Z: 4.4124994}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: de3a5c78-e148-49e4-b607-c7dd519b627d
+                        Model: 83fe7ad7-d015-4d17-9c15-0692ab4f0ada:Scenes/Prototyping/Shooting Range/shooting_range/blocker_004_011
+                        Materials: {}
+                    38eba46f7832c08a0f784719ec2bfd62: !StaticColliderComponent
+                        Id: e33f7931-0a03-4c45-9b8f-25426a07689c
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            484cb106725b5e3be273233b06d8a0a3: !StaticMeshColliderShapeDesc
+                                Model: 000bdf08-bbff-42ad-9be7-b1160211cda8:Scenes/Prototyping/Shooting Range/shooting_range/blocker_001_007
+        -   Entity:
+                Id: 73ae2667-a6e3-47be-90ff-42af5d6ca4f1
+                Name: floor_000
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 53731610-858d-41f8-9438-3cfa3dae2550
+                        Position: {X: 6.0335326, Y: 0.0, Z: -0.4557861}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 2.0859325, Y: 2.0859325, Z: 1.541807}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 82f2adaa-2e0d-4bad-affc-58945cc7d33e
+                        Model: f1b449e0-0f14-4ceb-b35e-430057b0f7e7:Scenes/Prototyping/Shooting Range/shooting_range/floor_000
+                        Materials: {}
+                    f190451ff141e642f56cb0aa5ec30780: !StaticColliderComponent
+                        Id: 927fb89c-7146-4bac-9557-ed45daca7edf
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            3cee891556b67ed63b11a8f80db31c9e: !StaticMeshColliderShapeDesc
+                                Model: f1b449e0-0f14-4ceb-b35e-430057b0f7e7:Scenes/Prototyping/Shooting Range/shooting_range/floor_000
+        -   Entity:
+                Id: 742d559d-ce53-4a89-a5cb-051f5e84e9c3
+                Name: Input Manager
+                Components:
+                    3077be894c6a640d1d098794aa6667dc: !TransformComponent
+                        Id: cdee2df2-0473-435a-a96a-cb4925632d1c
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            35a839ff3dfd4eb9c6fe7e8e2a39fb8e: ref!! 9b9c3280-ad20-4f81-a8d7-1f61851b9231
+        -   Entity:
+                Id: 75399de9-d60b-4f81-a3f5-375c87573fb4
+                Name: Directional light
+                Components:
+                    3c61d01becbc8ea98be9ffdc85bc2fb5: !TransformComponent
+                        Id: 4d423f8d-707c-4886-8ce4-589da40bb8fc
+                        Position: {X: 0.0, Y: 2.0, Z: 0.0}
+                        Rotation: {X: -0.57357645, Y: 0.0, Z: 0.0, W: 0.81915206}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    3f5f703842b830f5726d98ec7940e147: !LightComponent
+                        Id: acbb2d8c-d553-4e40-83a4-e8140c3c3a54
+                        Type: !LightDirectional
+                            Color: !ColorRgbProvider
+                                Value: {R: 1.0, G: 1.0, B: 1.0}
+                            Shadow:
+                                Size: Large
+                                DepthRange: {}
+                                PartitionMode: !LightDirectionalShadowMap.PartitionLogarithmic {}
+                                ComputeTransmittance: false
+                                BiasParameters: {}
+        -   Folder: null
+            Entity:
+                Id: 77295315-927f-4c53-ab46-d4ded00d1cdc
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 5bb82935-3da6-4095-8fba-e1e1cf799220
+                        Position: {X: 4.1330423, Y: 0.77355194, Z: 12.541189}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 77804cc3-dc44-409b-ad48-484226ea657b
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 7a8e2926-6153-4f2e-9f45-ff21848c1c73
+                Name: stand_003_012
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a5155238-fecd-4f81-9430-7f09eb6d8173
+                        Position: {X: 2.7316117, Y: 0.726911, Z: 4.4173775}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: fb9cdcf1-d623-4512-bf6a-e3a4f3b2aace
+                        Model: 5093ee9a-cd6d-427f-be56-1ace4a90d598:Scenes/Prototyping/Shooting Range/shooting_range/stand_003_012
+                        Materials: {}
+                    c6da71e43093694cf7f00db9e09d3429: !StaticColliderComponent
+                        Id: 95043742-cff9-4867-9230-3b983a3bd175
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            253b18ec28c1241c244e06bf3ed3da7d: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Entity:
+                Id: 7e962bac-dc93-4aa3-9587-11b6eb4dff15
+                Name: proto_pattern_disruptor
+                Components:
+                    0e949f652c4fb9fed53db70ef036fc3e: !TransformComponent
+                        Id: 088d5e52-eba6-4d34-aa9b-1fe4b340e10e
+                        Position: {X: -1.7560549, Y: 0.83, Z: 12.502}
+                        Rotation: {X: 0.0, Y: 0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    ad8d719e55ff0a86de4fadd71da75dd9: !ModelComponent
+                        Id: 481ecec4-db55-4b9f-91e6-2df47ae2de54
+                        Model: aba27aa2-5587-4159-96cb-f48fa4a013ce:Models/Prototype Weapons/proto_pattern_disruptor
+                        Materials: {}
+        -   Entity:
+                Id: 7f8c65aa-54f6-4a16-9c49-60edaf89a0d0
+                Name: DevCamera
+                Components:
+                    90c86d429f33f6013a913d2f86267e04: !TransformComponent
+                        Id: cea22884-f9fe-415d-a2ba-0d24eb8dd239
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    4c2fd08ed89c57f5b7b88eabb3422a2b: !CameraComponent
+                        Id: 38cfb48e-e886-4f27-94b0-925cb0e76159
+                        Name: null
+                        Projection: Perspective
+                        Slot: cba82b6c-2e07-4c7f-9d38-2ae6f41386d4
+                    b1e9bb8c26f7e9bed996fd329a2ab732: !Happenstance.SE.DevEditor.Core.DevCamera
+                        Id: fdf096bd-c02a-4fe2-a230-80aa4a8729fe
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MovementSpeed: 10.0
+                        FastMovementSpeed: 25.0
+                        SlowMovementSpeed: 2.0
+                        RotationSpeed: 5.0
+                        MainCameraEntity: null
+            Base:
+                BasePartAsset: 57b4e765-d0a0-44b3-88b5-f47aa490e959:Prefabs/Dev Editor Manager
+                BasePartId: 6d234b3b-cb7d-4394-a7e0-09d8e3565111
+                InstanceId: 85d48675-ab51-483a-a2f2-6abfe25ae45f
+        -   Folder: null
+            Entity:
+                Id: 7f8d1cb0-4f1d-4e29-9aac-dd04ef4a092d
+                Name: back_wall_002
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 3e774c2a-116f-4813-89a4-87d844c157da
+                        Position: {X: 0.007800467, Y: 2.5154629, Z: 13.439451}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.1457075, Y: 1.2288218, Z: 1.2288218}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 433b5eb9-9b9c-4352-a506-0891c9af5940
+                        Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+                        Materials: {}
+                    129c4dab6b1608d48cc68997bfa424de: !StaticColliderComponent
+                        Id: 025b70b6-d29b-4f9e-879c-5031c4be450b
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            2b59bf5a793ec13bef1fd079f9224e26: !StaticMeshColliderShapeDesc
+                                Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+        -   Entity:
+                Id: 7fe31dcc-5f9f-4980-8c60-d4a184ee3a28
+                Name: muzzle location
+                Components:
+                    4f6d0466c1081f3105e88814852edc77: !TransformComponent
+                        Id: a2ac5560-8930-466f-b91f-1dbe6b546bfd
+                        Position: {X: 0.0008800166, Y: 0.0464982, Z: 0.8011562}
+                        Rotation: {X: 0.0, Y: 1.0, Z: 0.0, W: -4.371139E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+            Base:
+                BasePartAsset: ea7937ac-889b-4906-812e-47d025806aa6:Prefabs/proto_cube_gun
+                BasePartId: a9368dec-99cd-4ea0-9df5-d677fac1c68c
+                InstanceId: f2d68e66-48d5-41a6-821d-dd74b79d4eea
+        -   Entity:
+                Id: 8395b6b0-9101-473c-a569-806cf2fb0428
+                Name: auto_mover_018
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1c108aa7-7577-470d-b8ba-92bdacb83268
+                        Position: {X: 2.724404, Y: 3.4790468, Z: 3.9509957}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: e7873ea2-6469-453e-9275-31d96abae638
+                        Model: 162b4d9b-c5b0-483c-a44a-3bc0440cd479:Scenes/Prototyping/Shooting Range/shooting_range/auto_mover_018
+                        Materials: {}
+        -   Entity:
+                Id: 895bb5a3-8e46-4884-8174-a3da2b47eda6
+                Name: auto_mover_003_016
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 0052a246-8173-4df1-89f7-0fa786b5ccb6
+                        Position: {X: -1.6532553, Y: 3.4790468, Z: 3.9509957}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 95514ee5-9581-4fa4-88e8-f3d4569cdcb9
+                        Model: d7e37bd7-f3b3-4b72-b300-d523d78abed2:Scenes/Prototyping/Shooting Range/shooting_range/auto_mover_003_016
+                        Materials: {}
+        -   Entity:
+                Id: 90fdc7b5-1907-4716-a3e7-04ea7cd0bd32
+                Name: blocker_003_009
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 6b1c974c-887e-41ee-aa5f-34f56ab0c20b
+                        Position: {X: -0.52842826, Y: 2.000201, Z: 4.4124994}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 97b15fe4-2c63-43eb-80c6-9ee43ac7d034
+                        Model: 3143bf2a-2d8a-480e-98ac-fb8dda7abed9:Scenes/Prototyping/Shooting Range/shooting_range/blocker_003_009
+                        Materials: {}
+                    3839712d0a47edd72a9da2e3cc9e4046: !StaticColliderComponent
+                        Id: 36e9f60a-bc76-4b04-9963-718a14ed1dfd
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            a02f569bd9a2cb1219dc3dfad53869e6: !StaticMeshColliderShapeDesc
+                                Model: 000bdf08-bbff-42ad-9be7-b1160211cda8:Scenes/Prototyping/Shooting Range/shooting_range/blocker_001_007
+        -   Folder: null
+            Entity:
+                Id: 91c46d66-b73b-4da7-9ecf-baef75046061
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: a66c7b9c-ee8b-4146-b539-29561cc5e737
+                        Position: {X: 3.9391508, Y: 0.77355194, Z: 12.675485}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: c8ab9456-8400-41ee-b050-3d6fc4e339a8
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: 93aa2046-78cb-4c2f-b117-279b37ce0b91
+                Name: Prototyping_Human_Size
+                Components:
+                    f8c7b9ab6f627e044f82ed4c6a675994: !TransformComponent
+                        Id: 8bb2c000-6c1b-4283-b400-aa6868d385ad
+                        Position: {X: 5.591518, Y: 0.0, Z: 7.7099285}
+                        Rotation: {X: 0.0, Y: 0.707074, Z: 0.0, W: 0.7071396}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    14ec2eee8012a87a173fae65a71240cf: !ModelComponent
+                        Id: 2ab6ea77-a098-4ab6-afb4-b10b66690038
+                        Model: 0e41569a-57d7-4de2-9605-3ed9d8838ff2:Prototyping_Human_Size
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 947b6894-5454-4069-a024-b99d3acf7bbe
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 97d9cb73-9719-4697-9778-3bf869f96df9
+                        Position: {X: 5.549, Y: 2.6590476, Z: -0.58880675}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.160339, Z: 0.9174534}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: cbac1e0f-cb6a-4391-966a-e4ae70582e08
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: 99a0202c-f6de-41d2-a1c6-7863d3a3737b
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Entity:
+                Id: 97bb01fb-0163-4999-b6bd-cdce54f988dc
+                Name: poster_002_024
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 15b3f7d9-ac4e-4671-be74-72b647be82a8
+                        Position: {X: 0.0, Y: -1.34, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 1ea5951d-5937-480a-ab82-6d0d50363355
+                        Model: c8834911-a40b-4428-abd9-222b1eee3ad9:Scenes/Prototyping/Shooting Range/shooting_range/poster_002_024
+                        Materials: {}
+                    e74e2c1837099c9d0bbe51ee80325f5c: !.RangeTarget,dysector
+                        Id: 9358960c-f6f6-411b-ae27-6d6253d34916
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MaxHealth: 100.0
+                        CanBePenetrated: true
+                        PenetrationResistance: 0.0
+                        DestroyOnHit: true
+                    266b347c94c78c3c01930da602b58f81: !RigidbodyComponent
+                        Id: ed3d1637-c0be-4062-bf68-9c4d0a346012
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        IsKinematic: true
+                        Mass: 1.0
+                        LinearDamping: 0.0
+                        AngularDamping: 0.0
+                        OverrideGravity: false
+                        Gravity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        NodeName: null
+                        ColliderShapes:
+                            8320860833d35bf030c032d31a476528: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 0.7, Y: 1.2, Z: 0.1}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+        -   Entity:
+                Id: 993dfab5-a421-479f-b1e5-e052dc12337e
+                Name: First Person Controller
+                Components:
+                    1940f0585e759f45c30d82c7abcde899: !TransformComponent
+                        Id: 0c05c33f-70b0-4158-879c-7052fa6887b6
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            935fa460c9a9a552b0edd6c3ad1a8038: ref!! 1b589898-e020-43d5-bbbf-6ea78663662c
+                    a503dfcaace145c5e386e68f194723b1: !CharacterComponent
+                        Id: 5ca77699-a930-4ad7-b262-06ac5b71e712
+                        CollisionGroup: CharacterFilter
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        FallSpeed: 10.0
+                        MaxSlope: {Radians: 0.7853982}
+                        JumpSpeed: 5.0
+                        Gravity: {X: 0.0, Y: -10.0, Z: 0.0}
+                        ColliderShapes:
+                            7fb1ccc94c399842b397ffc870dccd18: !CapsuleColliderShapeDesc
+                                Length: 1.0
+                                Radius: 0.3
+                                LocalOffset: {X: 0.0, Y: 0.8, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                    d363bc4862233ce314d7a4eaaacc2a39: !Happenstance.SE.PlayerController.HSPlayerController,dysector
+                        Id: cb3ce0c1-6afe-4575-b526-bf566365e91a
+                        Priority*: -1
+                        StartDisabled: false
+                        CollisionDetection: false
+                    ca8b7484a20e0252c0a16569b33fb1c5: !Happenstance.SE.PlayerController.HSPlayerSettings,dysector
+                        Id: 49401376-d994-4f7e-87f6-d6b6bd94950f
+                        Priority*: 0
+                        StartDisabled: false
+                        CollisionDetection: false
+                        LookSensitivityX*: 0.4
+                        LookSensitivityY*: 0.4
+                        InvertYAxis: false
+                        UseRawInput: true
+                        LookSmoothing: 5.0
+                        WalkSpeed: 5.0
+                        SprintSpeed: 8.0
+                        JumpHeight: 3.0
+                        AirControl: 0.5
+                        AimDownSightsSensitivity*: 0.8
+                        WeaponBobAmount: 0.05
+                        WeaponSwapSpeed: 0.3
+                        FieldOfView: 80.0
+                        AimingFieldOfView: 60.0
+                        HeadbobAmount: 0.05
+                    2b831334d0a2a204afb8de7e827df505: !.Player,dysector
+                        Id: ebfabdca-36c2-43ed-9701-aa03bff33e90
+                        Priority*: 0
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MaxHealth: 100.0
+                        GodMode: false
+                        PickupEnabled: true
+                        PickupRange: 3.0
+                        ThrowForce: 5.0
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: f4cf9cd2-7ce8-457a-b596-6d55112bd41d
+                InstanceId: ca5d7927-7fd0-47da-99e4-ab9962b0c399
+        -   Folder: null
+            Entity:
+                Id: 9ba15ea9-f2ff-4ab9-b474-3a27685669ee
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: a2dcdb06-b5be-498c-a0f0-a6837913590f
+                        Position: {X: 10.404335, Y: 3.0892243, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: 8bdc71b0-2e97-4e14-9882-e2ab45d177be
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 9d9f900f-6d3f-4fdb-aa10-9a503e118766
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 61fa2bd2-965b-468d-aa19-a6120866eae0
+                        Position: {X: 4.202088, Y: 0.77355194, Z: 12.411625}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 2829bc60-5ac9-4533-8190-b01b5d88466c
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: 9db9f364-8bf1-461f-83f4-21f23f9e9478
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: 3e0443d0-d167-4141-a57d-e8ec7998eb63
+                        Position: {X: 8.206324, Y: 4.145127, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: 3fb4f380-b405-448a-bb3d-6fbee6c29fe1
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Entity:
+                Id: 9dd6583c-c7e9-4718-87dc-e4bd5f984e29
+                Name: proto_critical_exception
+                Components:
+                    79b90c054de332f515b1548fdcd5c18d: !TransformComponent
+                        Id: 881dedda-f558-4c5c-8f31-78e19ac4bda0
+                        Position: {X: -3.8473887, Y: 0.8829938, Z: 12.48}
+                        Rotation: {X: 0.0, Y: 0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    d9c353f2588156407df499eb23f0f083: !ModelComponent
+                        Id: c6f7a8d2-d595-4479-a9c5-4d9eb86236f2
+                        Model: 917859fd-5192-4c3f-9589-d2087121cf60:Models/Prototype Weapons/proto_critical_exception
+                        Materials: {}
+        -   Entity:
+                Id: a36a5f13-f793-49dd-9891-904c5941758a
+                Name: proto_burst_compiler
+                Components:
+                    11ef11477cba676e0cf2897e4a2485df: !TransformComponent
+                        Id: 0a39de05-80c4-46a8-8b59-1028c4142da0
+                        Position: {X: 2.1327841, Y: 0.8472767, Z: 12.4349985}
+                        Rotation: {X: 0.0, Y: 0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    4ff9ec02142356c6f70940fab8133374: !ModelComponent
+                        Id: c5d34b76-13ec-4fdc-8284-994613a3810d
+                        Model: 25e75ba4-a624-4d50-ac71-878972033bc9:Models/Prototype Weapons/proto_burst_compiler
+                        Materials: {}
+        -   Entity:
+                Id: a398996c-4eca-4cf2-b54f-f80ec7e64055
+                Name: poster_020
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1c4c6b6f-977f-4e76-a32a-5c54cafffb27
+                        Position: {X: 0.0, Y: -1.34, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: f613cc87-8ee8-4b75-be72-5a1d05c5a903
+                        Model: ab2c89eb-b5f4-4ae2-88d4-c10653754f0d:Scenes/Prototyping/Shooting Range/shooting_range/poster_020
+                        Materials: {}
+                    f5010b972f72da422409f7a3d6d28b66: !.RangeTarget,dysector
+                        Id: 96922c74-ca17-4b7a-b4c8-92c8abe4ae9c
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MaxHealth: 100.0
+                        CanBePenetrated: true
+                        PenetrationResistance: 0.0
+                        DestroyOnHit: true
+                    374815ad977675c825a813dd153c3b42: !RigidbodyComponent
+                        Id: ee995f35-a244-4431-85c0-dee9990256b4
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        IsKinematic: true
+                        Mass: 1.0
+                        LinearDamping: 0.0
+                        AngularDamping: 0.0
+                        OverrideGravity: false
+                        Gravity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        NodeName: null
+                        ColliderShapes:
+                            00da7374f1b6fdefa4734e03e7643807: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 0.7, Y: 1.2, Z: 0.1}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+        -   Folder: null
+            Entity:
+                Id: a9058c32-072f-4a7d-93b1-982363216d30
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: 6efef71a-8461-4abe-a5b5-fa102b6e944c
+                        Position: {X: 8.505002, Y: 1.0826654, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: dd4ec2bf-7388-4fe2-8cb6-52995b75b4f2
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: aab20544-748f-4ce4-8bb1-b963e5958e5f
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 09590e1d-5655-4ab7-828b-c2cc8ca46187
+                        Position: {X: 4.2774334, Y: 0.77355194, Z: 12.675485}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 68bf1685-e0f5-4349-9692-60b3295d3405
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: abec0be7-4ae0-41b0-a6c9-a24f04829bb3
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 924f3f4d-00d0-4c0e-9f7a-af39901be78d
+                        Position: {X: 11.587165, Y: 5.652514, Z: -0.028997421}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.70710677, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 2.3209965, Z: 1.7276963}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 59e1cc2b-9819-43e9-b388-fe29ade9b67b
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: 121d8e1d-93b8-4253-8aa3-c60f3b1d60ac
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Entity:
+                Id: b1380226-58c6-4747-8b74-4f6a866a0568
+                Name: HS Logger
+                Components:
+                    37732c5b203056f13dee1a0708a6ccf3: !TransformComponent
+                        Id: f4e2216b-c938-4a1d-bb9e-ddef09f153b9
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            8b1ad7b4de56a1021eb498809ded27ad: ref!! 21428c9a-0c64-4b6b-a218-0732c64630af
+        -   Entity:
+                Id: b2281596-d13c-4210-a426-0c03707dc0c7
+                Name: First Person Controller
+                Components:
+                    7d8de892814ec9ad534166116157116d: !TransformComponent
+                        Id: 778b36e8-0d85-4fe7-8ba2-d3b06a3ebb47
+                        Position: {X: -0.8866017, Y: 0.0, Z: 9.641492}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            974f0ff291e3a201d1257b75445f2ac2: ref!! 0c05c33f-70b0-4158-879c-7052fa6887b6
+        -   Folder: null
+            Entity:
+                Id: b5dd3aa4-ac78-43d0-bdf6-750fa86aab3b
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 09a3a2cc-059b-4b33-ac04-403218af24b1
+                        Position: {X: 4.1330423, Y: 0.77355194, Z: 12.27567}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 34a968bf-5bab-4642-a28e-107162939c54
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: b6b586cc-8584-4cbd-92f9-9557740d4906
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: c708bdf3-6013-40df-bd08-4494318284b9
+                        Position: {X: 4.0097575, Y: 0.77355194, Z: 12.27567}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 0803fcad-4521-4895-9d9f-98ae2b3f1da9
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: b787b318-df81-419d-95ae-a313ba207794
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 55ff2ea8-33ba-4ecd-a82f-2cb422c35936
+                        Position: {X: 4.0097575, Y: 0.77355194, Z: 12.675485}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 7c08d0a5-ed7b-4729-bb84-65f520ec3eba
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: ba03fffd-e307-4902-b347-a79ae0930de4
+                Name: poster_003_026
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a1755349-2150-4d57-be1a-6e60f28e9ddb
+                        Position: {X: 0.0, Y: -1.34, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 3adcaa7d-c066-47b8-aced-20c5c15320a1
+                        Model: f130b326-cdae-471c-a9d7-bf2142915b6a:Scenes/Prototyping/Shooting Range/shooting_range/poster_003_026
+                        Materials: {}
+                    a045ab623d63497320a30dbcc23c6d21: !.RangeTarget,dysector
+                        Id: 06fcc290-a6d1-491d-b22d-8af949d12451
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MaxHealth: 100.0
+                        CanBePenetrated: true
+                        PenetrationResistance: 0.0
+                        DestroyOnHit: true
+                    ba88f2a0e28a21fb0080fd8474d7b9d4: !RigidbodyComponent
+                        Id: e939f5eb-73fa-4c6f-a7fd-032f8f9f3636
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        IsKinematic: true
+                        Mass: 1.0
+                        LinearDamping: 0.0
+                        AngularDamping: 0.0
+                        OverrideGravity: false
+                        Gravity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        NodeName: null
+                        ColliderShapes:
+                            50bb354badcb7e7feafe4a8356e41d20: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 0.7, Y: 1.2, Z: 0.1}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+        -   Folder: null
+            Entity:
+                Id: bdf89e7e-4dd5-4f11-8847-ea9eca90760c
+                Name: wall_16x5_003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: fe5ce831-c54a-426a-b47a-f4deb8c06801
+                        Position: {X: 0.102271944, Y: 5.6525145, Z: -0.028997421}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.70710677, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 2.3209965, Z: 1.7276963}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: add738b0-977e-43fe-b013-021b9cc023e5
+                        Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+                        Materials: {}
+                    a45b5e255e518511730e4c743dfd5778: !StaticColliderComponent
+                        Id: 5ebc6c7f-cffe-426c-8ec3-04656791b882
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            6df5c45409c01d8d69551436821f21c4: !StaticMeshColliderShapeDesc
+                                Model: 506a6d92-146c-4875-9375-661def849e6a:Scenes/Prototyping/Shooting Range/shooting_range/wall_16x5_003
+        -   Folder: null
+            Entity:
+                Id: c22a7b3c-a3d7-4136-b6f9-d0bebe7b2984
+                Name: back_wall_002
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 06d40f2c-e722-417f-82d4-edf93f9edd81
+                        Position: {X: 11.112075, Y: 2.5154629, Z: 13.362782}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.1457075, Y: 1.2288218, Z: 1.2288218}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 21392342-f466-413f-a8d1-16f1359a8d71
+                        Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+                        Materials: {}
+                    129c4dab6b1608d48cc68997bfa424de: !StaticColliderComponent
+                        Id: 6952e947-c33f-48bc-a6be-b87c27921a80
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            2b59bf5a793ec13bef1fd079f9224e26: !StaticMeshColliderShapeDesc
+                                Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+        -   Entity:
+                Id: c4ffee7e-d14e-4926-9bd5-8a2cfdda2ae7
+                Name: proto_trojan
+                Components:
+                    5c8ea00b4a4a18ad68e23f5170749a3e: !TransformComponent
+                        Id: eb1d45a6-f786-4c5e-b2d1-1ac2a3995093
+                        Position: {X: 14.215958, Y: 2.5085058, Z: 7.200977}
+                        Rotation: {X: 0.0, Y: -0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    33f7915a1eb254288299b35b22c70b18: !ModelComponent
+                        Id: badeb5ed-b9d9-432c-8864-254ac79e574a
+                        Model: c12fa14e-fdac-40ff-bb04-fba7a710306f:Models/Prototype Enemies/Proto Trojan/proto_trojan
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: c8b57bb4-0baf-4166-b2d8-0469af4c671f
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 11764e7c-24aa-4e55-984f-77a741924414
+                        Position: {X: 4.071762, Y: 0.77355194, Z: 12.675485}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 206c938b-b0c4-4bee-9d26-3aba22e6b4cc
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: c93c2cf8-c8f5-4711-8fb4-5dc672344cd6
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 74527389-1f47-4d96-8ab1-4d25ebf73c80
+                        Position: {X: 4.071762, Y: 0.77355194, Z: 12.541189}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: c13eed4d-9b41-444b-afe4-2c39c7d25c56
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: cd23e136-52a8-4dac-9b06-de68c3bac0f7
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: 6f66be01-e4de-47a5-9593-bed774871721
+                        Position: {X: 4.202088, Y: 0.77355194, Z: 12.675485}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: ae0d2ccc-511f-4160-be0e-5e00f562112c
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Entity:
+                Id: d95103e5-27c9-4c3b-8108-a9d1557bd82e
+                Name: poster_001_022
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 908019eb-92d8-4c37-9c23-d14ebf7e113f
+                        Position: {X: 0.0, Y: -1.34, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: d1042af8-db19-4f90-bb79-7769e6e80908
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+                    42984c6436d6a9033cfc1bebc6e41362: !.RangeTarget,dysector
+                        Id: d8d77966-635f-45ec-adef-ec81ebe31944
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MaxHealth: 100.0
+                        CanBePenetrated: true
+                        PenetrationResistance: 0.0
+                        DestroyOnHit: true
+                    09fc1716d62d534007c6b774cb0099fb: !RigidbodyComponent
+                        Id: c682c383-0d10-4988-9e59-5f4d23358221
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        IsKinematic: true
+                        Mass: 1.0
+                        LinearDamping: 0.0
+                        AngularDamping: 0.0
+                        OverrideGravity: false
+                        Gravity: {X: 0.0, Y: 0.0, Z: 0.0}
+                        NodeName: null
+                        ColliderShapes:
+                            203c7451faa312b21dd7196f5e9d16bc: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 0.7, Y: 1.2, Z: 0.1}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+        -   Folder: null
+            Entity:
+                Id: d9d333e4-9e20-4179-96e4-ac39b9fa2076
+                Name: stand_001_008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 7349920f-9f7c-4367-aea4-a6dcec6a0876
+                        Position: {X: -1.8777792, Y: 0.56961155, Z: 12.584147}
+                        Rotation: {X: 0.0, Y: 1.0, Z: 0.0, W: -4.371139E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: d554c07f-2b99-4648-8665-efc8f6fc2cb9
+                        Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+                        Materials: {}
+                    7c6c65352fbc4ba61c966e41b8eb6ab4: !StaticColliderComponent
+                        Id: e0d18eb0-d12d-41b5-8b43-dfe512518709
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d0341660a63eff18841ef7b303e25e73: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Folder: null
+            Entity:
+                Id: dfd05921-200d-4f01-928f-481c0dc61548
+                Name: proto_cube_magazine
+                Components:
+                    29196464b25247dc1bdf048090e11756: !TransformComponent
+                        Id: c0baad18-df54-4973-be79-21f4e729e95c
+                        Position: {X: 4.1330423, Y: 0.77355194, Z: 12.411625}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e758f0da9ec0ada0869d6b2f7174f57d: !ModelComponent
+                        Id: 672d5bf1-8cb0-4e09-9c28-2dc43762235f
+                        Model: 38cf6b71-02b1-40e7-91c2-5ba8b652c7e2:Models/Prototype Weapons/proto_cube_magazine
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: e11388ff-4c17-4aac-9ef9-9b0f2802373f
+                Name: stand_001_008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 2ed9390a-640d-47e2-95e2-6d031fa0e098
+                        Position: {X: 4.08381, Y: 0.56961155, Z: 12.584147}
+                        Rotation: {X: 0.0, Y: 1.0, Z: 0.0, W: -4.371139E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 4faa5f13-c010-48ff-b3d8-b3707d5765e2
+                        Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+                        Materials: {}
+                    7c6c65352fbc4ba61c966e41b8eb6ab4: !StaticColliderComponent
+                        Id: 18e45fcd-0dfa-42b3-a3bb-56bc32b195ca
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d0341660a63eff18841ef7b303e25e73: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Entity:
+                Id: e8881cb8-7de0-4cf7-9000-6ac77da9a792
+                Name: stand_002_010
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 8b0de175-3893-428e-b187-6d610537be55
+                        Position: {X: 0.5563839, Y: 0.726911, Z: 4.4173775}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: b29ed2ba-1b2b-4edb-8f07-8828d89e99a4
+                        Model: 9514d749-3361-4e45-bfd1-93c6c93c4138:Scenes/Prototyping/Shooting Range/shooting_range/stand_002_010
+                        Materials: {}
+                    3bd095c0262f3d81926d4b750f43df2f: !StaticColliderComponent
+                        Id: 2f3ca5a7-ee33-404e-a6fa-4d7521805b6f
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            ff88d40fae72bd081f6d65c2253f9174: !StaticMeshColliderShapeDesc
+                                Model: 25379126-a5d4-4416-832a-e99077b82877:Scenes/Prototyping/Shooting Range/shooting_range/stand_001_008
+        -   Folder: null
+            Entity:
+                Id: e9df36e2-72e0-4452-9a31-c648a8550eb6
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: 07bf6698-b71e-4ebb-ac58-88890c27b6cb
+                        Position: {X: 11.657181, Y: 0.99433005, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: 27b331e7-003b-43fb-8882-b095a274cb17
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}
+        -   Entity:
+                Id: eceef954-5208-45df-b393-eb3134304509
+                Name: DevEditorUI
+                Components:
+                    b80f46fb46b6493edafae49f23a087da: !TransformComponent
+                        Id: 80f28fbd-7fbd-460c-9e0e-025f87754dd5
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    297b3cd646cd3526f041f4f61a3efdda: !UIComponent
+                        Id: 02bf5d0f-c9b4-478e-b7c9-cf55a01703cd
+                        Enabled: false
+                        Page: 275be4a6-767c-425e-b0e2-68f245063311:Happenstance/Dev Editor/Source/dev_editor_page
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    3fa0d50ec647098a1cc9cf372cdc250e: !Happenstance.SE.DevEditor.UI.DevSceneInspector
+                        Id: 6e0b05b7-da26-4eb8-806f-bef04459c16e
+                        StartDisabled: false
+                        CollisionDetection: false
+                    20fd2d382ad5925207a97093189e96ba: !Happenstance.SE.DevEditor.UI.DevSceneHelper
+                        Id: 93bfb003-1ae2-4579-9530-d263afedd83f
+                        StartDisabled: false
+                        CollisionDetection: false
+                    0998e809c6491557f82f2db41af94a86: !Happenstance.SE.DevEditor.UI.DevSceneEntities
+                        Id: bdac9a90-fb1a-46c0-a736-f0d88b989570
+                        StartDisabled: false
+                        CollisionDetection: false
+            Base:
+                BasePartAsset: 57b4e765-d0a0-44b3-88b5-f47aa490e959:Prefabs/Dev Editor Manager
+                BasePartId: 76060f31-79f8-4854-b595-d51242b8ca33
+                InstanceId: 85d48675-ab51-483a-a2f2-6abfe25ae45f
+        -   Entity:
+                Id: ee5dc891-af26-4336-82ef-96738ef43f39
+                Name: proto_data_miner
+                Components:
+                    5a3f0e5bff4235192ffc03cfe61e7cc1: !TransformComponent
+                        Id: f186c52d-6a8d-4a9a-a5d5-fa66f5d3a93a
+                        Position: {X: 14.677893, Y: -0.0135758715, Z: 2.6513457}
+                        Rotation: {X: -0.0, Y: -0.70710677, Z: 0.0, W: 0.70710677}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9497007d5554a2b07ab7bffd79703013: !ModelComponent
+                        Id: c9d30294-e34b-40af-afff-d55fb2f8daf3
+                        Model: 6a8301eb-5616-444d-9321-6287e33c596c:Models/Prototype Enemies/proto_data_miner
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: f7d04826-3a68-441c-a442-8f49d15f73dc
+                Name: back_wall_002
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 26b09919-6d0c-4a17-a2c0-44e625a311fc
+                        Position: {X: 10.7419, Y: 2.7086575, Z: -7.7789974}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0715599, Y: 1.1772001, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 3294d318-019f-460e-b239-62a82c500be2
+                        Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+                        Materials: {}
+                    129c4dab6b1608d48cc68997bfa424de: !StaticColliderComponent
+                        Id: 98853af9-01b3-4c92-a49f-3e4f73bf07d5
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            2b59bf5a793ec13bef1fd079f9224e26: !StaticMeshColliderShapeDesc
+                                Model: 8a57cfb5-f471-4975-afd2-2b0778145d0b:Scenes/Prototyping/Shooting Range/shooting_range/back_wall_002
+        -   Entity:
+                Id: f8386393-59f9-4cc6-99f5-d9823d8810bf
+                Name: rail_mover_002_021
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 61a12a78-a81d-4a86-9428-7b9910a7bb85
+                        Position: {X: -1.644, Y: 3.082, Z: 1.869}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            0f9c7d793fa4830ece11c4be14b233ac: ref!! 908019eb-92d8-4c37-9c23-d14ebf7e113f
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: c5c2a837-117f-451e-918b-11e31a019593
+                        Model: e059d6dc-db5d-4b9d-9509-eee1a062317a:Scenes/Prototyping/Shooting Range/shooting_range/rail_mover_002_021
+                        Materials: {}
+                    a25b6f3450c30dfc6802694bc1359b24: !.RangeTargetCarrier,dysector
+                        Id: ed0f4006-6ec0-4286-9ec5-6c5e3f1f6d64
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MinMovementSpeed: 2.0
+                        MaxMovementSpeed: 3.5
+                        StartPosition: {X: -1.644, Y: 3.082, Z: -7.313}
+                        EndPosition: {X: -1.644, Y: 3.082, Z: 1.869}
+                        HideTime: 3.0
+        -   Entity:
+                Id: fca7590a-48f8-411f-bbcf-455a230a2653
+                Name: Dev Editor Manager
+                Components:
+                    3f6cd6de12404e31da98bbe8147beb75: !TransformComponent
+                        Id: 111b3349-486b-4c14-a33d-07c8a8be669a
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            6d29cb3e7a1e685013c347bfe6423d05: ref!! 80f28fbd-7fbd-460c-9e0e-025f87754dd5
+                            4527ef5e0f16af5d695865bf1df5e5f4: ref!! cea22884-f9fe-415d-a2ba-0d24eb8dd239
+                    3b198ccec7903e103979d60564112a88: !Happenstance.SE.DevEditor.Core.DevEditorManager
+                        Id: 86f852ed-fb18-4f62-8d10-0e20fa2b6fdd
+                        Priority*: -8
+                        StartDisabled: false
+                        CollisionDetection: false
+                        SelectedEntity: null
+                        CurrentEditMode: Position
+                        ActiveAxis: X
+            Base:
+                BasePartAsset: 57b4e765-d0a0-44b3-88b5-f47aa490e959:Prefabs/Dev Editor Manager
+                BasePartId: aae26c84-bfe7-4349-9a56-6954cdef2e91
+                InstanceId: 85d48675-ab51-483a-a2f2-6abfe25ae45f
+        -   Folder: null
+            Entity:
+                Id: ff627e01-5bb2-434a-bf97-40a048412b70
+                Name: poster_001_022
+                Components:
+                    07aefcf28aaf425bed6f4b8f71ee807b: !TransformComponent
+                        Id: 04818bf0-7979-456f-82c0-adf767b62593
+                        Position: {X: 12.85805, Y: 3.2990255, Z: -7.5230556}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    c15f92dd8484e373a98a8a0205a1be10: !ModelComponent
+                        Id: ab60109e-513e-44c9-a5a9-835c81919e45
+                        Model: df318746-b165-4683-b4aa-f48939c8eba4:Scenes/Prototyping/Shooting Range/shooting_range/poster_001_022
+                        Materials: {}

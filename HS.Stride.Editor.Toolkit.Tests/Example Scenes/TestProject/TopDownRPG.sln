@@ -1,0 +1,31 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 16.0.0.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopDownRPG.Windows", "TopDownRPG.Windows\TopDownRPG.Windows.csproj", "{10E19C08-3F16-47B7-BA1B-27F050868A19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopDownRPG.Game", "TopDownRPG.Game\TopDownRPG.Game.csproj", "{3326E58C-F2A9-40CB-B714-C6E6B885C1B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10E19C08-3F16-47B7-BA1B-27F050868A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10E19C08-3F16-47B7-BA1B-27F050868A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10E19C08-3F16-47B7-BA1B-27F050868A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10E19C08-3F16-47B7-BA1B-27F050868A19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3326E58C-F2A9-40CB-B714-C6E6B885C1B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3326E58C-F2A9-40CB-B714-C6E6B885C1B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3326E58C-F2A9-40CB-B714-C6E6B885C1B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3326E58C-F2A9-40CB-B714-C6E6B885C1B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2340010D-8D36-446F-924B-5256435E1C07}
+	EndGlobalSection
+EndGlobal

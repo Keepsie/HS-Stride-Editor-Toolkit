@@ -1,0 +1,466 @@
+HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
+==============================================
+
+LIBRARY PURPOSE: Batch automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, and assets.
+
+TARGET: .NET 8.0 | License: Apache 2.0
+Package: HS.Stride.Editor.Toolkit
+
+FULL DOCUMENTATION:
+For complete API documentation with detailed examples and explanations:
+https://github.com/Keepsie/HS-Stride-Editor-Toolkit/blob/main/API.md
+
+Project Repository:
+https://github.com/Keepsie/HS-Stride-Editor-Toolkit
+
+CRITICAL WORKFLOW NOTES
+-----------------------
+- This is FILE-BASED batch editing, NOT live editor scripting
+- Close Stride Editor before running scripts (avoid file conflicts)
+- Changes persist on .Save() - ALWAYS backup projects first
+- After running scripts, close/reopen GameStudio to see changes
+- Only serialized properties (visible in Stride Property Grid) are accessible
+
+PROJECT MODES
+-------------
+- Strict (default): Throws exception if setting non-existent properties
+- Loose: Allows any property (for dynamic scenarios)
+
+var project = new StrideProject(@"C:\MyGame"); // Strict
+var project = new StrideProject(@"C:\MyGame", ProjectMode.Loose); // Loose
+
+
+QUICK START TEMPLATE
+--------------------
+using HS.Stride.Editor.Toolkit.Core;
+
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+
+// Find/modify entities
+var player = scene.FindEntityByName("Player");
+var transform = player.GetTransform();
+transform.SetPosition(10, 0, 5);
+
+// Use assets
+var prefab = project.FindAsset("Enemy", AssetType.Prefab);
+scene.InstantiatePrefab(prefab, new Vector3Data(5, 0, 5));
+
+scene.Save();
+
+
+CORE API - STRIDEPROJECT (RECOMMENDED ENTRY POINT)
+--------------------------------------------------
+Namespace: HS.Stride.Editor.Toolkit.Core
+
+CONSTRUCTOR:
+new StrideProject(string projectPath, ProjectMode mode = ProjectMode.Strict)
+
+PROPERTIES:
+- string ProjectPath
+- string AssetsPath
+- ProjectMode Mode (can change after construction)
+
+SCENE METHODS:
+- Scene LoadScene(string nameOrPath)
+
+ASSET LOADING:
+- MaterialAsset LoadMaterial(string nameOrPath)
+- TextureAsset LoadTexture(string nameOrPath)
+- AnimationAsset LoadAnimation(string nameOrPath)
+- PrefabAsset LoadPrefab(string nameOrPath)
+- UIPageAsset LoadUIPage(string nameOrPath)
+- SoundAsset LoadSound(string nameOrPath)
+- SkeletonAsset LoadSkeleton(string nameOrPath)
+- SpriteSheetAsset LoadSpriteSheet(string nameOrPath)
+- EffectAsset LoadEffect(string nameOrPath)
+
+ASSET FINDING:
+- AssetReference? FindAsset(string name, AssetType? type = null)
+- List<AssetReference> FindAssets(string pattern, AssetType? type = null)
+- AssetReference? FindAssetByPath(string relativePath)
+- AssetReference? FindAssetByGuid(string guid)
+
+GET ALL ASSETS:
+- List<AssetReference> GetScenes/Prefabs/Models/Materials/Textures/Animations/Skeletons/Sounds/UIPages/SpriteSheets/Effects/Scripts()
+- List<AssetReference> GetAssets(AssetType type)
+- List<AssetReference> GetAllAssets()
+
+UTILITY:
+- void Rescan() // Rescan after external changes
+- string? GetRawAssetSource(AssetReference rawAsset) // Get actual file path for .sdraw assets
+
+
+SCENE API
+---------
+Namespace: HS.Stride.Editor.Toolkit.Core.SceneEditing
+
+LOADING:
+Scene.Load(string filePath) // Direct file load (when not using StrideProject)
+
+PROPERTIES:
+- string Id // Scene GUID
+- string FilePath
+- List<Entity> AllEntities
+
+FIND METHODS:
+- Entity? FindEntityById(string id)
+- Entity? FindEntityByName(string name)
+- List<Entity> FindEntitiesByName(string pattern) // Wildcards: *, ?
+- List<Entity> FindEntitiesWithComponent(string componentType)
+- List<Entity> FindEntities(Func<Entity, bool> predicate) // LINQ queries
+
+ENTITY MANIPULATION:
+- Entity CreateEntity(string name, string? folder = null)
+- Entity CreateEntity(string name, string parent, ParentType parentType)
+  ParentType.Folder = editor organization only
+  ParentType.Entity = transform hierarchy (children follow parent)
+- Entity InstantiatePrefab(AssetReference prefab, Vector3Data? position = null, string? folder = null)
+- void RemoveEntity(Entity entity)
+- void RemoveEntity(string entityId)
+
+SAVE:
+- void Save()
+- void SaveAs(string filePath)
+- void Reload()
+
+
+ENTITY API
+----------
+Namespace: HS.Stride.Editor.Toolkit.Core
+
+PROPERTIES:
+- string Id
+- string Name
+- string? Folder
+- Dictionary<string, Component> Components
+- PrefabData? ParentPrefab
+
+COMPONENT METHODS:
+- bool HasComponent(string type)
+- Component? GetComponent(string type)
+
+TYPED WRAPPERS (Built-in components only):
+- TransformWrapper? GetTransform()
+- ModelWrapper? GetModel()
+- StaticColliderWrapper? GetStaticCollider()
+- RigidbodyWrapper? GetRigidbody()
+- LightWrapper? GetLight()
+
+ADD COMPONENTS:
+- Component AddComponent(string type) // Generic or custom
+- StaticColliderWrapper AddStaticCollider()
+- RigidbodyWrapper AddRigidbody(float mass = 1.0f, bool isKinematic = false)
+- ModelWrapper AddModel()
+- LightWrapper AddLight()
+
+REMOVE:
+- void RemoveComponent(string type)
+
+HIERARCHY NAVIGATION:
+- List<Entity> GetChildren()
+- Entity? FindChildByName(string name)
+- List<Entity> FindChildrenByName(string pattern)
+- Entity? GetParent()
+- List<Entity> GetDescendants() // Recursive
+- bool HasChildren()
+
+
+COMPONENT API (For custom components)
+--------------------------------------
+Namespace: HS.Stride.Editor.Toolkit.Core
+
+PROPERTIES:
+- string Key // GUID without hyphens
+- string Type // Full type name
+- string Id
+- Dictionary<string, object> Properties
+- string RawContent
+
+METHODS:
+- T? Get<T>(string propertyName) // Dot notation for nested: "Position.X"
+- void Set(string propertyName, object value)
+- Dictionary<string, object>? GetMultiValueProperty(string name) // For Vector3, Color, etc.
+- void SetMultiValueProperty(string name, Dictionary<string, object> value)
+- void SetEntityRef(string propertyName, Entity entity)
+- void SetAssetRef(string propertyName, AssetReference asset)
+- void AddToList(string propertyName, object value)
+- void SetDictionary(string propertyName, object key, object value)
+- void SetList(string propertyName, IEnumerable<object> values)
+
+
+CUSTOM COMPONENTS - AUTOMATIC SCRIPT SCANNING
+----------------------------------------------
+When using StrideProject.LoadScene(), custom scripts are automatically scanned:
+
+var player = scene.FindEntityByName("Player");
+var health = player.AddComponent("HealthComponent"); // Auto-scans for class
+health.Set("MaxHealth", 100.0f);
+health.Set("CurrentHealth", 100.0f);
+
+YAML format for custom components:
+- With namespace: !Namespace.ClassName,AssemblyName
+- Without namespace: !.ClassName,AssemblyName
+
+Entity references: use $"ref!! {entity.Id}"
+Asset references: use asset.Reference
+
+
+TYPED COMPONENT WRAPPERS (Built-in components)
+-----------------------------------------------
+Namespace: HS.Stride.Editor.Toolkit.Core.Wrappers
+
+TRANSFORMWRAPPER:
+Methods: GetPosition/Rotation/Scale(), SetPosition(x,y,z), SetRotation(x,y,z,w), SetScale(x,y,z), SetUniformScale(s)
+Children: AddChild/RemoveChild/HasChild(entityId), GetChildren()
+
+MODELWRAPPER:
+Properties: bool Enabled, string Model, Dictionary Materials
+Methods: SetModel(AssetReference), AddMaterial(slotKey, AssetReference)
+
+STATICCOLLIDERWRAPPER:
+Properties: bool CanSleep, float Restitution, Friction, RollingFriction, bool IsTrigger
+Shapes: AddBoxShape(x,y,z), AddSphereShape(radius), AddCapsuleShape(length, radius, orientation),
+        AddCylinderShape(h,r,orient), AddConeShape(h,r,orient), AddMeshShape(model),
+        AddConvexHullShape(model), AddPlaneShape(normalX,Y,Z, offset)
+
+RIGIDBODYWRAPPER (extends StaticCollider shapes):
+Properties: bool CanSleep, IsKinematic, float Mass, LinearDamping, AngularDamping, bool OverrideGravity
+Methods: GetGravity(), SetGravity(x,y,z)
+
+LIGHTWRAPPER:
+Properties: float Intensity, Dictionary Type
+Methods: GetColor(), SetColor(r,g,b,a)
+
+
+PREFAB CREATION
+---------------
+Namespace: HS.Stride.Editor.Toolkit.Core.PrefabEditing
+
+var prefab = project.CreatePrefab("CratePrefab", "Prefabs/Props");
+var root = prefab.GetRootEntity();
+root.AddModel();
+root.AddStaticCollider().AddBoxShape(1,1,1);
+prefab.Save();
+project.Rescan(); // Register new prefab
+
+Also: Prefab.Load(filePath), prefab.CreateEntity(), prefab.SaveAs()
+
+
+UI PAGE CREATION
+----------------
+Namespace: HS.Stride.Editor.Toolkit.Core.UIPageEditing
+
+var page = project.CreateUIPage("MainMenu", "UI/Menus");
+var canvas = page.CreateCanvas("menu_canvas", width: 800f, height: 600f);
+var title = page.CreateTextBlock("title", "Game Title", canvas, fontSize: 50f);
+title.SetMargin(top: 100f);
+title.SetAlignment(horizontal: "Center");
+
+var btn = page.CreateButton("start_btn", "Start", canvas, width: 300f, height: 60f);
+btn.SetMargin(left: 250f, top: 250f);
+
+page.Save();
+project.Rescan();
+
+ELEMENT TYPES: TextBlock, Button, ImageElement, Canvas, Grid, StackPanel, ScrollViewer, EditText
+
+CREATE METHODS:
+- CreateTextBlock(name, text, parent, fontSize, hAlign, vAlign)
+- CreateButton(name, text, parent, width, height)
+- CreateImage(name, spriteSheet?, frame?, parent, width?, height?)
+- CreateCanvas/Grid/StackPanel(name, parent, width?, height?)
+- CreateScrollViewer(name, content, parent)
+
+MANIPULATION:
+- SetMargin(left, top, right, bottom)
+- SetSize(width, height)
+- SetAlignment(horizontal, vertical) // "Left", "Center", "Right", "Top", "Bottom", "Stretch"
+- SetBackgroundColor(r,g,b,a)
+- SetTextColor(r,g,b,a)
+- SetVisibility(bool)
+- SetSpriteSheet(propertyName, spriteSheet, frame)
+
+FIND:
+- FindElementById/ByName/sByName/sByType(...)
+
+
+ASSET EDITING
+-------------
+Namespace: HS.Stride.Editor.Toolkit.Core.AssetEditing
+
+All asset classes implement: string Id, FilePath, Save(), SaveAs(path)
+
+MATERIALASSET:
+var mat = MaterialAsset.Load(path) or project.LoadMaterial(name)
+- object? Get(string propertyName) // Dot notation
+- void Set(string propertyName, object value)
+- void SetDiffuseTexture(string textureReference)
+- void SetEmissiveTexture(string textureReference)
+- void SetNormalMap(string textureReference)
+
+TEXTUREASSET:
+var tex = TextureAsset.Load(path) or project.LoadTexture(name)
+- object? Get(string propertyName)
+- void Set(string propertyName, object value)
+
+ANIMATIONASSET, SOUNDASSET, SKELETONASSET, SPRITESHEETASSET, EFFECTASSET:
+Similar pattern: Load(path), Get/Set properties, Save()
+
+
+DATA TYPES
+----------
+Namespace: HS.Stride.Editor.Toolkit.Core.DataTypes
+
+Vector3Data: new Vector3Data(x, y, z)
+Properties: float X, Y, Z
+
+QuaternionData: new QuaternionData(x, y, z, w)
+Properties: float X, Y, Z, W
+
+ColorData: new ColorData(r, g, b, a)
+Properties: float R, G, B, A
+
+EntityRefData: Represents "ref!! guid" references
+Methods: Entity? Resolve(Scene scene)
+
+AssetRefData: Represents "guid:path" references
+Methods: AssetReference? Resolve(StrideProject project)
+
+
+ASSET TYPES ENUM
+----------------
+AssetType: Unknown, Prefab, Model, Material, Texture, Scene, Sound, Animation, Skeleton, SpriteSheet, Effect, UIPage, RawAsset
+
+
+ASSETREFERENCE CLASS
+--------------------
+Properties: string Id, Name, Path, FilePath, AssetType Type, string Reference
+Reference format: "{Id}:{Path}"
+
+
+COMMON PATTERNS
+---------------
+
+BATCH ADD COLLIDERS:
+var targets = scene.FindEntities(e => e.HasComponent("ModelComponent") && !e.HasComponent("StaticColliderComponent"));
+foreach (var entity in targets)
+{
+    var collider = entity.AddStaticCollider();
+    collider.AddBoxShape(1, 1, 1);
+}
+scene.Save();
+
+MASS ENEMY GENERATION:
+var enemyTypes = new Dictionary<string, (float hp, float speed)> { ["Goblin"] = (50, 3.0f), ... };
+foreach (var enemy in enemyTypes)
+{
+    var prefab = project.CreatePrefab(enemy.Key, "Prefabs/Enemies");
+    var root = prefab.GetRootEntity();
+    var ai = root.AddComponent("EnemyAI");
+    ai.Set("MaxHealth", enemy.Value.hp);
+    ai.Set("MoveSpeed", enemy.Value.speed);
+    prefab.Save();
+}
+project.Rescan();
+
+SWAP MATERIALS:
+var entities = scene.FindEntitiesWithComponent("ModelComponent");
+var newMat = project.FindAsset("NewMaterial", AssetType.Material);
+foreach (var entity in entities)
+{
+    var model = entity.GetModel();
+    model.AddMaterial("slot0", newMat);
+}
+scene.Save();
+
+COMPLEX QUERIES:
+var lowHealthEnemies = scene.FindEntities(e => {
+    if (!e.HasComponent("EnemyAI") || !e.HasComponent("HealthComponent")) return false;
+    var health = e.GetComponent("HealthComponent");
+    var current = health.Get<float>("CurrentHealth");
+    var max = health.Get<float>("MaxHealth");
+    return (current / max) < 0.3f;
+});
+
+
+GOTCHAS & IMPORTANT NOTES
+--------------------------
+1. ALWAYS call .Save() to persist changes
+2. Close GameStudio before running scripts
+3. Reopen GameStudio after scripts complete to see changes
+4. Only serialized properties work (must be visible in Stride Property Grid)
+5. In Strict mode, setting non-existent properties throws InvalidOperationException
+6. Custom component automatic scanning requires Entity.ParentProject to be set (automatic with StrideProject.LoadScene)
+7. Wildcard patterns: * (any chars), ? (single char)
+8. Entity references use format: "ref!! {entity.Id}"
+9. Asset references use format: "{asset.Id}:{asset.Path}"
+10. Collections in YAML use GUID-keyed dictionaries, helpers manage this automatically
+11. Prefab/UI creation requires project.Rescan() to register in asset database
+12. ParentType.Folder = editor organization (no transform hierarchy)
+13. ParentType.Entity = transform hierarchy (children follow parent)
+14. GetRawAssetSource() returns actual file path for .sdraw database assets
+
+
+ERROR HANDLING
+--------------
+Common exceptions:
+- ArgumentNullException: Missing required parameters
+- FileNotFoundException: Asset/scene not found
+- InvalidOperationException: Setting invalid property (Strict mode), parent entity not found
+- ArgumentException: Invalid project path
+
+Always check HasComponent() before GetComponent() to avoid NullReferenceException
+
+
+NAMESPACES SUMMARY
+------------------
+HS.Stride.Editor.Toolkit.Core - StrideProject, Scene, Entity, Component, ProjectMode
+HS.Stride.Editor.Toolkit.Core.SceneEditing - Scene editing classes
+HS.Stride.Editor.Toolkit.Core.AssetEditing - Asset classes (Material, Texture, etc.)
+HS.Stride.Editor.Toolkit.Core.PrefabEditing - Prefab creation
+HS.Stride.Editor.Toolkit.Core.UIPageEditing - UI page creation
+HS.Stride.Editor.Toolkit.Core.Wrappers - Typed component wrappers
+HS.Stride.Editor.Toolkit.Core.DataTypes - Vector3Data, QuaternionData, ColorData, etc.
+HS.Stride.Editor.Toolkit.Utilities - ProjectScanner
+
+
+EXAMPLE: COMPLETE WORKFLOW
+---------------------------
+using HS.Stride.Editor.Toolkit.Core;
+using HS.Stride.Editor.Toolkit.Core.AssetEditing;
+
+var project = new StrideProject(@"C:\MyGame");
+
+// Scene editing
+var scene = project.LoadScene("Level1");
+var player = scene.FindEntityByName("Player");
+player.GetTransform().SetPosition(0, 10, 0);
+
+// Asset usage
+var enemyPrefab = project.FindAsset("Enemy", AssetType.Prefab);
+scene.InstantiatePrefab(enemyPrefab, new Vector3Data(5, 0, 5));
+
+// Material editing
+var material = project.LoadMaterial("PlayerMat");
+var newTexture = project.FindAsset("NewSkin", AssetType.Texture);
+material.SetDiffuseTexture(newTexture.Reference);
+material.Save();
+
+// Custom component
+var health = player.AddComponent("HealthComponent");
+health.Set("MaxHealth", 100.0f);
+health.Set("CurrentHealth", 100.0f);
+
+scene.Save();
+
+// Batch process all scenes
+foreach (var sceneRef in project.GetScenes())
+{
+    var s = project.LoadScene(sceneRef.Name);
+    // Batch modify...
+    s.Save();
+}
+
+
+END OF API REFERENCE

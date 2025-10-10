@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- Package Metadata -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <PackageId>HS.Stride.Editor.Toolkit</PackageId>
+    <Title>HS Stride Editor Toolkit</Title>
+    <Authors>Happenstance Games LLC</Authors>
+    <Company>Happenstance Games LLC</Company>
+    <Product>HS Stride Editor Toolkit</Product>
+    <Description>A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.</Description>
+    <Copyright>Copyright © 2025 Happenstance Games LLC</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Keepsie/HS-Stride-Editor-Toolkit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Keepsie/HS-Stride-Editor-Toolkit</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>stride;stride-engine;game-engine;editor;automation;scene-editor;asset-management;batch-processing;toolkit</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

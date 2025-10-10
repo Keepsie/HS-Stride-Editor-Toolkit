@@ -1,0 +1,8 @@
+!Texture
+Id: 97e693b1-3369-442e-b11e-b3b46682be55
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../../Resources/Textures/dota.png
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}
+IsStreamable: false

@@ -1,0 +1,261 @@
+!SceneAsset
+Id: 9fd4052f-6cd4-4365-97f8-bf885ac7b59b
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+ChildrenIds: []
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
+Hierarchy:
+    RootParts:
+        - ref!! 8dae5b06-af4f-47a3-a2bd-2720c96644a8
+        - ref!! 7bb84c09-277c-488d-bdb0-206e9550871e
+        - ref!! 1a8fe902-fad4-4f89-a65d-7e25d8e172d3
+    Parts:
+        -   Entity:
+                Id: 1a8fe902-fad4-4f89-a65d-7e25d8e172d3
+                Name: CubeGroupPrefab
+                Components:
+                    2737c05bfbd7cffbac58574587e9b10e: !TransformComponent
+                        Id: 8d19bd09-eb77-43c8-9b51-379559966137
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            785f9ed593fe8e958a4f100a4207dbd0: ref!! 419673e4-f310-43ab-8ca4-c3f0896fa3a4
+                            fa1c679307ef3091456f7280cd5deb2e: ref!! 641f6325-082e-4357-bff1-a410f797ae56
+                            a0362a054776e4f0a5e2607c829f21bc: ref!! 464f6195-aaf4-48c2-b936-7c1027b94dce
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: 902c2f90-a323-4301-8c41-d541fc705517
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397
+        -   Entity:
+                Id: 2641c854-77c0-4beb-a5f8-ac331c4543d8
+                Name: Cube (2)
+                Components:
+                    ccba0b5c2622a2f136d197c3fe340045: !TransformComponent
+                        Id: 464f6195-aaf4-48c2-b936-7c1027b94dce
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    24a796ae3c985efde4ad09dae2f49a5a: !ModelComponent
+                        Id: 4ec7989b-39e7-4ae4-a5c2-d89867de55b0
+                        Model: fe366995-fb5b-40ab-909d-323d83d9af15:Cube (2)
+                        Materials: {}
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: b7259398-4ab3-4afe-a234-da67557e10a3
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397
+        -   Entity:
+                Id: 7bb84c09-277c-488d-bdb0-206e9550871e
+                Name: Testing NoNameSpace
+                Components:
+                    449aab4687fe1247cddb937e1384f681: !TransformComponent
+                        Id: 072312a9-13fa-4ed7-809f-8fa60d8ffcbe
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    6e3106e324bcf07e29bb2ea28c357e27: !.NoNameSpace,TopDownRPG.Game
+                        Id: 0d5f240c-52af-495e-a0f1-fc0e8bc39dd4
+                        intValue: 43
+                        floatValue: 2.2
+                        boolValue: true
+                        stringValue: Hello Moto
+                        singleEntity: ref!! 8dae5b06-af4f-47a3-a2bd-2720c96644a8
+                        prefabRef: 1c3eb155-b98b-4977-b089-6ef8ad8e3447:LootBox
+                        modelRef: 1a54db4e-d69e-47a1-893d-3542a8dbc90b:Models/Box3x1x1
+                        materialRef: 26b18539-2938-41e3-82d6-598d4f244a85:Materials/coinC2
+                        AnimationClips:
+                            12d486907b60cf89b3155990ee505911~New key: a0499edf-6d82-4be6-8f6f-e58e3f059e92:Animations/Idle
+                        primClips:
+                            97d41d2fac1c97f437f893038ee0a46e~123: Dog
+                        transformRef: ref!! a1b63eeb-a9bc-4487-912b-feb88e2a22f2
+                        entityList: null
+                        prefabList: null
+                        RawAsset: 1eebafed-46f9-4b79-97b2-6bcd3f620815:rawAssetTest
+                        intArray: null
+                        entityArray: null
+                        Stuff2:
+                            32354a4815f7194d94d51dbcc2470590: 2
+        -   Entity:
+                Id: 86043c07-5d0e-4526-bf8f-ae26510bf502
+                Name: CollisionWall
+                Components:
+                    81e049a26ff49a468daa04fa529c1955: !TransformComponent
+                        Id: e399476e-0217-4f67-897c-5ef6c4655ebb
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    b5c346a60c652a4b9b497d243845df03: !StaticColliderComponent
+                        Id: 63efc415-1de8-48f1-a53c-da3984b44b44
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d1515cec847a6046ab7daa4368a533f7: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: e3dd57e0-e350-46b3-a941-e6e2affb71f9
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397
+        -   Entity:
+                Id: 8dae5b06-af4f-47a3-a2bd-2720c96644a8
+                Name: Box1x1x1
+                Components:
+                    45e3355ea9416a0a1d780cae619441f8: !TransformComponent
+                        Id: a1b63eeb-a9bc-4487-912b-feb88e2a22f2
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    406ecc1a40dafa46d61f3831da33fd6a: !ModelComponent
+                        Id: 1a058991-5aec-47f8-82d8-58f69f62dd9f
+                        Model: 8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1
+                        Materials: {}
+                    e5b6f493aa467da352996830505dabe7: !TopDownRPG.Tester,TopDownRPG.Game
+                        Id: bb16409b-10a2-4994-a031-d1e480129c3b
+                        health: 100
+        -   Entity:
+                Id: 9b6301f0-93e0-4c31-bbfe-f098c69b20a8
+                Name: LootBox
+                Components:
+                    4bfa77cbdae1aa40aeba86b0b487ad99: !TransformComponent
+                        Id: 646b37ee-46ac-4014-ba6d-366b3943733a
+                        Position: {X: 0.0, Y: 0.5, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            81e049a26ff49a468daa04fa529c1955: ref!! e399476e-0217-4f67-897c-5ef6c4655ebb
+                    92a01d27b6aa2e49b6f4555de61f78e4: !ModelComponent
+                        Id: 7ebaeb28-d68a-455e-b4ee-ac04d55385f4
+                        Model: 75180ab2-1195-4530-83f3-d9e1ce609790:Models/BoxF
+                        Materials: {}
+                    9ff39e9a53a90d49bb7faec06f6d32ca: !StaticColliderComponent
+                        Id: d96ea901-549e-4d1d-970c-9d9993b78f03
+                        CollisionGroup: CustomFilter2
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: true
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            42588de189ce0146b55493835f755fe8: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                    4e93d2aaca7cd64e9e2cdb87b6dea8c1: !TopDownRPG.Gameplay.CrateScript,TopDownRPG.Game
+                        Id: 5503d0ed-5e35-4b7a-a958-dad588de9011
+                        CoinGetEffect: 0728b818-ab18-42f3-aa67-7f2ed9cc88cd:VFXPrefabs/vfx-Dustcloud
+                        CoinSpawnModel: 55259b28-5339-4142-a4a9-fe6a574d9cb7:LootGoldCoin
+                        SoundEffect: 73dbcf5b-10da-4471-97d9-140f695e2fc5:Audio/crate_breaking
+                        Trigger: ref!! 959fb7bf-c375-46c8-82ec-eb28404813c2
+                    28cbe91f2b1efd4a865067a932c54649: !TopDownRPG.Gameplay.Trigger,TopDownRPG.Game
+                        Id: 959fb7bf-c375-46c8-82ec-eb28404813c2
+                        TriggerCondition: StartOnly
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: aa659fd0-1730-4b77-961b-3a3f1599a121
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397
+        -   Entity:
+                Id: c36dd86d-0db8-4066-83e5-ae29efd6d93d
+                Name: LootBox
+                Components:
+                    2688da0f173a089f5783b98d6d6cd75e: !TransformComponent
+                        Id: 641f6325-082e-4357-bff1-a410f797ae56
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            c979ea809fef753b2a1657e6aded5b70: ref!! 646b37ee-46ac-4014-ba6d-366b3943733a
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: 854ce644-433a-463d-baa3-96951d937ee1
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397
+        -   Entity:
+                Id: f072b5eb-c88d-4c3f-9e7b-f1cfb2cf027f
+                Name: CollisionWall
+                Components:
+                    81e049a26ff49a468daa04fa529c1955: !TransformComponent
+                        Id: 78e200b7-2c70-4b7c-977b-6457c871ecc7
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    b5c346a60c652a4b9b497d243845df03: !StaticColliderComponent
+                        Id: 465eb61e-b5f5-42fd-8662-f444ce597baf
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            d1515cec847a6046ab7daa4368a533f7: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: 5abb5cfd-0239-415e-ab95-9ccc4a3ffb41
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397
+        -   Entity:
+                Id: f0e58e67-2321-4948-b28d-5fcab5430e98
+                Name: LootBox
+                Components:
+                    4bfa77cbdae1aa40aeba86b0b487ad99: !TransformComponent
+                        Id: 419673e4-f310-43ab-8ca4-c3f0896fa3a4
+                        Position: {X: 0.0, Y: 0.5, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            81e049a26ff49a468daa04fa529c1955: ref!! 78e200b7-2c70-4b7c-977b-6457c871ecc7
+                    92a01d27b6aa2e49b6f4555de61f78e4: !ModelComponent
+                        Id: 32474a6d-5cf5-4a76-8f6f-5fbfe9e29b9a
+                        Model: 75180ab2-1195-4530-83f3-d9e1ce609790:Models/BoxF
+                        Materials: {}
+                    9ff39e9a53a90d49bb7faec06f6d32ca: !StaticColliderComponent
+                        Id: 5392153d-2ab1-490b-aac1-90caf1b4bb96
+                        CollisionGroup: CustomFilter2
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: true
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            42588de189ce0146b55493835f755fe8: !BoxColliderShapeDesc
+                                Is2D: false
+                                Size: {X: 1.0, Y: 1.0, Z: 1.0}
+                                LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                    4e93d2aaca7cd64e9e2cdb87b6dea8c1: !TopDownRPG.Gameplay.CrateScript,TopDownRPG.Game
+                        Id: 843118ee-bd4e-4ddd-a492-85b22967fac3
+                        CoinGetEffect: 0728b818-ab18-42f3-aa67-7f2ed9cc88cd:VFXPrefabs/vfx-Dustcloud
+                        CoinSpawnModel: 55259b28-5339-4142-a4a9-fe6a574d9cb7:LootGoldCoin
+                        SoundEffect: 73dbcf5b-10da-4471-97d9-140f695e2fc5:Audio/crate_breaking
+                        Trigger: ref!! 1190a774-b656-4139-a4f3-24eaac41a258
+                    28cbe91f2b1efd4a865067a932c54649: !TopDownRPG.Gameplay.Trigger,TopDownRPG.Game
+                        Id: 1190a774-b656-4139-a4f3-24eaac41a258
+                        TriggerCondition: StartOnly
+            Base:
+                BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
+                BasePartId: d7e1e37c-01fb-4a83-81e5-e88dacc8a134
+                InstanceId: b55a19a6-e4e7-4575-abed-a7266bf7d397

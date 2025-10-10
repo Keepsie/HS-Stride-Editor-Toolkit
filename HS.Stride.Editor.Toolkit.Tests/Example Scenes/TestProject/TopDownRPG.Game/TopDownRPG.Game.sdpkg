@@ -1,0 +1,27 @@
+!Package
+SerializedVersion: {Assets: 3.1.0.0}
+Meta:
+    Name: TopDownRPG.Game
+    Version: 1.0.0
+    Authors: []
+    Owners: []
+    RootNamespace: TopDownRPG
+    Dependencies: null
+AssetFolders:
+    -   Path: !dir ../Assets
+    -   Path: !dir Effects
+    -   Path: !dir C:/Users/Dave/Documents/Stride Projects/TopDownRPG/Assets
+    -   Path: !dir ../Assets
+    -   Path: !dir E:/Github/HS-Stride-Editor-Toolkit/HS.Stride.Editor.Toolkit.Tests/Example Scenes/TestProject/Assets
+ResourceFolders:
+    - !dir ../Resources
+OutputGroupDirectories: {}
+ExplicitFolders: []
+Bundles: []
+TemplateFolders: []
+RootAssets:
+    - 23eae646-a0fb-4c67-9955-9207bd3522c0:EasternChunk
+    - 3940e2d9-ed48-4530-89fd-cf7c4b0ada9e:SouthernChunk
+    - 46f893d9-4e89-47fd-87cb-a4dc241409b2:CentralChunk
+    - 616fd03e-d441-4c4b-ba53-826d7bb3b498:WesternChunk
+    - 6cefe63f-92d2-49af-94a8-c7228954ea6d:NorthernChunk

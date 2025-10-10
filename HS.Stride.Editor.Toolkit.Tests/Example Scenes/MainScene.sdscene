@@ -1,0 +1,1577 @@
+!SceneAsset
+Id: 5af06fb3-bb04-46bd-a578-4df940a39761
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+ChildrenIds: []
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
+Hierarchy:
+    RootParts:
+        - ref!! 5bde58f1-9059-44aa-8c60-536df638e561
+        - ref!! 0e130f14-aca0-46a9-a850-e29df1985d39
+        - ref!! 209caff8-53a8-4028-8900-6ec6c73da8d3
+        - ref!! 862e99d9-d94b-4018-a829-edd75894d047
+        - ref!! e3d55196-303e-408c-be35-b4c1acc0b1e5
+        - ref!! df2f94ca-eddd-4508-958f-af16d1601a7c
+        - ref!! 32d04e1a-406d-4b50-8e3b-eb3328856758
+        - ref!! b2f8eae3-36bd-468a-a028-0ca8d7f3c0ce
+        - ref!! 0c8b195f-6d34-483e-94bc-414c0d44fc8d
+        - ref!! d73cc563-3127-445c-9c5d-e67c3acae231
+        - ref!! 3eb7f5ac-a3e2-484c-a35f-d97dd6953372
+        - ref!! c8a9f046-dd4f-4b42-8eb1-9c199260ead2
+        - ref!! a9f19087-a152-473b-a267-89fb445ebc29
+        - ref!! 10e366ec-2e41-4a72-bb97-f548847dad40
+        - ref!! 7c1828df-3187-48dc-83f2-2085d8b40354
+    Parts:
+        -   Entity:
+                Id: 00bdf771-f648-4e23-8d7b-de35b3d59df9
+                Name: DevEditorUI
+                Components:
+                    b80f46fb46b6493edafae49f23a087da: !TransformComponent
+                        Id: fad6475b-833b-4fbc-8988-270c95bd5e84
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    297b3cd646cd3526f041f4f61a3efdda: !UIComponent
+                        Id: 08371dee-ceae-478f-98fa-8d45ea64f915
+                        Enabled: false
+                        Page: 275be4a6-767c-425e-b0e2-68f245063311:Happenstance/Dev Editor/Source/dev_editor_page
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    3fa0d50ec647098a1cc9cf372cdc250e: !Happenstance.SE.DevEditor.UI.DevSceneInspector
+                        Id: 12f181c1-51f3-4601-ab62-e865037eaa5e
+                        StartDisabled: false
+                        CollisionDetection: false
+                    20fd2d382ad5925207a97093189e96ba: !Happenstance.SE.DevEditor.UI.DevSceneHelper
+                        Id: 62646cc9-4380-445c-970f-7a48a429712b
+                        StartDisabled: false
+                        CollisionDetection: false
+                    0998e809c6491557f82f2db41af94a86: !Happenstance.SE.DevEditor.UI.DevSceneEntities
+                        Id: b001778d-4999-4551-bff5-cac0bcace147
+                        StartDisabled: false
+                        CollisionDetection: false
+            Base:
+                BasePartAsset: 57b4e765-d0a0-44b3-88b5-f47aa490e959:Prefabs/Dev Editor Manager
+                BasePartId: 76060f31-79f8-4854-b595-d51242b8ca33
+                InstanceId: 5d399334-ec0f-4fcd-9c7f-96340784dec3
+        -   Entity:
+                Id: 04628d0d-cc91-49c4-b518-91837a1a79ef
+                Name: Cube (4).018
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a86adf8d-a5e2-4cda-8eb4-39d5524395a8
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 4733869e-b99b-453a-a054-01ed8399d73d
+                        Model: 8702569c-78ba-4e55-879e-f9490010b9b7:Models/Levels/proto_data_recovery/Cube (4).018
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: ed10fc98-9ad0-47a4-9d25-dd3113b5dba5
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 081e1b84-0b7c-426e-a79a-1ba4d584e484
+                Name: Cube (4).008
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 957abd03-deac-4e71-9c0f-2f14c29d9ec0
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 757c8eed-88f8-4705-975a-446d6a309729
+                        Model: f3fb63c0-5bc7-49e9-93af-cd323ec90f70:Models/Levels/proto_data_recovery/Cube (4).008
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 80cf497e-77a9-427a-b73e-3ceb96237fa2
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 09c7591d-3d37-4d1b-b31e-eb064f9a8fa5
+                Name: DevConsoleUI
+                Components:
+                    aaf6f90586685888f14e1c72b6bd0e84: !TransformComponent
+                        Id: c39eec14-468c-4926-a0db-e00e6f8958ec
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    160412c9361dbc87b58f91ff7246d050: !UIComponent
+                        Id: d7d1c817-a469-4e9e-a4c5-e6d5cf5c1e28
+                        Enabled: false
+                        Page: e57146fa-d5cc-4b58-832d-9afde81625b4:Happenstance/Dev Console/Source/dev_console_page
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                    f49490563262fb53ed9f60700f450ebe: !Happenstance.SE.DevConsole.ConsoleUI
+                        Id: 0c0651a9-39d9-4647-99cd-18819ac451b9
+                        StartDisabled: false
+                        CollisionDetection: false
+            Base:
+                BasePartAsset: 7285db21-781a-4f48-af5d-ad064bc3d7df:Prefabs/Dev Console Manager
+                BasePartId: d14e1602-f4bd-4f16-a264-e210b9bd3e21
+                InstanceId: 4fceb5c2-196c-4de0-af43-79960fbc2a9d
+        -   Entity:
+                Id: 0c8b195f-6d34-483e-94bc-414c0d44fc8d
+                Name: proto_data_miner
+                Components:
+                    4ba1647f173c0ddfd5c1aba8b9858bc3: !TransformComponent
+                        Id: ef0e7498-888c-4396-8d32-df02eb515788
+                        Position: {X: -9.08741, Y: 0.0, Z: -39.385582}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    cedb95caee4f619fbd2b78686b339aa9: !ModelComponent
+                        Id: e316089b-a220-4e23-bc03-73f62b64568a
+                        Model: 6a8301eb-5616-444d-9321-6287e33c596c:Models/Prototype Enemies/proto_data_miner
+                        Materials:
+                            e5ce6a6f2db7f3a4482d973723b98b66~0: e4a8b81d-08ea-4561-92cc-ef5a7fef6a7d:Stride Samples/Materials/DullSilver
+        -   Entity:
+                Id: 0e130f14-aca0-46a9-a850-e29df1985d39
+                Name: Skybox
+                Components:
+                    77c83f412fe49a08157d4d94005aba10: !TransformComponent
+                        Id: 8942fc38-268d-4f87-8519-c6894423a8c8
+                        Position: {X: 0.0, Y: 2.0, Z: -2.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    e7833f2037b962fe8ff23610171d05c3: !BackgroundComponent
+                        Id: 0fac6f81-4e1b-4df6-9458-38c5b685d44e
+                        Texture: 2a0193bf-fcf1-42b4-92d8-dbde51d42cad:Textures/Skybox texture
+                    a13f2fdfe7d0981d3e0d9236fe5ecc6f: !LightComponent
+                        Id: 75e3dca1-d8ff-4c0f-8a5c-b1a0d0b60a38
+                        Type: !LightSkybox
+                            Skybox: eac9f828-dd97-4429-96f9-bf47998b76fe:Textures/Skybox
+        -   Folder: Managers
+            Entity:
+                Id: 10e366ec-2e41-4a72-bb97-f548847dad40
+                Name: Dev Console Manager
+                Components:
+                    704ee4e1cc4fd175ace3714c209cac14: !TransformComponent
+                        Id: 9ca5fe61-adf4-4364-a961-621d8cc11778
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            84eb536885e251258f9d8ba6515651c4: ref!! 2ec50a42-2e6d-4a1e-98b8-17c7a70070fc
+        -   Entity:
+                Id: 11ca81db-5469-4fe1-a2bb-f683d2abea1e
+                Name: Cube (4).028
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 09bf7593-947f-4738-a752-845adfb1f690
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: b5846f0e-cc6f-44ab-9a08-659b4a0f5392
+                        Model: e66bb2a4-7b8f-424c-a68d-10d5106f890b:Models/Levels/proto_data_recovery/Cube (4).028
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 5a2c3afd-4e7b-482d-b399-821c85494c33
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 16284562-9533-402e-9a17-bd148e41f06d
+                Name: Cube (4).043
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 671bb095-4967-470f-9b98-d0c2ed377e6a
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: b094d2fc-e3f9-4c0d-8910-2cbe619dffd5
+                        Model: 9394fc15-44c1-437e-8ce9-0aa806e038e8:Models/Levels/proto_data_recovery/Cube (4).043
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 3352c629-a305-4b64-994b-23d0b11565c1
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 1a9f62c2-b08a-4805-8ed5-8321a7f38b9b
+                Name: Cube (4).032
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 64fc5318-ce8d-4354-8afd-03e4e4ff39d5
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 63cf1cc0-0d33-499c-99c9-1071ed8dd146
+                        Model: eda1e2e6-b648-4ffb-9443-c668e5ae3863:Models/Levels/proto_data_recovery/Cube (4).032
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 8fd69f52-5b94-4e70-be42-4d73bf9b392d
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 1c30d43b-6621-47a1-8487-26634b73d2c8
+                Name: Dev Console Manager
+                Components:
+                    59c17e2ae7f9eee58dbb9b9646e77568: !TransformComponent
+                        Id: 2ec50a42-2e6d-4a1e-98b8-17c7a70070fc
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            8c813224184505bbbe9896103afa139d: ref!! c39eec14-468c-4926-a0db-e00e6f8958ec
+                    eae540219a4858089b5bc9d939ecf027: !Happenstance.SE.DevConsole.ConsoleManager
+                        Id: 43043586-70a8-4929-9683-f730af2ede1f
+                        Priority: -48
+                        StartDisabled: false
+                        CollisionDetection: false
+            Base:
+                BasePartAsset: 7285db21-781a-4f48-af5d-ad064bc3d7df:Prefabs/Dev Console Manager
+                BasePartId: 454fa16d-859b-4776-a6b4-5c9374f7a075
+                InstanceId: 4fceb5c2-196c-4de0-af43-79960fbc2a9d
+        -   Entity:
+                Id: 209caff8-53a8-4028-8900-6ec6c73da8d3
+                Name: SM_Buildings_Floor_2x2_01
+                Components:
+                    0a58b3376bcf59b57983079ba5a4586f: !TransformComponent
+                        Id: 3f881ac4-5bb6-43db-a02f-d13ec783d66b
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    6caf31521b73b8e37985833af642b447: !ModelComponent
+                        Id: 35d9bd97-42d5-4c36-b377-72c06a842525
+                        Model: ddea9916-62b5-494c-94d2-f473786bf067:SyntyPrototype/Models/Buildings/SM_Buildings_Floor_2x2_01
+                        Materials: {}
+        -   Entity:
+                Id: 26baae72-2db3-45b3-9041-496197611dba
+                Name: Cube (4).053
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: af9a2cdf-680a-4974-9a06-aeb9da82336f
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 66227706-abe1-4240-aca5-1425e3426ebe
+                        Model: b7025385-2d6c-40e5-9cef-bb1657f64c57:Models/Levels/proto_data_recovery/Cube (4).053
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 6f8ee27f-d1fa-4833-a5b0-b1d0441f121f
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 27ff2ade-e078-472f-a605-9946fad3db70
+                Name: Cube (4).025
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 6a0d52be-b6a6-424f-806d-c6935f8f5804
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 6a43183b-9598-480f-925d-5c74790d900d
+                        Model: eeb6e937-8ff5-44ed-ab64-c1e3e453bc95:Models/Levels/proto_data_recovery/Cube (4).025
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 5e681396-cecf-4aad-a387-ed47fd7263d9
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 2880152f-6706-470e-846c-0d44ea70e837
+                Name: Cube (4).039
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 259665d6-864f-4fff-9a8e-74ba554432b5
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 88c4828a-e77e-48f4-a281-5ee1d5cb6ff9
+                        Model: 47d8f721-a799-477a-b4e5-2d66e93a1814:Models/Levels/proto_data_recovery/Cube (4).039
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 6719072f-d763-40d5-8590-17937bfd844d
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 32d04e1a-406d-4b50-8e3b-eb3328856758
+                Name: Prototyping_Human_Size
+                Components:
+                    89f256054947266e11f7b701034e3673: !TransformComponent
+                        Id: 249e0433-a8d5-43ad-bef4-482facfd5121
+                        Position: {X: -4.675386, Y: 0.0, Z: -4.0760727}
+                        Rotation: {X: 0.0, Y: 0.6954779, Z: 0.0, W: 0.7185475}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    5324470f19065537bdf1f3b4b9b7b6cd: !ModelComponent
+                        Id: 22336f14-6b0f-4010-8db5-59b3a8c4d4f2
+                        Model: 0e41569a-57d7-4de2-9605-3ed9d8838ff2:Prototyping_Human_Size
+                        Materials: {}
+        -   Entity:
+                Id: 33415592-deb1-402f-9ac5-e6d0e7673c63
+                Name: Camera
+                Components:
+                    d1b3c0cf7088e3571be76f69eb018683: !TransformComponent
+                        Id: 747e3fc7-83e8-481d-9b2d-ebe85db927e7
+                        Position: {X: 0.0, Y: 1.6642183, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            15ad6759e688ad063804cbad865f3802: ref!! 596bf1cf-f70e-4d5a-adce-913ed1664e4f
+                            c8bd4a02919082499fc375a9c5560174: ref!! 5817cb0b-fab0-4014-85c5-1007c3da49b5
+                    cb0332682d728d0e48b7291cc8b623ec: !CameraComponent
+                        Id: 2c9344d5-61b9-4e6f-9509-656e051afc66
+                        Name: null
+                        Projection: Perspective
+                        Slot: caa4bb38-461e-4aa2-8904-6495aa8251e7
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: d1087fd4-46a2-4f71-9057-d5a51da3aa28
+                InstanceId: a3937d02-796a-4ecf-b24b-331b119746bc
+        -   Entity:
+                Id: 3357c6bc-8011-484f-a990-463eabb9a622
+                Name: Cube (4).007
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 387eb112-d287-4a02-ae1b-69ff4b6e0ee9
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 9798110a-f95b-4e3f-9433-b0c2390c3090
+                        Model: 553a7bb0-0a5b-42ad-a98f-99fb163252f5:Models/Levels/proto_data_recovery/Cube (4).007
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 3d18218b-5f84-4468-a83f-12488a600646
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 35413546-5572-41f8-8db6-c9b8870d3b18
+                Name: Cube (4).024
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 16e44bcc-5c22-4ca1-aa2e-f04a366bebc1
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 923e0ee6-d781-49fb-b8d8-8f1e4d6e7947
+                        Model: 760a30b1-a489-4a67-877e-69a45c39efe7:Models/Levels/proto_data_recovery/Cube (4).024
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 01d1a8bd-25f9-4ffb-89fb-ea766540e92e
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Folder: Managers
+            Entity:
+                Id: 3eb7f5ac-a3e2-484c-a35f-d97dd6953372
+                Name: HS Input Manager
+                Components:
+                    322d0f724d55428243050b9074042c1b: !TransformComponent
+                        Id: 8f2d3c74-7810-42ca-8b34-d7845878df93
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    d8bde25f4af40945ed778d47b6199301: !Happenstance.SE.Input.HSInputManager,dysector
+                        Id: 04e61654-b8aa-4454-8f18-29e8c82a69be
+                        StartDisabled: false
+                        CollisionDetection: false
+        -   Entity:
+                Id: 4213d981-ac8d-4e9e-87b5-e81f84e3bb41
+                Name: Cube (4).034
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: ec5213c8-917b-4dd3-910b-345250ab7a38
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 9183904a-be5c-4111-a89f-92dc2d19da98
+                        Model: ecba995a-7012-4a8e-a85b-2ea4a3d94f84:Models/Levels/proto_data_recovery/Cube (4).034
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 665f87a4-cc2f-4ff2-8ba1-c8e847a6983b
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 42d423ad-0a83-4292-a52e-56e2699883f3
+                Name: Cube (4).002
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: acb662e5-ac3e-4f05-b66b-9160e4311d40
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 6ad2cb5e-4fce-47bc-a85e-4a087e9bad11
+                        Model: 5bab548f-c05b-4610-9051-551bf81ee5fa:Models/Levels/proto_data_recovery/Cube (4).002
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: f36f6c0f-9ff8-42c3-8e51-794c9f7e4567
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 4517d89e-e96f-450b-99e4-439360fc09e7
+                Name: proto_data_recovery
+                Components:
+                    961ae8a7666cc3785b61a3ec150b76ed: !TransformComponent
+                        Id: 111da417-781b-49bb-a470-60a6567d2122
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            4d44a50a0f334ba4adc8337ba4d39425: ref!! acb662e5-ac3e-4f05-b66b-9160e4311d40
+                            8da70918fad74d80ae6ccc58f18a96fd: ref!! cdbc7cc5-596d-40a3-bf2e-21fbffd1d670
+                            92b9be5cfd184f87bc7b90b911ba78c9: ref!! 83757ab3-afd6-4b98-a3a7-6570227beea9
+                            e6a1b7c832004c95baea208642876bf6: ref!! e43211b5-b5d3-4094-8279-6d14959dbda4
+                            8bc4e3486dc345a8a38a5eb4df4de0c1: ref!! eea389bc-a679-4676-89a4-d59b61ea6153
+                            86a285c27f314c468bc82dd5640b8637: ref!! 387eb112-d287-4a02-ae1b-69ff4b6e0ee9
+                            99b4dd4035974cf39056680c01cad21b: ref!! 957abd03-deac-4e71-9c0f-2f14c29d9ec0
+                            d701a0d5cec94bac9b822850c6afa08f: ref!! 6539c50e-27fa-4c35-83bb-707347cc2a59
+                            b0b4bf626783453a8394349c006bd30d: ref!! 9c402797-da2c-4c2d-b0d3-1c86b59c87bd
+                            438a59197822444390d33eae8c4fd631: ref!! 72215202-1270-4a91-b7be-9b06f18f9151
+                            2ec328bd0af14800a0c7791b455b9bd5: ref!! 1d8aa0a9-54e7-40af-a14c-b8db1eb73062
+                            2f7259cd06aa4c83ab4a858e6cdbf4cb: ref!! c66e49e3-77b0-4576-aeea-c7652bb620c2
+                            e52c967386b64de995605bec2b5dfa5e: ref!! 9172c92d-3183-465f-b36a-ab913f418d06
+                            7e20c9b0b9254390a6c260bc50309ef2: ref!! 2146e584-c92a-4064-8639-dbf12d426822
+                            ac7a4ec6f25e4be497a28e0fa344c0ff: ref!! 2db83f17-a611-4a80-8fc7-3000a6451b42
+                            bf3e5800683b4bbcbe2ec56197fc88ad: ref!! a86adf8d-a5e2-4cda-8eb4-39d5524395a8
+                            6b2164f39f6e45929f59b83d855e9786: ref!! 801994a1-fda7-4a62-b1e9-1328c1992f34
+                            538ddf06910847d4b519cb6986917b4b: ref!! d92335d2-924a-46eb-959d-2d11b9c43750
+                            ef697a168eeb493ebfbc43d0676badbe: ref!! 6ddbad4e-1337-4295-9a2d-3a49bd8eb228
+                            ae9ef64cecf64a25ae876cae3ba7322d: ref!! 3106908b-6268-4447-b0a4-95628376acbc
+                            e2d5549b93e84b55803190287da319ed: ref!! 427e6a4a-477d-41b5-9798-8e6ba31e6b4d
+                            e2db493bc3d64349ba73c8c344e60dea: ref!! 16e44bcc-5c22-4ca1-aa2e-f04a366bebc1
+                            b4168fecc5b74364afddf4185cd8fad4: ref!! 6a0d52be-b6a6-424f-806d-c6935f8f5804
+                            f126bf7c666a4d5f8882df5a4bd056c9: ref!! 60fcf956-285d-493e-a60f-51a1504f4bfe
+                            4dfe556f375347959a6767f9d797b4cb: ref!! 71ccc197-7cde-41b6-811c-27da3537c3ec
+                            e15f8fedb1294478ae08d3ebd49463c2: ref!! 09bf7593-947f-4738-a752-845adfb1f690
+                            e85212d615b445698d925dff4acc79ac: ref!! 1b9d3010-4072-490f-bf51-551cd040b240
+                            e545e76ce0d74cd0b40c588195f88fc2: ref!! f5c1f966-3bd0-40bb-81e5-a4920b86aef1
+                            3a2bf493caa144b1933481bada7f198d: ref!! cdc1e760-177c-4eec-be48-d46bf5cc7d48
+                            44e66d7bf2704be4a8abf2e2a8fab1da: ref!! 64fc5318-ce8d-4354-8afd-03e4e4ff39d5
+                            8212ab4300f14a688eb5ce0a08ca47c9: ref!! 9d1c7d28-5424-46e0-88d6-d01c8bb2bbba
+                            29badf08c91c4296855e72325bc4233b: ref!! ec5213c8-917b-4dd3-910b-345250ab7a38
+                            73fe6aa9e46c4f9bbef3b75c6be07d1d: ref!! 4818df86-e3b8-43aa-a5c6-4950fd86f43f
+                            804c9aed06fe499fae03eb983b357f72: ref!! 4b007616-5ece-4bdb-84f7-20c0d47ca0c0
+                            bb8215a6438444e090e55ca5e00f3cdd: ref!! 9db9750a-c7bd-4602-bacf-c9f943860d2c
+                            d953efa8c5224269b6e2f7eb05ff8d1d: ref!! 213b0e74-b091-4a10-ac12-702d777f0ea8
+                            86c9a0b16fa74f188ef3bbc2000c6450: ref!! 259665d6-864f-4fff-9a8e-74ba554432b5
+                            f499762c27e24a1090b76d861f134d42: ref!! 9abbe513-40b3-472b-ab59-87dc7f8c6c7a
+                            9d26b4b1959e43d9bc4a088f6e61cdd8: ref!! a5c3f6ff-c2f8-429e-b3bb-b68a6e4206b7
+                            5f0b4cc708384cb0982a476690d73911: ref!! 0d2fe561-113e-4c28-8eb0-834eb3042fdd
+                            9d0f59e84abb45168a0c279aa1205189: ref!! 671bb095-4967-470f-9b98-d0c2ed377e6a
+                            fc9c27f5769144b98004e4a5b541082a: ref!! bf2db121-617d-4e6a-9352-b322388f6611
+                            9f75464e01a041ab86a07f6b55bed821: ref!! 5abdfd0d-009e-4247-8e98-eb1c71d1f028
+                            08b183ee77cf4a7fbdca3ea91d5d521a: ref!! 970c899b-68b4-4823-8990-a80d94825d3c
+                            b525cb37b33e40c8b49e02050a3903b4: ref!! a242cfde-75ef-403c-af51-c59e05721dbd
+                            cee2b8ccaa4149f0b4146e02dd4a71f6: ref!! 25030ccf-a160-4e98-84a8-73ab38efa20e
+                            cc19e1945f644cd5945b2dbea77913a9: ref!! 87937d75-6b3b-4155-9486-dbbb899dd9c0
+                            6e0d1ddc2e284472b397f098ccb9c26e: ref!! 04552d83-87fb-4442-84f1-2cbe85b15b6a
+                            9e83e79de824426fad3667f18e6167cb: ref!! eeed69e8-d5cb-438c-ac93-c4f103b9d6a2
+                            96ad70d317cf4b1594e1bf0d39bfb3a5: ref!! 90e479ea-c2c9-4985-b68b-24a1a875cef8
+                            6053db09274a4fe5a61140c3ebfd4c33: ref!! af9a2cdf-680a-4974-9a06-aeb9da82336f
+                            09c95aa7ed374074bef496c9db598381: ref!! 587309d0-9b5b-406d-b28d-8ad2b03ff058
+                            ae542829668840a8b25db8d157afdc82: ref!! 2a9da6e9-91d4-4f8c-9ea4-d37355267af6
+                            c55735966a604d15b7b6afd65325f27d: ref!! eb0c24ba-b9bf-4e40-81a9-e086fcb9676b
+                            85ae1fe6b71944f49c03d0e656be4e87: ref!! 75d810de-9623-4dd3-98bc-2a2e6dd7d536
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 901c8b9c-0afd-4a5d-a692-d2b02e7bd346
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 4a22be92-779f-4106-8913-8134c40f2d03
+                Name: Cube (4).044
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: bf2db121-617d-4e6a-9352-b322388f6611
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: d3b99e53-5cc8-407c-9396-7bf8be9882b8
+                        Model: 950a7eb7-16c6-4bd0-b68a-fcd6b2f6d962:Models/Levels/proto_data_recovery/Cube (4).044
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: e45423c1-f002-46ef-bcea-573148917de4
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 4e0ece96-32bb-4d3d-8ac5-140f57d78f98
+                Name: Cube (4).021
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 6ddbad4e-1337-4295-9a2d-3a49bd8eb228
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 07a27fa1-7b42-40aa-905b-d72a0be48d3c
+                        Model: 8f050f8e-8001-407d-97ef-8b787eb9c037:Models/Levels/proto_data_recovery/Cube (4).021
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 173b9a54-e25b-4635-907d-f152a40b86a5
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 4f807f83-2aa1-44fb-a77a-7b3d9ed8f2fe
+                Name: Cube (4).011
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 9c402797-da2c-4c2d-b0d3-1c86b59c87bd
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 9baebe15-0e1b-4069-be51-229d8d3822c3
+                        Model: 1b112729-8c25-43e2-b044-74df67ff9eae:Models/Levels/proto_data_recovery/Cube (4).011
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 57360137-1d99-428c-9125-5d021d63d267
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 5bde58f1-9059-44aa-8c60-536df638e561
+                Name: Directional light
+                Components:
+                    4ff4c56b2bc68eef77f0cb8b1dbf6830: !TransformComponent
+                        Id: 7826111b-5acb-4eef-b57f-b5258d1dcddc
+                        Position: {X: 0.0, Y: 2.0, Z: 0.0}
+                        Rotation: {X: 1.131334E-08, Y: -0.9659258, Z: -0.25881904, W: -4.222196E-08}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    cf94e0880a423909124b23dca745f2e6: !LightComponent
+                        Id: 8f5f8fae-95bc-45e9-a1ba-dfc16d9141a1
+                        Type: !LightDirectional
+                            Color: !ColorRgbProvider
+                                Value: {R: 1.0, G: 1.0, B: 1.0}
+                            Shadow:
+                                Enabled: true
+                                Filter: !LightShadowMapFilterTypePcf
+                                    FilterSize: Filter5x5
+                                Size: Large
+                                DepthRange: {}
+                                PartitionMode: !LightDirectionalShadowMap.PartitionLogarithmic {}
+                                ComputeTransmittance: false
+                                BiasParameters: {}
+                        Intensity: 20.0
+        -   Entity:
+                Id: 5c37f9a9-3dff-4750-b7c9-f04af8591052
+                Name: Cube (4).038
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 213b0e74-b091-4a10-ac12-702d777f0ea8
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 25082015-ac6e-43f2-af32-e96296b09a43
+                        Model: 074f11f0-391b-4dc4-9e2d-6f88bc550857:Models/Levels/proto_data_recovery/Cube (4).038
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 9934d8ed-aa83-4787-b11b-cb5b6e8c1fbc
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 5ff54450-c4c1-45ce-8167-0eebc95fb440
+                Name: Cube (4).013
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1d8aa0a9-54e7-40af-a14c-b8db1eb73062
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 904e4335-3438-46ce-b812-8f9f55900ee7
+                        Model: 1a61e1b1-4573-4ed8-ab30-d5c87c8b8a29:Models/Levels/proto_data_recovery/Cube (4).013
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: a0f5f198-bcbb-49fd-a129-9c88f7ac4b41
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 6152c7d1-69f9-443e-befe-c47dba271edd
+                Name: Cube (4).050
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 04552d83-87fb-4442-84f1-2cbe85b15b6a
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 07a2606e-a335-4f02-a785-0f4915bcb9a4
+                        Model: a142f164-6710-40ea-b130-2740a566b5f2:Models/Levels/proto_data_recovery/Cube (4).050
+                        Materials:
+                            afc273179448cdbaee573aeabc44123a*~0: c7aae7a8-5dc8-40c1-9659-e0f2bedfaafc:DevTextures/Materials/Prefab_purple_Mat
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 4c0e5d97-bd53-4df5-8690-3790ea1f848a
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 62d4975c-4d2f-4581-b012-3547ebacd49f
+                Name: DevCamera
+                Components:
+                    90c86d429f33f6013a913d2f86267e04: !TransformComponent
+                        Id: 401b9a28-9b1e-4b83-9eea-cdc39918fe3f
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    4c2fd08ed89c57f5b7b88eabb3422a2b: !CameraComponent
+                        Id: 5768fd2e-9865-4104-8ed4-2e318e2b890e
+                        Name: null
+                        Projection: Perspective
+                        Slot: cba82b6c-2e07-4c7f-9d38-2ae6f41386d4
+                    b1e9bb8c26f7e9bed996fd329a2ab732: !Happenstance.SE.DevEditor.Core.DevCamera
+                        Id: 255772b6-53d3-4e6d-97b5-6aaf38976a8b
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MovementSpeed: 10.0
+                        FastMovementSpeed: 25.0
+                        SlowMovementSpeed: 2.0
+                        RotationSpeed: 5.0
+                        MainCameraEntity: null
+            Base:
+                BasePartAsset: 57b4e765-d0a0-44b3-88b5-f47aa490e959:Prefabs/Dev Editor Manager
+                BasePartId: 6d234b3b-cb7d-4394-a7e0-09d8e3565111
+                InstanceId: 5d399334-ec0f-4fcd-9c7f-96340784dec3
+        -   Entity:
+                Id: 65b31f1a-9b4c-4256-9746-0e627817b75c
+                Name: Cube (4).040
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 9abbe513-40b3-472b-ab59-87dc7f8c6c7a
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 16941dac-b44f-47cd-a3e4-4efd8c514c07
+                        Model: 88ba8e41-5b5c-408f-837a-167e092637a3:Models/Levels/proto_data_recovery/Cube (4).040
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 19f49306-7eaf-4153-b763-d63a73b89102
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 6ad9818e-03aa-40ef-b13c-7b66324412a0
+                Name: Cube (4).056
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: eb0c24ba-b9bf-4e40-81a9-e086fcb9676b
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 5c88b3ad-c2c2-41c7-8c78-0c3a4b6dbd18
+                        Model: 4ff2e8f2-36ed-4955-95e9-efaaadfa79b6:Models/Levels/proto_data_recovery/Cube (4).056
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 08360ec1-f4fc-4caf-ad15-2573300fffe8
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 769a7244-685b-4744-a097-59a05f037762
+                Name: Cube (4).033
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 9d1c7d28-5424-46e0-88d6-d01c8bb2bbba
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 51d636b1-4e36-4982-89f9-75b18779ef64
+                        Model: a76a05d8-fddc-4018-986c-acbb08cd858a:Models/Levels/proto_data_recovery/Cube (4).033
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 72c44db4-06c3-48fd-a2ed-dda24ad2c412
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 77003d36-295f-439f-8241-0ed013a64f11
+                Name: Cube (4).041
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a5c3f6ff-c2f8-429e-b3bb-b68a6e4206b7
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 932b4465-ad32-4570-8d71-4f4ea89b4619
+                        Model: 7ab4ac18-0b18-4308-8a29-e93b29d82ad8:Models/Levels/proto_data_recovery/Cube (4).041
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 024d8650-6b41-4273-9cc3-153e39b3d7c6
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 7c1828df-3187-48dc-83f2-2085d8b40354
+                Name: First Person Controller
+                Components:
+                    05f0c07329fbf2c1ce7484b40927dd30: !TransformComponent
+                        Id: 9dec8800-8454-4b72-8de3-bc748ea56ccc
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            6d85fc53b4e35a748dbb75cbf23eb180: ref!! 2dca8b58-e03f-48f7-b584-27d49fe7fd8f
+        -   Entity:
+                Id: 80c3abaf-8983-41a3-92d6-fd7e9e29a963
+                Name: Cube (4).030
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: f5c1f966-3bd0-40bb-81e5-a4920b86aef1
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 42dc4165-6306-4db4-84a6-a778388ed135
+                        Model: f411c99b-b876-4cce-a1f9-d89abea6c9b2:Models/Levels/proto_data_recovery/Cube (4).030
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 4bebbb54-ec74-4f3a-a7f6-1b72e9874588
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 85d8e3f3-61b7-4f13-8a1c-3c675be56801
+                Name: Cube (4).048
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 25030ccf-a160-4e98-84a8-73ab38efa20e
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 2dc1610f-7fda-4b47-9bac-8c32bfe95281
+                        Model: 199775ba-14d6-443a-a44d-88c3950a4ffe:Models/Levels/proto_data_recovery/Cube (4).048
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: e2f14aed-b492-40f6-834b-b40cdd76a353
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Folder: null
+            Entity:
+                Id: 862e99d9-d94b-4018-a829-edd75894d047
+                Name: SM_Buildings_Floor_2x2_01
+                Components:
+                    0a58b3376bcf59b57983079ba5a4586f: !TransformComponent
+                        Id: 9c916981-f395-47be-8064-bb541d54d9ac
+                        Position: {X: 0.0, Y: 0.0, Z: -1.9999999}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    6caf31521b73b8e37985833af642b447: !ModelComponent
+                        Id: 8d996b54-03df-45ec-b9aa-18c65734656a
+                        Model: ddea9916-62b5-494c-94d2-f473786bf067:SyntyPrototype/Models/Buildings/SM_Buildings_Floor_2x2_01
+                        Materials: {}
+        -   Entity:
+                Id: 88e48734-dba1-4e4a-ac27-b7cbef6509d7
+                Name: Cube (4).051
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: eeed69e8-d5cb-438c-ac93-c4f103b9d6a2
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: b26bde8b-555a-417f-92c6-b4f459187d2e
+                        Model: c2f75973-2052-4dd9-807e-5d6487da424d:Models/Levels/proto_data_recovery/Cube (4).051
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: f6b249ce-1cec-44b6-bd0b-db9c9946737a
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 89a6eba4-a67c-4b38-a56e-a507bbfc5a29
+                Name: Crosshair
+                Components:
+                    11af2092ec6588a425357f150eef8b01: !TransformComponent
+                        Id: 596bf1cf-f70e-4d5a-adce-913ed1664e4f
+                        Position: {X: 0.0, Y: 0.0, Z: -3.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 0.05, Y: 0.05, Z: 0.05}
+                        Children: {}
+                    f7aea1534db0c81fd763bd311fb06a54: !SpriteComponent
+                        Id: 06010255-1b84-4dee-9980-3d3db9e32b62
+                        SpriteProvider: !SpriteFromTexture
+                            Texture: 676bf183-96ba-4b5c-b32e-ae78db9f8901:Happenstance/Player Controller/First Person Player/Textures/crosshair
+                            Center: {X: 0.0, Y: 0.0}
+                        Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+                        Intensity: 2.0
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: eb5c00e2-5a39-447b-95e4-5ac762222f3d
+                InstanceId: a3937d02-796a-4ecf-b24b-331b119746bc
+        -   Entity:
+                Id: 8d2230dc-c64f-40c1-8913-fdf2bb383d82
+                Name: Cube (4).027
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 71ccc197-7cde-41b6-811c-27da3537c3ec
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 1ed7bf0e-e014-4d67-afa0-701fcd9dc986
+                        Model: 91f6cb8b-0dd2-4c9c-b5f2-8d1251fb66f1:Models/Levels/proto_data_recovery/Cube (4).027
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 873c82c5-11df-4659-93c2-c57d9830a1e0
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 8e359735-1adb-4955-884e-02823ae71c65
+                Name: Cube (4).035
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 4818df86-e3b8-43aa-a5c6-4950fd86f43f
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 24205d0c-7fa8-44ac-b99c-5582740501bc
+                        Model: e13983ad-724c-4944-9dfd-c8417bb6d5d3:Models/Levels/proto_data_recovery/Cube (4).035
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 538fdaf9-d1f6-49ac-b88f-18fc20d0918e
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 8f48257f-7979-4c06-982b-97fa7a960957
+                Name: Cube (4).017
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 2db83f17-a611-4a80-8fc7-3000a6451b42
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: a474e63e-4764-4264-8791-fdacbb08452e
+                        Model: 1b8e3a59-a25e-4176-8d71-e1a05db82891:Models/Levels/proto_data_recovery/Cube (4).017
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 9d15b9d8-de13-4d4c-8e80-88946366872d
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 901819ee-b6c3-43cc-a776-fc044cdb28d3
+                Name: Cube (4).049
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 87937d75-6b3b-4155-9486-dbbb899dd9c0
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 8283e950-42c9-430c-ba4f-425f229b979a
+                        Model: 43fd960d-547d-45f9-9e0d-b0f97c7329b5:Models/Levels/proto_data_recovery/Cube (4).049
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: f07cf4e4-7f27-40d1-85b9-44d41a14b7cb
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 95cba774-3e90-45cb-b658-f1af82b19d0f
+                Name: Cube (4).036
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 4b007616-5ece-4bdb-84f7-20c0d47ca0c0
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: efe34d94-5bc2-4c08-acd0-96d432cbb017
+                        Model: adc8d053-1db8-4897-a819-decf23698a24:Models/Levels/proto_data_recovery/Cube (4).036
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: b9d3b0da-a149-4e1e-acde-89d190b95382
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: 97fff899-db20-406b-aa4b-d2f8ce5a539c
+                Name: Cube (4).055
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 2a9da6e9-91d4-4f8c-9ea4-d37355267af6
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 594687eb-296c-4ef6-8e2b-1670ef652a37
+                        Model: 4823ccc2-11e3-4ddf-a201-b0e137683c91:Models/Levels/proto_data_recovery/Cube (4).055
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: b673e2a8-f893-4edf-b39c-06653ceda6ad
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: a04c5242-e7d3-4dd4-8b15-567df40aeba8
+                Name: Cube (4).031
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: cdc1e760-177c-4eec-be48-d46bf5cc7d48
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: be457f81-1309-4192-8081-61ce0626bab7
+                        Model: 666faf2a-1ea0-4f01-a4c2-dd27f896add2:Models/Levels/proto_data_recovery/Cube (4).031
+                        Materials:
+                            fd0bd085700c4fc6e3f1d332a28b0e57*~1: 47128df6-19ab-42c6-912b-9c1339453da8:DevTextures/Materials/Solid_NoRender_Mat
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: e1ea606d-fe16-4ee8-aca7-3eec42edbd99
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: a06ccd2e-fb3b-45f0-83f7-3368049bc280
+                Name: Cube (4).026
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 60fcf956-285d-493e-a60f-51a1504f4bfe
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 2a7c7ba0-e97d-4c8b-8650-4bf2b2f32769
+                        Model: 8eacee52-2c76-46ce-938a-6152daf79bac:Models/Levels/proto_data_recovery/Cube (4).026
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 9d9d0fe3-3261-4289-bfa2-ab68760fcf7c
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: a3373953-8258-4577-93dc-16efd0ad69d6
+                Name: Cube (4).006
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: eea389bc-a679-4676-89a4-d59b61ea6153
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 66cd47e0-71de-4d14-8537-82b37cbdc55d
+                        Model: e8e55a73-0ee7-47bd-8e31-86e0d7204820:Models/Levels/proto_data_recovery/Cube (4).006
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 87e201f6-de56-49d1-bf85-b8c0cd8e34f8
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: a635bbfd-4a66-4b74-9a4d-0530e11a28df
+                Name: Cube (4).037
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 9db9750a-c7bd-4602-bacf-c9f943860d2c
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: ced7f07f-0987-47fa-9dc1-e555665f0ee9
+                        Model: fdcda9be-584b-476a-94dc-1036d39caca0:Models/Levels/proto_data_recovery/Cube (4).037
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 40a40a3c-9b73-48fa-8e58-ebbd8cfc9507
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Folder: Managers
+            Entity:
+                Id: a9f19087-a152-473b-a267-89fb445ebc29
+                Name: Dev Editor Manager
+                Components:
+                    8e6906dd2b9eb1b6243008ebd9538410: !TransformComponent
+                        Id: 06507a9b-5ce7-4b14-8d6c-f0044eaad8a0
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            3350a16f87c214f20e74358b29cda28c: ref!! 8220136e-358b-4aae-8b52-713fc1e52097
+        -   Entity:
+                Id: b2f8eae3-36bd-468a-a028-0ca8d7f3c0ce
+                Name: proto_data_recovery
+                Components:
+                    75c96bdc8fe0f61d7ebd7f271fe7c93b: !TransformComponent
+                        Id: 30b47d9e-829b-4689-9ce2-984123066feb
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 0.1, Y: 0.1, Z: 0.1}
+                        Children:
+                            44fb097f53cb8ea34a11ee218bd7ae3a: ref!! 111da417-781b-49bb-a470-60a6567d2122
+        -   Entity:
+                Id: b492c562-e695-471d-9967-a34e709f6449
+                Name: Cube (4).016
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 2146e584-c92a-4064-8639-dbf12d426822
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 126162cf-d0c6-40cc-8060-35b862f3e1a9
+                        Model: 78c3caf6-e86c-4999-801d-b984484497b7:Models/Levels/proto_data_recovery/Cube (4).016
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 9561238c-551c-4aa0-91db-e5941fd3ffff
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b4b81f00-1d1a-41d5-b18f-2b62203a5883
+                Name: Floor
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 75d810de-9623-4dd3-98bc-2a2e6dd7d536
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 18054a28-507d-41a9-abe0-168f2b1b4571
+                        Model: 029ff16d-ca01-4eb2-b978-c877946441d6:Models/Levels/proto_data_recovery/Floor
+                        Materials: {}
+                    09ab31eaf8d7e094f40542afbe8808cb*: !StaticColliderComponent
+                        Id: c51f1fd4-3774-4a01-9ae6-3ec98958d8f2
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        IsTrigger: false
+                        AlwaysUpdateNaviMeshCache: false
+                        ColliderShapes:
+                            9d360396788920f1cdf2f4e1d75a798f: !StaticMeshColliderShapeDesc
+                                Model: 029ff16d-ca01-4eb2-b978-c877946441d6:Models/Levels/proto_data_recovery/Floor
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 3438eb35-adb2-42bc-a01e-9eadc49cf143
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b54e698a-92a4-4266-8e21-9522f2a2a7a1
+                Name: Cube (4).042
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 0d2fe561-113e-4c28-8eb0-834eb3042fdd
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: ab4e3725-328b-4f87-a629-58b4d2e40b62
+                        Model: f87b15de-d7bc-4acc-bfd2-d2d1d43b2e4a:Models/Levels/proto_data_recovery/Cube (4).042
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 1d5023f5-711a-4171-8bb5-39bf69fdc01a
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b576d23f-979e-4b9e-a3f6-3d732b480894
+                Name: Cube (4).029
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 1b9d3010-4072-490f-bf51-551cd040b240
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 794a403c-fb98-46f4-bf74-ed4e0f273da9
+                        Model: 6df03aa2-7307-4948-a064-75cda07897ea:Models/Levels/proto_data_recovery/Cube (4).029
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: df75a718-62f4-4a8c-9e51-6263fbe29799
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b6c63d6f-ebe0-499d-af09-eccac4b3c676
+                Name: Cube (4).005
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: e43211b5-b5d3-4094-8279-6d14959dbda4
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 63715580-700d-456d-9a99-83f765e03fe5
+                        Model: 2ef1bf86-c271-474d-99e4-dca1a7ed9a14:Models/Levels/proto_data_recovery/Cube (4).005
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 8707d439-3614-4840-bb7a-f36943dfb23f
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b7587ec7-8945-45f7-aa0d-fbd4c5166c40
+                Name: Cube (4).046
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 970c899b-68b4-4823-8990-a80d94825d3c
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: ac2192e6-8d2b-4c05-9afb-c1eabf1c9964
+                        Model: f13a398c-0420-4d9d-bbdb-177f2d37f4e2:Models/Levels/proto_data_recovery/Cube (4).046
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: fc303ee5-154c-4a47-ba88-0f96bfbd0a8f
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b91468da-0c78-4c8c-8396-e2f079f723f5
+                Name: Cube (4).052
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 90e479ea-c2c9-4985-b68b-24a1a875cef8
+                        Position*: {X: 0.0, Y: -2.855151, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 8c8822c1-2a46-4f50-81c4-6489c522663a
+                        Model: 5902c57e-d2cd-41a9-a552-bf3cd2a8fd66:Models/Levels/proto_data_recovery/Cube (4).052
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: a5e1b37c-e7a8-4e1f-ae03-e26815d342fd
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: b9c25a8e-1a9b-494b-86aa-55fe06c0692f
+                Name: Cube (4).009
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 6539c50e-27fa-4c35-83bb-707347cc2a59
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 5d408be4-bc03-4b45-8c03-c6da5f6091ac
+                        Model: 31e81788-4e13-4e89-8371-b121f7186740:Models/Levels/proto_data_recovery/Cube (4).009
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: d14a5cb3-fcc1-4a75-b353-3c23178fe25c
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: ba62517a-337e-4293-8b77-abfad06cefe4
+                Name: First Person Controller
+                Components:
+                    1940f0585e759f45c30d82c7abcde899: !TransformComponent
+                        Id: 2dca8b58-e03f-48f7-b584-27d49fe7fd8f
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            935fa460c9a9a552b0edd6c3ad1a8038: ref!! 747e3fc7-83e8-481d-9b2d-ebe85db927e7
+                    a503dfcaace145c5e386e68f194723b1: !CharacterComponent
+                        Id: a308049a-4127-461b-85a4-ab04eddd470e
+                        CollisionGroup: CharacterFilter
+                        CanSleep: false
+                        Restitution: 0.0
+                        Friction: 0.5
+                        RollingFriction: 0.0
+                        CcdMotionThreshold: 0.0
+                        CcdSweptSphereRadius: 0.0
+                        FallSpeed: 10.0
+                        MaxSlope: {Radians: 0.7853982}
+                        JumpSpeed: 5.0
+                        Gravity: {X: 0.0, Y: -10.0, Z: 0.0}
+                        ColliderShapes:
+                            7fb1ccc94c399842b397ffc870dccd18: !CapsuleColliderShapeDesc
+                                Length: 1.0
+                                Radius: 0.3
+                                LocalOffset: {X: 0.0, Y: 0.8, Z: 0.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                    d363bc4862233ce314d7a4eaaacc2a39: !Happenstance.SE.PlayerController.HSPlayerController,dysector
+                        Id: abc40fae-2bb4-4593-8e2a-3b6b9bdcdf8c
+                        Priority: -10
+                        StartDisabled: false
+                        CollisionDetection: false
+                    ca8b7484a20e0252c0a16569b33fb1c5: !Happenstance.SE.PlayerController.HSPlayerSettings,dysector
+                        Id: 407a8870-51af-404d-b357-8991f202346c
+                        StartDisabled: false
+                        CollisionDetection: false
+                        LookSensitivityX: 1.0
+                        LookSensitivityY: 1.0
+                        InvertYAxis: false
+                        UseRawInput: true
+                        LookSmoothing: 5.0
+                        WalkSpeed: 5.0
+                        SprintSpeed: 8.0
+                        JumpHeight: 3.0
+                        AirControl: 0.5
+                        AimDownSightsSensitivity: 0.7
+                        WeaponBobAmount: 0.05
+                        WeaponSwapSpeed: 0.3
+                        FieldOfView: 80.0
+                        AimingFieldOfView: 60.0
+                        HeadbobAmount: 0.05
+                    2b831334d0a2a204afb8de7e827df505: !.Player,dysector
+                        Id: 117816f5-554d-47c5-a039-7a6dab16bacc
+                        StartDisabled: false
+                        CollisionDetection: false
+                        MaxHealth: 100.0
+                        GodMode: false
+                        PickupEnabled: true
+                        PickupRange: 3.0
+                        ThrowForce: 5.0
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: f4cf9cd2-7ce8-457a-b596-6d55112bd41d
+                InstanceId: a3937d02-796a-4ecf-b24b-331b119746bc
+        -   Entity:
+                Id: ba72969f-55d4-4d6f-86bb-f785454a689e
+                Name: Hitmarker
+                Components:
+                    d8c185445b1b693059c2b99a57f7b6ab: !TransformComponent
+                        Id: 5817cb0b-fab0-4014-85c5-1007c3da49b5
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    27f22707b310e3ff2e97a5b798619490: !SpriteComponent
+                        Id: 3d030f46-1ee7-4870-94fe-d07cf110262e
+                        Enabled: false
+                        SpriteProvider: !SpriteFromTexture
+                            Texture: 676bf183-96ba-4b5c-b32e-ae78db9f8901:Happenstance/Player Controller/First Person Player/Textures/crosshair
+                            Center: {X: 0.0, Y: 0.0}
+                        Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+            Base:
+                BasePartAsset: 95d54c5f-df6a-4229-8204-c487bc3cd452:Prefabs/First Person Controller
+                BasePartId: 3a3e9fcb-6a9e-453e-a969-d65288b463a4
+                InstanceId: a3937d02-796a-4ecf-b24b-331b119746bc
+        -   Entity:
+                Id: bb8da3fd-ee2c-412f-b5ee-6d87676fe074
+                Name: Cube (4).015
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 9172c92d-3183-465f-b36a-ab913f418d06
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 6ad00e12-3637-4c89-84d1-c81e14d2b985
+                        Model: efa054a6-d3a7-4713-8c5f-3fbbd30f7ac6:Models/Levels/proto_data_recovery/Cube (4).015
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 55d38d7a-11bb-445d-bb96-9775733aa489
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: bd787548-bdfe-47c1-9daa-078664553ca9
+                Name: Cube (4).004
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 83757ab3-afd6-4b98-a3a7-6570227beea9
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 6da7d7fa-7737-46ed-908e-8e4ff9e39bae
+                        Model: 17632ebf-8181-45fc-a886-914d03597f92:Models/Levels/proto_data_recovery/Cube (4).004
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 966e556f-0df3-4fef-b914-db1e200cc31a
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: c06800b1-dec7-4f6d-9ed9-935932dbd1cd
+                Name: Dev Editor Manager
+                Components:
+                    3f6cd6de12404e31da98bbe8147beb75: !TransformComponent
+                        Id: 8220136e-358b-4aae-8b52-713fc1e52097
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            6d29cb3e7a1e685013c347bfe6423d05: ref!! fad6475b-833b-4fbc-8988-270c95bd5e84
+                            4527ef5e0f16af5d695865bf1df5e5f4: ref!! 401b9a28-9b1e-4b83-9eea-cdc39918fe3f
+                    3b198ccec7903e103979d60564112a88: !Happenstance.SE.DevEditor.Core.DevEditorManager
+                        Id: 56c3a718-4da6-44d1-86c9-00bdfe77f5f4
+                        Priority: -48
+                        StartDisabled: false
+                        CollisionDetection: false
+                        SelectedEntity: null
+                        CurrentEditMode: Position
+                        ActiveAxis: X
+            Base:
+                BasePartAsset: 57b4e765-d0a0-44b3-88b5-f47aa490e959:Prefabs/Dev Editor Manager
+                BasePartId: aae26c84-bfe7-4349-9a56-6954cdef2e91
+                InstanceId: 5d399334-ec0f-4fcd-9c7f-96340784dec3
+        -   Entity:
+                Id: c1d48e57-3082-4a07-b93e-e12dbaa0e0f3
+                Name: Cube (4).019
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 801994a1-fda7-4a62-b1e9-1328c1992f34
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 78710bd2-ee6b-45b0-b56f-79eb1807a10d
+                        Model: 123de471-6a2b-4a43-b6fc-dcdd1d5c066b:Models/Levels/proto_data_recovery/Cube (4).019
+                        Materials:
+                            76d1d786134adaf7101fb6db27d6ca7f*~0: a475a9dd-d164-411f-af53-a03af9fc13b7:DevTextures/Materials/Prefab_orange_Mat
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 3270cea0-415b-41b1-a87f-fc14417cb466
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: c43fd721-8528-4066-908e-f55970ad8e55
+                Name: Cube (4).047
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: a242cfde-75ef-403c-af51-c59e05721dbd
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 5a3af9e8-1711-48f6-987b-040af593e328
+                        Model: 75bdc5dc-1884-4c2c-af91-b1b76d069d4e:Models/Levels/proto_data_recovery/Cube (4).047
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 94083f2e-69d6-42af-835d-04a892e07bec
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: c581b80f-0871-4b6a-b0b6-e25a7afc720f
+                Name: Cube (4).014
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: c66e49e3-77b0-4576-aeea-c7652bb620c2
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 40c476d3-99e4-461f-9edc-03b8ca7eb411
+                        Model: 65747e5c-e6fa-4de8-b19e-c18680cfe527:Models/Levels/proto_data_recovery/Cube (4).014
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 80a98c79-36ec-47b9-a894-322cfd23e2a9
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Folder: Managers
+            Entity:
+                Id: c8a9f046-dd4f-4b42-8eb1-9c199260ead2
+                Name: HS Logger
+                Components:
+                    18759be72c5b132b153669e31b8ab493: !TransformComponent
+                        Id: 268f2377-0fca-465a-a3d6-afabe7be5079
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    2d3bc6ee55d74f693846d84a89bd58b6: !Happenstance.SE.Logger.Core.HSLogger,dysector
+                        Id: b9cec357-96cb-4ac8-a676-7c710dbc6439
+                        DebugMode: false
+        -   Entity:
+                Id: cbba63d1-adc7-49cf-bc63-ed7309038ce1
+                Name: Cube (4).003
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: cdbc7cc5-596d-40a3-bf2e-21fbffd1d670
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 4369024c-00f5-4f28-b22d-edc491d30faf
+                        Model: df146613-ce98-49fc-aae0-dde01351282d:Models/Levels/proto_data_recovery/Cube (4).003
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 78fd60c2-3c97-4d5b-af0e-d8ccaf088b76
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: d079ebc0-b798-4cd8-aac2-93c79589bb45
+                Name: Cube (4).020
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: d92335d2-924a-46eb-959d-2d11b9c43750
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: c7bbd978-0d61-4169-b5b1-9d5391a71f86
+                        Model: e4f3614b-704f-4148-bfa9-f984f16c2191:Models/Levels/proto_data_recovery/Cube (4).020
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: f7c27daa-c68a-429c-85f8-f8288db71dd9
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: d41c161f-7e05-4cc6-ba0e-4215f54e5a04
+                Name: Cube (4).054
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 587309d0-9b5b-406d-b28d-8ad2b03ff058
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: f4e1d92c-9dc8-4453-bbd6-3f77aa22ba58
+                        Model: 5b75436c-0574-42d6-9518-2367e95977e5:Models/Levels/proto_data_recovery/Cube (4).054
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: a1491971-ef40-481a-ac56-571e8e77376e
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: d4c89fd9-5417-4fa6-9edf-d992e3b2ef9b
+                Name: Cube (4).045
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 5abdfd0d-009e-4247-8e98-eb1c71d1f028
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: 661bfeb4-b207-47e7-ac88-f0120c7cc941
+                        Model: a8f6d5c8-0626-46f3-8224-42cd6ba9c6af:Models/Levels/proto_data_recovery/Cube (4).045
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 0eddb4f8-647f-4550-bef2-b0234505b1d3
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: d73cc563-3127-445c-9c5d-e67c3acae231
+                Name: proto_ransomware_overlord
+                Components:
+                    30f1d4b23e1bbd1750aeb23904a50a22: !TransformComponent
+                        Id: 5c87c36e-0661-471a-b2ae-e5c77a49dcd1
+                        Position: {X: -3.679401, Y: 0.0, Z: -124.23124}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    4e3b4c8c7408518fee1f51d1924e9461: !ModelComponent
+                        Id: d2f60d5e-87d1-4916-8ca0-9884c5525d3d
+                        Model: 150f2dc9-1645-4099-a046-6c2fdded02c8:Models/Prototype Enemies/proto_ransomware_overlord
+                        Materials:
+                            c93d291caeff2a0fb667cdf2deb24296~0: e4a8b81d-08ea-4561-92cc-ef5a7fef6a7d:Stride Samples/Materials/DullSilver
+        -   Folder: null
+            Entity:
+                Id: df2f94ca-eddd-4508-958f-af16d1601a7c
+                Name: SM_Buildings_Floor_2x2_01
+                Components:
+                    0a58b3376bcf59b57983079ba5a4586f: !TransformComponent
+                        Id: e2e379a4-e9d7-48a7-b6b5-82d300e4670b
+                        Position: {X: 2.0, Y: 0.0, Z: -1.9999999}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    6caf31521b73b8e37985833af642b447: !ModelComponent
+                        Id: 43fa1b52-bb94-4c2c-b744-4f213c1ab3fe
+                        Model: ddea9916-62b5-494c-94d2-f473786bf067:SyntyPrototype/Models/Buildings/SM_Buildings_Floor_2x2_01
+                        Materials: {}
+        -   Folder: null
+            Entity:
+                Id: e3d55196-303e-408c-be35-b4c1acc0b1e5
+                Name: SM_Buildings_Floor_2x2_01
+                Components:
+                    0a58b3376bcf59b57983079ba5a4586f: !TransformComponent
+                        Id: 534705ba-ffb7-47c6-998c-5446b191958a
+                        Position: {X: 2.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    6caf31521b73b8e37985833af642b447: !ModelComponent
+                        Id: ca5e8d7d-9609-4559-86ce-fcb5cee3901d
+                        Model: ddea9916-62b5-494c-94d2-f473786bf067:SyntyPrototype/Models/Buildings/SM_Buildings_Floor_2x2_01
+                        Materials: {}
+        -   Entity:
+                Id: ea0b6845-86ff-488f-877f-86020c0ad68d
+                Name: Cube (4).012
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 72215202-1270-4a91-b7be-9b06f18f9151
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: abec2fe7-57b5-431e-b22c-dd9465dbaccc
+                        Model: 6d26e529-e5c3-4345-a34c-2073714a0a07:Models/Levels/proto_data_recovery/Cube (4).012
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 01aab41d-b7d4-48ce-a3ca-588c1d02d48b
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: f066e8ae-f8b2-4d88-8154-c4f78d9f661a
+                Name: Cube (4).023
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 427e6a4a-477d-41b5-9798-8e6ba31e6b4d
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: e8fcfc30-df32-4422-a94a-ddb48c183c97
+                        Model: 1cef0cb2-51fd-4efa-809d-15af46d8d1b3:Models/Levels/proto_data_recovery/Cube (4).023
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: b5fc76f6-1396-49fa-9965-dfd58c29af2b
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
+        -   Entity:
+                Id: f8fe352c-9c39-426b-b672-2a3c5f58d411
+                Name: Cube (4).022
+                Components:
+                    e9f67a8a0ea22804b0285279fe8c2c41: !TransformComponent
+                        Id: 3106908b-6268-4447-b0a4-95628376acbc
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    9a5a0c793a9d36c3de89e0e51b089965: !ModelComponent
+                        Id: e486c49e-6b90-4e9a-8eb7-aac783670564
+                        Model: 26125b29-5902-4cca-b4bf-09df337295c4:Models/Levels/proto_data_recovery/Cube (4).022
+                        Materials: {}
+            Base:
+                BasePartAsset: 6f4d3fe8-f40a-4e22-b70b-1537273ba2ae:Models/Levels/proto_data_recovery/proto_data_recovery
+                BasePartId: 8e8dfddd-c354-4d2a-82da-db8131884b20
+                InstanceId: 6f19fdf3-64e1-49ed-b680-02449a6644b4
