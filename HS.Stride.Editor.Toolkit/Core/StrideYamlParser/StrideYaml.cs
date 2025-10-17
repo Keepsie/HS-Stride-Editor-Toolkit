@@ -27,7 +27,7 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
 
         /// <summary>
         /// Formats a value for YAML output based on its type.
-        /// Handles floats, doubles, bools, nulls, and strings.
+        /// Handles integers, floats, doubles, bools, nulls, and strings.
         /// </summary>
         protected static string FormatValue(object? value)
         {
@@ -35,6 +35,10 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
 
             return value switch
             {
+                int i => i.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                long l => l.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                short s => s.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                byte b => b.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 bool b => b ? "true" : "false",
                 float f => FormatFloat(f),
                 double d => FormatFloat(d),
