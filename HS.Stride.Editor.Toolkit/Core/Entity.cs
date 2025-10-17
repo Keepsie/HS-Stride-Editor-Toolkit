@@ -45,6 +45,12 @@ namespace HS.Stride.Editor.Toolkit.Core
         /// </summary>
         public StrideProject? ParentProject { get; set; }
 
+        /// <summary>
+        /// Tracks if this entity was modified (components accessed/added/removed).
+        /// Used for surgical YAML editing - only modified entities are regenerated.
+        /// </summary>
+        internal bool IsModified { get; set; } = false;
+
 
 
         /// <summary>
@@ -77,6 +83,10 @@ namespace HS.Stride.Editor.Toolkit.Core
                     // Cache it for next time
                     var componentKey = component.Key;
                     Components[componentKey] = component;
+
+                    // Mark entity as modified since we accessed a component
+                    IsModified = true;
+
                     return component;
                 }
             }
@@ -114,9 +124,10 @@ namespace HS.Stride.Editor.Toolkit.Core
                     component = ScriptToComponent.Create(scriptInfo);
                     component.ParentEntity = this;  // Set for strict mode validation
                     Components[component.Key] = component;
+                    IsModified = true;
                     return component;
                 }
-                
+
                 // If we have a ParentProject but couldn't find the script
                 // Check if this looks like a custom script name
                 if (!IsBuiltInStrideComponent(componentType))
@@ -139,6 +150,7 @@ namespace HS.Stride.Editor.Toolkit.Core
             };
 
             Components[componentKey] = component;
+            IsModified = true;
             return component;
         }
 
@@ -181,7 +193,10 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             var key = Components.FirstOrDefault(kvp => kvp.Value.Type.Contains(componentType)).Key;
             if (key != null)
+            {
                 Components.Remove(key);
+                IsModified = true;
+            }
         }
 
         /// <summary>

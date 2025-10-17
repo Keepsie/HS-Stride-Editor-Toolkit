@@ -53,15 +53,18 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
             if (componentsIndex == -1)
                 return null;
 
-            // Find where components section ends (next "Base:" or "Entity:" or "Parts:")
+            // Find where components section ends (next "Base:", "Entity:", "Folder:", or "Parts:")
             var nextSectionIndex = rawContent.Length;
             var baseIndex = rawContent.IndexOf("\n            Base:", componentsIndex);
             var entityIndex = rawContent.IndexOf("\n        -   Entity:", componentsIndex);
-            
+            var folderIndex = rawContent.IndexOf("\n        -   Folder:", componentsIndex);
+
             if (baseIndex != -1 && baseIndex < nextSectionIndex)
                 nextSectionIndex = baseIndex;
             if (entityIndex != -1 && entityIndex < nextSectionIndex)
                 nextSectionIndex = entityIndex;
+            if (folderIndex != -1 && folderIndex < nextSectionIndex)
+                nextSectionIndex = folderIndex;
 
             var componentsSection = rawContent.Substring(componentsIndex + componentsMarker.Length, 
                 nextSectionIndex - (componentsIndex + componentsMarker.Length));

@@ -18,9 +18,28 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
         #region YAML Writing
 
         /// <summary>
-        /// Generates complete scene YAML from SceneContent.
+        /// Generates scene YAML using surgical editing - only regenerates modified entities.
+        /// Unmodified entities are left byte-for-byte identical from raw content.
         /// </summary>
         public static string GenerateSceneYaml(SceneContent sceneContent)
+        {
+            // Check if we have raw content and any entities are modified
+            var modifiedEntities = sceneContent.Entities.Where(e => e.IsModified).ToList();
+
+            if (string.IsNullOrEmpty(sceneContent.RawContent) || modifiedEntities.Count == 0)
+            {
+                // No raw content or no modifications - full regeneration
+                return GenerateCompleteSceneYaml(sceneContent);
+            }
+
+            // Surgical editing: replace only modified entities in raw content
+            return GenerateSurgicalSceneYaml(sceneContent, modifiedEntities);
+        }
+
+        /// <summary>
+        /// Generates complete scene YAML from scratch (used when no raw content available).
+        /// </summary>
+        private static string GenerateCompleteSceneYaml(SceneContent sceneContent)
         {
             var sb = new StringBuilder();
 
@@ -29,6 +48,111 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
 
             // Write hierarchy (RootParts and Parts)
             WriteHierarchy(sb, sceneContent);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Performs surgical YAML editing - replaces only modified entities in raw content.
+        /// </summary>
+        private static string GenerateSurgicalSceneYaml(SceneContent sceneContent, List<Entity> modifiedEntities)
+        {
+            var rawContent = sceneContent.RawContent;
+
+            foreach (var entity in modifiedEntities)
+            {
+                // Find the entity's YAML block in raw content
+                var entityStartMarker = $"Id: {entity.Id}";
+                var entityIdIndex = rawContent.IndexOf(entityStartMarker);
+
+                if (entityIdIndex == -1)
+                {
+                    // Entity not found in raw content (newly created) - skip for now
+                    // This would require more complex logic to insert new entities
+                    continue;
+                }
+
+                // Find the start of the entity block (look backward for "-   Entity:")
+                int entityBlockStart = entityIdIndex;
+                while (entityBlockStart > 0)
+                {
+                    var lineStart = rawContent.LastIndexOf('\n', entityBlockStart - 1) + 1;
+                    var lineContent = rawContent.Substring(lineStart, entityIdIndex - lineStart + entityStartMarker.Length);
+
+                    if (lineContent.Contains("-   Entity:") || lineContent.Contains("-   Folder:"))
+                    {
+                        entityBlockStart = lineStart;
+                        break;
+                    }
+
+                    entityBlockStart = lineStart - 1;
+                    if (entityBlockStart <= 0)
+                    {
+                        entityBlockStart = 0;
+                        break;
+                    }
+                }
+
+                // Find the end of the entity block (next entity or end of Parts section)
+                int entityBlockEnd = FindEntityBlockEnd(rawContent, entityIdIndex);
+
+                // Generate new YAML for this entity
+                var newEntityYaml = GenerateEntityBlock(entity);
+
+                // Replace the old entity block with the new one
+                rawContent = rawContent.Substring(0, entityBlockStart) + newEntityYaml + rawContent.Substring(entityBlockEnd);
+            }
+
+            return rawContent;
+        }
+
+        /// <summary>
+        /// Finds the end of an entity block in raw YAML content.
+        /// </summary>
+        private static int FindEntityBlockEnd(string rawContent, int entityIdIndex)
+        {
+            // Find the next entity marker or end of file
+            var nextEntityIndex = rawContent.IndexOf("\n        -   Entity:", entityIdIndex);
+            var nextFolderIndex = rawContent.IndexOf("\n        -   Folder:", entityIdIndex);
+
+            int blockEnd = rawContent.Length;
+
+            if (nextEntityIndex != -1 && nextEntityIndex < blockEnd)
+                blockEnd = nextEntityIndex + 1; // Include the newline
+
+            if (nextFolderIndex != -1 && nextFolderIndex < blockEnd)
+                blockEnd = nextFolderIndex + 1;
+
+            return blockEnd;
+        }
+
+        /// <summary>
+        /// Generates YAML for a single entity block (including Folder marker if present).
+        /// </summary>
+        private static string GenerateEntityBlock(Entity entity)
+        {
+            var sb = new StringBuilder();
+
+            // Write Folder marker if present
+            if (!string.IsNullOrEmpty(entity.Folder))
+            {
+                sb.AppendLine($"        -   Folder: {entity.Folder}");
+                sb.AppendLine("            Entity:");
+            }
+            else
+            {
+                sb.AppendLine("        -   Entity:");
+            }
+
+            // Delegate entity content generation to StrideYamlEntity
+            string entityYaml = StrideYamlEntity.GenerateEntityYaml(entity, 4);
+            sb.Append(entityYaml);
+
+            // Write Base section if entity is a prefab instance
+            if (entity.ParentPrefab != null)
+            {
+                WriteBasePrefabInfo(sb, entity);
+            }
 
             return sb.ToString();
         }
