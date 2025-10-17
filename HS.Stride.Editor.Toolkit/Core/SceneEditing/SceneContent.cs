@@ -13,5 +13,11 @@ namespace HS.Stride.Editor.Toolkit.Core.SceneEditing
         public List<string> RootEntityIds { get; set; } = new();
         public List<Entity> Entities { get; set; } = new();
         public StrideProject? ParentProject { get; set; }
+
+        /// <summary>
+        /// Tracks entity IDs that were removed (for surgical YAML editing).
+        /// These entities need to be deleted from the raw YAML on save.
+        /// </summary>
+        internal List<string> RemovedEntityIds { get; set; } = new();
     }
 }

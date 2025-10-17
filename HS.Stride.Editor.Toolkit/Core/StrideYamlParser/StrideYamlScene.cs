@@ -20,20 +20,29 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
         /// <summary>
         /// Generates scene YAML using surgical editing - only regenerates modified entities.
         /// Unmodified entities are left byte-for-byte identical from raw content.
+        /// New entities are inserted at appropriate locations.
         /// </summary>
         public static string GenerateSceneYaml(SceneContent sceneContent)
         {
-            // Check if we have raw content and any entities are modified
-            var modifiedEntities = sceneContent.Entities.Where(e => e.IsModified).ToList();
-
-            if (string.IsNullOrEmpty(sceneContent.RawContent) || modifiedEntities.Count == 0)
+            // Check if we have raw content
+            if (string.IsNullOrEmpty(sceneContent.RawContent))
             {
-                // No raw content or no modifications - full regeneration
+                // No raw content - full regeneration
                 return GenerateCompleteSceneYaml(sceneContent);
             }
 
-            // Surgical editing: replace only modified entities in raw content
-            return GenerateSurgicalSceneYaml(sceneContent, modifiedEntities);
+            var modifiedEntities = sceneContent.Entities.Where(e => e.IsModified).ToList();
+            var newEntities = sceneContent.Entities.Where(e =>
+                !sceneContent.RawContent.Contains($"Id: {e.Id}")).ToList();
+
+            if (modifiedEntities.Count == 0 && newEntities.Count == 0 && sceneContent.RemovedEntityIds.Count == 0)
+            {
+                // No changes at all - return raw content as-is
+                return sceneContent.RawContent;
+            }
+
+            // Surgical editing: replace modified, remove deleted, insert new
+            return GenerateSurgicalSceneYaml(sceneContent, modifiedEntities, newEntities);
         }
 
         /// <summary>
@@ -53,12 +62,19 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
         }
 
         /// <summary>
-        /// Performs surgical YAML editing - replaces only modified entities in raw content.
+        /// Performs surgical YAML editing - replaces modified, removes deleted, inserts new entities in raw content.
         /// </summary>
-        private static string GenerateSurgicalSceneYaml(SceneContent sceneContent, List<Entity> modifiedEntities)
+        private static string GenerateSurgicalSceneYaml(SceneContent sceneContent, List<Entity> modifiedEntities, List<Entity> newEntities)
         {
             var rawContent = sceneContent.RawContent;
 
+            // First, remove deleted entities
+            foreach (var removedEntityId in sceneContent.RemovedEntityIds)
+            {
+                rawContent = RemoveEntityBlock(rawContent, removedEntityId);
+            }
+
+            // Then, replace modified entities
             foreach (var entity in modifiedEntities)
             {
                 // Find the entity's YAML block in raw content
@@ -67,8 +83,7 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
 
                 if (entityIdIndex == -1)
                 {
-                    // Entity not found in raw content (newly created) - skip for now
-                    // This would require more complex logic to insert new entities
+                    // Entity not found in raw content - shouldn't happen for modified entities
                     continue;
                 }
 
@@ -103,7 +118,130 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
                 rawContent = rawContent.Substring(0, entityBlockStart) + newEntityYaml + rawContent.Substring(entityBlockEnd);
             }
 
+            // Finally, insert new entities
+            if (newEntities.Count > 0)
+            {
+                rawContent = InsertNewEntities(rawContent, newEntities);
+
+                // Update RootParts section to include new root entities
+                rawContent = UpdateRootParts(rawContent, sceneContent.RootEntityIds);
+            }
+
             return rawContent;
+        }
+
+        /// <summary>
+        /// Inserts new entities at the end of the Parts section.
+        /// </summary>
+        private static string InsertNewEntities(string rawContent, List<Entity> newEntities)
+        {
+            // Find the last entity in the Parts section
+            // We'll insert new entities right after the last entity
+            var lines = rawContent.Split('\n');
+            int lastEntityEndLine = -1;
+
+            // Find the last line that belongs to an entity
+            for (int i = lines.Length - 1; i >= 0; i--)
+            {
+                var line = lines[i];
+                // Look for entity content (indented more than "Parts:")
+                if (line.StartsWith("                ") || // 16 spaces - entity content
+                    line.StartsWith("            ") ||      // 12 spaces - entity properties
+                    line.Contains("-   Entity:") ||
+                    line.Contains("-   Folder:"))
+                {
+                    lastEntityEndLine = i;
+                    break;
+                }
+            }
+
+            if (lastEntityEndLine == -1)
+            {
+                // Couldn't find entities, append at the end
+                lastEntityEndLine = lines.Length - 1;
+            }
+
+            // Generate YAML for new entities
+            var sb = new StringBuilder();
+            foreach (var entity in newEntities)
+            {
+                sb.Append(GenerateEntityBlock(entity));
+            }
+
+            // Insert the new entities after the last entity
+            var beforeInsert = string.Join("\n", lines.Take(lastEntityEndLine + 1));
+            var afterInsert = string.Join("\n", lines.Skip(lastEntityEndLine + 1));
+
+            return beforeInsert + "\n" + sb.ToString() + afterInsert;
+        }
+
+        /// <summary>
+        /// Updates the RootParts section with the current list of root entity IDs.
+        /// </summary>
+        private static string UpdateRootParts(string rawContent, List<string> rootEntityIds)
+        {
+            // Find RootParts section
+            var rootPartsStart = rawContent.IndexOf("    RootParts:");
+            if (rootPartsStart == -1)
+                return rawContent; // No RootParts section found
+
+            // Find the end of RootParts (where "Parts:" starts)
+            var partsStart = rawContent.IndexOf("    Parts:", rootPartsStart);
+            if (partsStart == -1)
+                return rawContent; // No Parts section found
+
+            // Generate new RootParts section
+            var sb = new StringBuilder();
+            sb.AppendLine("    RootParts:");
+            foreach (var rootId in rootEntityIds)
+            {
+                sb.AppendLine($"        - ref!! {rootId}");
+            }
+
+            // Replace old RootParts with new
+            return rawContent.Substring(0, rootPartsStart) + sb.ToString() + rawContent.Substring(partsStart);
+        }
+
+        /// <summary>
+        /// Removes an entity block from raw YAML content.
+        /// </summary>
+        private static string RemoveEntityBlock(string rawContent, string entityId)
+        {
+            var entityStartMarker = $"Id: {entityId}";
+            var entityIdIndex = rawContent.IndexOf(entityStartMarker);
+
+            if (entityIdIndex == -1)
+            {
+                // Entity not found in raw content, nothing to remove
+                return rawContent;
+            }
+
+            // Find the start of the entity block (look backward for "-   Entity:" or "-   Folder:")
+            int entityBlockStart = entityIdIndex;
+            while (entityBlockStart > 0)
+            {
+                var lineStart = rawContent.LastIndexOf('\n', entityBlockStart - 1) + 1;
+                var lineContent = rawContent.Substring(lineStart, entityIdIndex - lineStart + entityStartMarker.Length);
+
+                if (lineContent.Contains("-   Entity:") || lineContent.Contains("-   Folder:"))
+                {
+                    entityBlockStart = lineStart;
+                    break;
+                }
+
+                entityBlockStart = lineStart - 1;
+                if (entityBlockStart <= 0)
+                {
+                    entityBlockStart = 0;
+                    break;
+                }
+            }
+
+            // Find the end of the entity block
+            int entityBlockEnd = FindEntityBlockEnd(rawContent, entityIdIndex);
+
+            // Remove the entity block
+            return rawContent.Substring(0, entityBlockStart) + rawContent.Substring(entityBlockEnd);
         }
 
         /// <summary>

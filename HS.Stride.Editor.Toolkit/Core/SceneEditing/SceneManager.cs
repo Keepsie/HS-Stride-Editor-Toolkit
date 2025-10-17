@@ -526,6 +526,12 @@ namespace HS.Stride.Editor.Toolkit.Core.SceneEditing
             _content.Entities.Remove(entity);
             _content.RootEntityIds.Remove(entity.Id);
             RemoveEntityFromParentChildren(entity.Id);
+
+            // Track removed entity for surgical YAML editing
+            if (!string.IsNullOrEmpty(_content.RawContent))
+            {
+                _content.RemovedEntityIds.Add(entity.Id);
+            }
         }
 
         public void RemoveEntity(string entityId)
