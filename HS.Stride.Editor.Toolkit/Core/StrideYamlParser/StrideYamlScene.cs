@@ -679,15 +679,14 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
                         var key = part.Substring(0, colonIndex).Trim();
                         var val = part.Substring(colonIndex + 1).Trim();
 
-                        // Try parse as number
-                        if (float.TryParse(val, System.Globalization.NumberStyles.Float,
+                        if (int.TryParse(val, out int intVal))
+                        {
+                            props[key] = intVal;
+                        }
+                        else if (float.TryParse(val, System.Globalization.NumberStyles.Float,
                             System.Globalization.CultureInfo.InvariantCulture, out float floatVal))
                         {
                             props[key] = floatVal;
-                        }
-                        else if (int.TryParse(val, out int intVal))
-                        {
-                            props[key] = intVal;
                         }
                         else if (bool.TryParse(val, out bool boolVal))
                         {
@@ -723,14 +722,12 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
             if (bool.TryParse(value, out bool bVal))
                 return bVal;
 
-            // Float/Double (including scientific notation like -4.371139E-08)
+            if (int.TryParse(value, out int iVal))
+                return iVal;
+
             if (float.TryParse(value, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out float fVal))
                 return fVal;
-
-            // Int
-            if (int.TryParse(value, out int iVal))
-                return iVal;
 
             // String/default
             return value;
