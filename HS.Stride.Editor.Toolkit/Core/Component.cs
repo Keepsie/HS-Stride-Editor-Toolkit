@@ -186,6 +186,10 @@ namespace HS.Stride.Editor.Toolkit.Core
         {
             return value switch
             {
+                int i => i.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                long l => l.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                short s => s.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                byte b => b.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 float f => f.ToString("0.0#######", System.Globalization.CultureInfo.InvariantCulture),
                 double d => d.ToString("0.0#######", System.Globalization.CultureInfo.InvariantCulture),
                 bool b => b.ToString().ToLower(),

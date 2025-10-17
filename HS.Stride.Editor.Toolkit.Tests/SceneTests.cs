@@ -217,5 +217,48 @@ namespace HS.Stride.Editor.Toolkit.Tests
                     File.Delete(tempPath);
             }
         }
+
+        [Test]
+        public void SaveAndReload_IntegerProperties_ShouldPreserveIntegerType()
+        {
+            // Arrange
+            var tempPath = Path.Combine(Path.GetTempPath(), $"test_scene_{Guid.NewGuid()}.sdscene");
+
+            try
+            {
+                File.Copy(_testScenePath, tempPath);
+                var scene = Scene.Load(tempPath);
+                var entity = scene.CreateEntity("TestEntity");
+                var component = entity.AddComponent("TestComponent");
+
+                // Set an integer property
+                component.Set("intProperty", 3);
+                component.Set("floatProperty", 3.5f);
+
+                // Act - Save and reload
+                scene.Save();
+                var reloadedScene = Scene.Load(tempPath);
+                var reloadedEntity = reloadedScene.FindEntityByName("TestEntity");
+                var reloadedComponent = reloadedEntity!.GetComponent("TestComponent");
+
+                // Assert - Integer should stay as int, not become float
+                var intValue = reloadedComponent!.Get<int>("intProperty");
+                var floatValue = reloadedComponent.Get<float>("floatProperty");
+
+                intValue.Should().Be(3);
+                floatValue.Should().Be(3.5f);
+
+                // Verify in raw YAML that integer doesn't have decimal point
+                var yamlContent = File.ReadAllText(tempPath);
+                yamlContent.Should().Contain("intProperty: 3");
+                yamlContent.Should().NotContain("intProperty: 3.0");
+                yamlContent.Should().Contain("floatProperty: 3.5");
+            }
+            finally
+            {
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+            }
+        }
     }
 }
