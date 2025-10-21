@@ -17,7 +17,10 @@ namespace HS.Stride.Editor.Toolkit.Tests
         [SetUp]
         public void Setup()
         {
-            _project = new StrideProject(@"C:\Users\Dave\Documents\Stride Projects\TopDownRPG");
+            // Go up from bin/Release/net8.0 to project root
+            var projectRoot = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", ".."));
+            var testProjectPath = Path.Combine(projectRoot, "Example Scenes", "TestProject");
+            _project = new StrideProject(testProjectPath);
         }
 
         [Test]

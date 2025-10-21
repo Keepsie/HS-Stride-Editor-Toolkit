@@ -418,6 +418,16 @@ namespace HS.Stride.Editor.Toolkit.Core
         }
 
         /// <summary>
+        /// Gets the ParticleSystemComponent as a wrapper. Returns null if not found.
+        /// </summary>
+        /// <returns>ParticleSystemWrapper or null</returns>
+        public ParticleSystemWrapper? GetParticleSystem()
+        {
+            var component = GetComponent("ParticleSystemComponent");
+            return component != null ? new ParticleSystemWrapper(component) : null;
+        }
+
+        /// <summary>
         /// Adds a StaticColliderComponent to this entity. Returns existing if already present.
         /// </summary>
         /// <returns>StaticColliderWrapper for the component</returns>
@@ -477,6 +487,29 @@ namespace HS.Stride.Editor.Toolkit.Core
             var component = LightWrapper.CreateComponent();
             Components[componentKey] = component;
             return new LightWrapper(component);
+        }
+
+        /// <summary>
+        /// Adds a ParticleSystemComponent to this entity. Returns existing if already present.
+        /// </summary>
+        /// <returns>ParticleSystemWrapper for the component</returns>
+        public ParticleSystemWrapper AddParticleSystem()
+        {
+            var existing = GetParticleSystem();
+            if (existing != null) return existing;
+
+            var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
+            var component = ParticleSystemWrapper.CreateComponent();
+            Components[componentKey] = component;
+            return new ParticleSystemWrapper(component);
+        }
+
+        /// <summary>
+        /// Removes the ParticleSystemComponent from this entity if present.
+        /// </summary>
+        public void RemoveParticleSystem()
+        {
+            RemoveComponent("ParticleSystemComponent");
         }
     }
 }
