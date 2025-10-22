@@ -162,6 +162,48 @@ page.Save();
 project.Rescan();
 ```
 
+### 5. Create Particle Effects with Code
+
+Generate smoke, fire, explosions, and other VFX programmatically:
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+
+// Create a smoke effect entity
+var smokeEntity = scene.CreateEntity("Smoke");
+var vfx = smokeEntity.AddParticleSystem();
+
+vfx.Control = "Play";
+vfx.Speed = 1.0f;
+
+// Create smoke emitter
+var smoke = vfx.CreateBillboardEmitter("SmokeEmitter", (5.0f, 7.0f));
+
+// Configure appearance (use any smoke texture in your project)
+var smokeTexture = project.FindAsset("SMO001", AssetType.Texture);
+smoke.SetTextureMaterial(smokeTexture, hdrMultiplier: 1.0f, alphaAdditive: 0.5f);
+smoke.SetFlipbookAnimation(8, 8, 0, 64);
+
+// Configure spawning
+smoke.SetPerSecondSpawner(10.0f, looping: true);
+
+// Set particle behavior
+smoke.AddInitialSize((0.7f, 1.5f));
+smoke.AddInitialPosition((-0.1f, 0.0f, -0.1f), (0.1f, 0.2f, 0.1f));
+smoke.AddInitialVelocity((-0.1f, 0.5f, -0.1f), (0.1f, 0.7f, 0.1f));
+smoke.AddInitialRotation((-360.0f, 360.0f));
+
+// Add fade in/out
+smoke.AddColorFade(
+    (0.0f, 1.0f, 1.0f, 1.0f, 0.0f),   // Start: transparent
+    (0.5f, 1.0f, 1.0f, 1.0f, 0.5f),   // Middle: semi-visible
+    (1.0f, 1.0f, 1.0f, 1.0f, 0.0f));  // End: transparent
+
+vfx.AddEmitter(smoke);
+scene.Save();
+```
+
 ## ⚠️ IMPORTANT: Backup & Disclaimers
 
 ### 🚨 ALWAYS BACKUP YOUR SCENES AND PROJECT BEFORE USE
