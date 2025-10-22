@@ -1,8 +1,9 @@
 HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
 
-**Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, and assets.
-**Version:** 1.1.0
+**Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
+**Version:** 1.2.0
+**API Version:** 1.2.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 **Package:** HS.Stride.Editor.Toolkit
@@ -495,6 +496,134 @@ foreach (var (name, text, yPos) in buttons)
 
 page.Save();
 project.Rescan();
+```
+
+---
+
+#### Particle System Creation (Namespace: `HS.Stride.Editor.Toolkit.Core.Wrappers`)
+
+**Purpose:** Programmatically create and configure particle effects (smoke, fire, explosions, sparks, trails, etc.) without using Game Studio.
+
+##### Adding Particle System to Entity
+
+*   `entity.AddParticleSystem()`: Returns `ParticleSystemWrapper`
+
+##### `ParticleSystemWrapper` Class
+
+**Properties:**
+
+*   `string Control`: Playback control - `"Play"`, `"Pause"`, or `"Stop"`
+*   `float ResetSeconds`: Loop time in seconds
+*   `float Speed`: Time scale multiplier (1.0 = normal speed)
+*   `Dictionary<string, object> Color`: Overall tint color
+
+**Methods:**
+
+*   `void SetColor(float r, float g, float b, float a = 1.0f)`: Sets overall tint
+*   `void AddEmitter(VFXEmitter emitter)`: Adds an emitter
+*   `List<VFXEmitter> GetEmitters()`: Gets all emitters
+*   `bool RemoveEmitter(string emitterKey)`: Removes emitter by key
+
+**Creating Emitters (extension methods on ParticleSystemWrapper):**
+
+*   `CreateBillboardEmitter(string? name = null, (float min, float max)? lifetime = null)`: Particles face camera. Default lifetime: (1.0, 1.0)
+*   `CreateOrientedQuadEmitter(string? name = null, (float min, float max)? lifetime = null, bool scaleLength = true, float lengthFactor = 1.0f)`: Particles oriented by velocity. Default lifetime: (0.5, 1.5)
+*   `CreateRibbonEmitter(string? name = null, (float min, float max)? lifetime = null, int segments = 15, VFXSmoothingPolicy smoothingPolicy = VFXSmoothingPolicy.Best, int maxParticles = 50)`: Trail/ribbon particles
+
+##### `VFXEmitter` Class
+
+**Properties:**
+
+*   `string? EmitterName`: Emitter name
+*   `(float min, float max) ParticleLifetime`: Particle lifetime range in seconds
+*   `int? MaxParticlesOverride`: Max particles alive at once
+*   `int? DrawPriority`: Draw order (higher = on top)
+*   `string? SimulationSpace`: `"World"` or `"Local"`
+*   `string? SortingPolicy`: `"ByOrder"`, `"ByDepth"`, etc.
+
+**Material Methods (extension methods):**
+
+*   `SetTextureMaterial(AssetReference texture, float hdrMultiplier = 1.0f, float alphaAdditive = 0.0f)`: Set particle texture with HDR and additive blend
+*   `SetTextureMaterial(AssetReference texture, float hdrR, float hdrG, float hdrB, float alphaAdditive = 0.0f)`: Separate RGB HDR multipliers
+*   `SetFlipbookAnimation(int xDivisions, int yDivisions, int startFrame, int animationSpeed)`: Enable spritesheet animation
+
+**Spawner Methods (extension methods):**
+
+*   `SetBurstSpawner(int particleCount, bool oneShot = true, (float min, float max)? delay = null)`: Spawn burst of particles
+*   `SetPerSecondSpawner(float particlesPerSecond, bool looping = true, (float min, float max)? delay = null, (float min, float max)? duration = null)`: Continuous spawning
+*   `SetPerFrameSpawner(float particlesPerFrame, float framerate = 60.0f, bool looping = true)`: Per-frame spawning (for trails)
+
+**Initializer Methods (extension methods):**
+
+*   `AddInitialSize((float min, float max) sizeRange, float? scaleUniform = null)`: Initial particle size
+*   `AddInitialPosition((float x, float y, float z) min, (float x, float y, float z) max)`: Initial position offset
+*   `AddInitialVelocity((float x, float y, float z) min, (float x, float y, float z) max)`: Initial velocity
+*   `AddInitialRotation((float min, float max) angleRange)`: Initial rotation in degrees
+*   `AddInitialColor((float r, float g, float b, float a) colorMin, (float r, float g, float b, float a) colorMax)`: Initial color range
+*   `AddSpawnOrder()`: Add spawn order (required for ribbons)
+
+**Updater Methods (extension methods):**
+
+*   `AddColorFade(params (float time, float r, float g, float b, float a)[] keyframes)`: Animate color over lifetime (time: 0.0-1.0)
+*   `AddSizeOverTime(params (float time, float size)[] keyframes)`: Animate size over lifetime
+*   `AddForceField(VFXFieldShape fieldShape = VFXFieldShape.Sphere, (float x, float y, float z)? scale = null, float forceDirected = 0.0f, float forceVortex = 0.0f, float forceRepulsive = 0.0f, float energyConservation = 0.2f)`: Apply physics forces
+
+**Enums:**
+
+*   `VFXFieldShape`: `Sphere`, `Cylinder`, `Cube`, `Torus`, `Box`, `HollowSphere`
+*   `VFXSmoothingPolicy`: `None`, `Fast`, `Best`
+
+**Example - Smoke Effect:**
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+
+var smokeEntity = scene.CreateEntity("Smoke");
+var vfx = smokeEntity.AddParticleSystem();
+vfx.Control = "Play";
+
+var smoke = vfx.CreateBillboardEmitter("smoke", (5.0f, 7.0f));
+var texture = project.FindAsset("SMO001", AssetType.Texture);
+smoke.SetTextureMaterial(texture, hdrMultiplier: 1.0f, alphaAdditive: 0.5f);
+smoke.SetFlipbookAnimation(8, 8, 0, 64);
+smoke.SetPerSecondSpawner(10.0f, looping: true);
+smoke.AddInitialSize((0.7f, 1.5f));
+smoke.AddInitialPosition((-0.1f, 0.0f, -0.1f), (0.1f, 0.2f, 0.1f));
+smoke.AddInitialVelocity((-0.1f, 0.5f, -0.1f), (0.1f, 0.7f, 0.1f));
+smoke.AddInitialRotation((-360.0f, 360.0f));
+smoke.AddColorFade(
+    (0.0f, 1.0f, 1.0f, 1.0f, 0.0f),
+    (0.5f, 1.0f, 1.0f, 1.0f, 0.5f),
+    (1.0f, 1.0f, 1.0f, 1.0f, 0.0f));
+vfx.AddEmitter(smoke);
+scene.Save();
+```
+
+**Example - Explosion with Multiple Emitters:**
+
+```csharp
+var vfx = scene.CreateEntity("Explosion").AddParticleSystem();
+vfx.ResetSeconds = 3.0f;
+vfx.Control = "Play";
+
+// Fire flash
+var fire = vfx.CreateBillboardEmitter("fire", (1.0f, 1.3f));
+fire.SetTextureMaterial(project.FindAsset("EXP001", AssetType.Texture), 50.0f);
+fire.SetBurstSpawner(10, oneShot: true);
+fire.AddInitialSize((1.0f, 2.0f));
+fire.AddInitialVelocity((-0.5f, -0.2f, -0.5f), (0.5f, 0.5f, 0.5f));
+fire.AddColorFade((0.0f, 1.0f, 1.0f, 1.0f, 1.0f), (1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+vfx.AddEmitter(fire);
+
+// Sparks
+var sparks = vfx.CreateBillboardEmitter("sparks", (0.7f, 1.4f));
+sparks.SetTextureMaterial(project.FindAsset("dota", AssetType.Texture), hdrR: 50.0f, hdrG: 20.0f, hdrB: 20.0f);
+sparks.SetBurstSpawner(50, oneShot: true, delay: (0.5f, 0.5f));
+sparks.AddForceField(VFXFieldShape.Sphere, (2.0f, 2.0f, 2.0f), forceRepulsive: -0.3f);
+vfx.AddEmitter(sparks);
+
+scene.Save();
 ```
 
 ---

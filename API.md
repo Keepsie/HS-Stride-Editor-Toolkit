@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -84,14 +84,15 @@ Internal script variables that aren't serialized by Stride won't be available. I
 4. [Scene Manipulation API](#scene-manipulation-api)
 5. [Prefab Creation](#prefab-creation-programmatically)
 6. [UI Page Creation](#ui-page-creation-programmatically)
-7. [Entity & Component System](#entity--component-system)
-8. [Working with Custom Components](#working-with-custom-components-critical)
-9. [Typed Component Wrappers](#typed-component-wrappers)
-10. [Asset Scanning & References](#asset-scanning--references)
-11. [Direct Asset Editing](#direct-asset-editing)
-12. [Data Types](#data-types)
-13. [Error Handling](#error-handling)
-14. [Advanced Workflows & Best Practices](#advanced-workflows--best-practices)
+7. [Particle System Creation (Programmatically)](#particle-system-creation-programmatically)
+8. [Entity & Component System](#entity--component-system)
+9. [Working with Custom Components](#working-with-custom-components-critical)
+10. [Typed Component Wrappers](#typed-component-wrappers)
+11. [Asset Scanning & References](#asset-scanning--references)
+12. [Direct Asset Editing](#direct-asset-editing)
+13. [Data Types](#data-types)
+14. [Error Handling](#error-handling)
+15. [Advanced Workflows & Best Practices](#advanced-workflows--best-practices)
 
 ---
 
@@ -1488,6 +1489,584 @@ The `CreateElement` method supports the following common UI types (case-insensit
 - **StackPanel**: A container that stacks child elements horizontally or vertically.
 - **ScrollViewer**: A container that provides scrolling for its content.
 - **EditText**: An input field for text.
+
+---
+
+## Particle System Creation (Programmatically)
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.Wrappers`
+
+The toolkit provides a powerful API for programmatically creating and configuring particle effects (VFX) without needing the Game Studio editor. Create smoke, fire, explosions, sparks, magic effects, and any other particle-based visual effects entirely through code.
+
+### Quick Start Example
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("GameScene");
+
+// Create entity with particle system
+var smokeEntity = scene.CreateEntity("Smoke");
+var vfx = smokeEntity.AddParticleSystem();
+
+// Configure particle system
+vfx.Control = "Play";
+vfx.Speed = 1.0f;
+
+// Create a billboard emitter
+var smoke = vfx.CreateBillboardEmitter("SmokeEmitter", (5.0f, 7.0f));
+
+// Set material and texture
+var smokeTexture = project.FindAsset("SMO001", AssetType.Texture);
+smoke.SetTextureMaterial(smokeTexture, hdrMultiplier: 1.0f, alphaAdditive: 0.5f);
+
+// Add flipbook animation
+smoke.SetFlipbookAnimation(8, 8, 0, 64);
+
+// Configure spawning
+smoke.SetPerSecondSpawner(10.0f, looping: true);
+
+// Add initializers
+smoke.AddInitialSize((0.7f, 1.5f));
+smoke.AddInitialPosition((-0.1f, 0.0f, -0.1f), (0.1f, 0.2f, 0.1f));
+smoke.AddInitialVelocity((-0.1f, 0.5f, -0.1f), (0.1f, 0.7f, 0.1f));
+smoke.AddInitialRotation((-360.0f, 360.0f));
+
+// Add color fade over time
+smoke.AddColorFade(
+    (0.0f, 1.0f, 1.0f, 1.0f, 0.0f),   // Start: white, transparent
+    (0.5f, 1.0f, 1.0f, 1.0f, 0.5f),   // Middle: white, semi-transparent
+    (1.0f, 1.0f, 1.0f, 1.0f, 0.0f));  // End: white, transparent
+
+// Add emitter to particle system
+vfx.AddEmitter(smoke);
+
+// Save
+scene.Save();
+```
+
+### ParticleSystemWrapper Class
+
+Represents a ParticleSystemComponent on an entity. This is the main container for all particle emitters.
+
+#### Adding to an Entity
+
+##### `entity.AddParticleSystem()`
+
+Extension method to add a ParticleSystemComponent to an entity.
+
+```csharp
+var entity = scene.CreateEntity("VFX");
+var vfx = entity.AddParticleSystem();
+```
+
+#### Particle System Properties
+
+##### `string Control`
+
+Playback control: `"Play"`, `"Pause"`, or `"Stop"`.
+
+```csharp
+vfx.Control = "Play";
+```
+
+##### `float ResetSeconds`
+
+How long (in seconds) before the particle system loops or resets.
+
+```csharp
+vfx.ResetSeconds = 3.0f; // Loop every 3 seconds
+```
+
+##### `float Speed`
+
+Time scale multiplier for the entire particle system. `1.0` is normal speed, `2.0` is double speed, `0.5` is half speed.
+
+```csharp
+vfx.Speed = 1.5f; // 1.5x speed
+```
+
+##### `SetColor(float r, float g, float b, float a)`
+
+Sets the overall tint color for the particle system (multiplies with emitter colors).
+
+```csharp
+vfx.SetColor(1.0f, 0.5f, 0.5f, 1.0f); // Red tint
+```
+
+#### Managing Emitters
+
+##### `void AddEmitter(VFXEmitter emitter)`
+
+Adds an emitter to the particle system.
+
+```csharp
+var fire = vfx.CreateBillboardEmitter("fire", (1.0f, 2.0f));
+// Configure fire emitter...
+vfx.AddEmitter(fire);
+```
+
+##### `List<VFXEmitter> GetEmitters()`
+
+Gets all emitters in this particle system.
+
+```csharp
+var emitters = vfx.GetEmitters();
+foreach (var emitter in emitters)
+{
+    Console.WriteLine($"Emitter: {emitter.EmitterName}");
+}
+```
+
+##### `bool RemoveEmitter(string emitterKey)`
+
+Removes an emitter by its internal key. Returns true if removed successfully.
+
+**Note**: Emitter keys are internal identifiers (GUIDs). This is a low-level method - typically you would rebuild particle systems rather than selectively removing emitters.
+
+### VFXEmitter Class
+
+Represents a single particle emitter within a particle system. Each emitter controls particle spawning, appearance, behavior, and lifetime.
+
+#### Creating Emitters
+
+##### `CreateBillboardEmitter(string? name = null, (float min, float max)? lifetime = null)`
+
+Creates a billboard emitter (particles always face the camera).
+
+**Parameters:**
+- `name`: Optional emitter name (e.g., "fire", "smoke", "sparks") - defaults to null
+- `lifetime`: Particle lifetime range in seconds (min, max) - defaults to (1.0, 1.0)
+
+```csharp
+var smoke = vfx.CreateBillboardEmitter("smoke", (5.0f, 7.0f));
+```
+
+##### `CreateOrientedQuadEmitter(string? name = null, (float min, float max)? lifetime = null, bool scaleLength = true, float lengthFactor = 1.0f)`
+
+Creates an oriented quad emitter (particles oriented by velocity direction - good for sparks, trails).
+
+**Parameters:**
+- `name`: Optional emitter name - defaults to null
+- `lifetime`: Particle lifetime range - defaults to (0.5, 1.5)
+- `scaleLength`: Scale particle length based on velocity - default true
+- `lengthFactor`: Length scaling factor - default 1.0
+
+```csharp
+var sparks = vfx.CreateOrientedQuadEmitter("sparks", (0.5f, 1.5f),
+    scaleLength: true, lengthFactor: 0.05f);
+```
+
+##### `CreateRibbonEmitter(string? name = null, (float min, float max)? lifetime = null, int segments = 15, VFXSmoothingPolicy smoothingPolicy = VFXSmoothingPolicy.Best, int maxParticles = 50)`
+
+Creates a ribbon/trail emitter (particles connect into a continuous trail).
+
+**Parameters:**
+- `name`: Optional emitter name
+- `lifetime`: Particle lifetime range - defaults to (1.0, 1.0)
+- `segments`: Number of segments in the ribbon - default 15
+- `smoothingPolicy`: Smoothing quality (`VFXSmoothingPolicy.None`, `VFXSmoothingPolicy.Fast`, `VFXSmoothingPolicy.Best`) - default Best
+- `maxParticles`: Maximum particles - default 50
+
+```csharp
+var trail = vfx.CreateRibbonEmitter("trail", (1.0f, 2.0f), segments: 20);
+```
+
+#### Emitter Properties
+
+##### `string? EmitterName`
+
+Optional name for this emitter.
+
+```csharp
+emitter.EmitterName = "MainFire";
+```
+
+##### `(float min, float max) ParticleLifetime`
+
+How long particles live (in seconds) before disappearing.
+
+```csharp
+emitter.ParticleLifetime = (2.0f, 4.0f); // Live 2-4 seconds
+```
+
+##### `int? MaxParticlesOverride`
+
+Maximum number of particles this emitter can have alive at once. If not set, uses default.
+
+```csharp
+emitter.MaxParticlesOverride = 100;
+```
+
+##### `int? DrawPriority`
+
+Draw order priority. Higher values draw later (on top).
+
+```csharp
+emitter.DrawPriority = 10; // Draw on top
+```
+
+##### `string? SimulationSpace`
+
+`"World"` or `"Local"`. Local space means particles move with the entity.
+
+```csharp
+emitter.SimulationSpace = "Local"; // Particles follow entity
+```
+
+##### `string? SortingPolicy`
+
+How particles are sorted: `"ByOrder"` (for ribbons/trails), `"ByDepth"`, etc.
+
+```csharp
+emitter.SortingPolicy = "ByOrder"; // For ribbons
+```
+
+#### Material and Appearance
+
+##### `SetTextureMaterial(AssetReference texture, float hdrMultiplier = 1.0f, float alphaAdditive = 0.0f)`
+
+Sets the particle texture with HDR color multiplier and additive blending.
+
+**Parameters:**
+- `texture`: Texture asset reference
+- `hdrMultiplier`: HDR brightness multiplier (values > 1.0 create glow)
+- `alphaAdditive`: Additive blending amount (0.0 = normal, 1.0 = fully additive)
+
+```csharp
+var fireTexture = project.FindAsset("FIR001", AssetType.Texture);
+emitter.SetTextureMaterial(fireTexture, hdrMultiplier: 10.0f, alphaAdditive: 0.8f);
+```
+
+##### `SetTextureMaterial(AssetReference texture, float hdrR, float hdrG, float hdrB, float alphaAdditive = 0.0f)`
+
+Sets texture material with separate RGB HDR multipliers for color tinting.
+
+```csharp
+// Orange fire glow
+emitter.SetTextureMaterial(fireTexture,
+    hdrR: 50.0f, hdrG: 20.0f, hdrB: 10.0f, alphaAdditive: 0.8f);
+```
+
+##### `SetFlipbookAnimation(int xDivisions, int yDivisions, int startFrame, int animationSpeed)`
+
+Enables flipbook/spritesheet animation for the texture.
+
+**Parameters:**
+- `xDivisions`: Number of columns in the spritesheet
+- `yDivisions`: Number of rows in the spritesheet
+- `startFrame`: Starting frame index (0-based)
+- `animationSpeed`: Animation speed (frames per second)
+
+```csharp
+// 8x8 spritesheet, start at frame 0, play at 64 fps
+emitter.SetFlipbookAnimation(8, 8, 0, 64);
+```
+
+#### Spawning Particles
+
+##### `SetBurstSpawner(int particleCount, bool oneShot = true, (float min, float max)? delay = null)`
+
+Spawns a burst of particles all at once.
+
+**Parameters:**
+- `particleCount`: Number of particles to spawn
+- `oneShot`: If true, spawns once and stops; if false, repeats
+- `delay`: Optional delay range before spawning (min, max) in seconds
+
+```csharp
+// Spawn 50 particles once, after 0.5 second delay
+emitter.SetBurstSpawner(50, oneShot: true, delay: (0.5f, 0.5f));
+```
+
+##### `SetPerSecondSpawner(float particlesPerSecond, bool looping = true, (float min, float max)? delay = null, (float min, float max)? duration = null)`
+
+Spawns particles continuously over time.
+
+**Parameters:**
+- `particlesPerSecond`: Spawn rate
+- `looping`: If true, repeats; if false, runs once
+- `delay`: Optional delay before starting
+- `duration`: Optional duration to spawn for
+
+```csharp
+// Spawn 20 particles/second continuously
+emitter.SetPerSecondSpawner(20.0f, looping: true);
+
+// Spawn 500 particles/second for 0.1 seconds after 0.05 second delay
+emitter.SetPerSecondSpawner(500.0f, looping: false,
+    delay: (0.05f, 0.05f), duration: (0.1f, 0.1f));
+```
+
+##### `SetPerFrameSpawner(float particlesPerFrame, float framerate = 60.0f, bool looping = true)`
+
+Spawns particles every frame (useful for trails).
+
+```csharp
+emitter.SetPerFrameSpawner(2.0f, framerate: 60.0f, looping: true);
+```
+
+#### Particle Initializers
+
+Initializers set the initial properties of particles when they spawn.
+
+##### `AddInitialSize((float min, float max) sizeRange, float? scaleUniform = null)`
+
+Sets initial particle size range.
+
+```csharp
+emitter.AddInitialSize((0.5f, 1.5f)); // Random size between 0.5 and 1.5
+emitter.AddInitialSize((1.0f, 1.0f), scaleUniform: 0.5f); // Size 1.0, scaled by 0.5
+```
+
+##### `AddInitialPosition((float x, float y, float z) min, (float x, float y, float z) max)`
+
+Sets initial particle position offset range (local to emitter).
+
+```csharp
+// Spawn in a cube region
+emitter.AddInitialPosition((-1.0f, 0.0f, -1.0f), (1.0f, 0.0f, 1.0f));
+```
+
+##### `AddInitialVelocity((float x, float y, float z) min, (float x, float y, float z) max)`
+
+Sets initial particle velocity range.
+
+```csharp
+// Launch upward with some variation
+emitter.AddInitialVelocity((-0.2f, 1.0f, -0.2f), (0.2f, 2.0f, 0.2f));
+```
+
+##### `AddInitialRotation((float min, float max) angleRange)`
+
+Sets initial particle rotation angle range (in degrees).
+
+```csharp
+emitter.AddInitialRotation((-360.0f, 360.0f)); // Random rotation
+```
+
+##### `AddInitialColor((float r, float g, float b, float a) colorMin, (float r, float g, float b, float a) colorMax)`
+
+Sets initial particle color range.
+
+```csharp
+// Orange to yellow
+emitter.AddInitialColor(
+    (1.0f, 0.5f, 0.0f, 1.0f),  // Orange
+    (1.0f, 1.0f, 0.0f, 1.0f)); // Yellow
+```
+
+##### `AddSpawnOrder()`
+
+Adds spawn order information (needed for ribbons/trails).
+
+```csharp
+emitter.AddSpawnOrder(); // Required for ribbon emitters
+```
+
+#### Particle Updaters
+
+Updaters modify particle properties over their lifetime.
+
+##### `AddColorFade(params (float time, float r, float g, float b, float a)[] keyframes)`
+
+Animates particle color over lifetime. Time goes from 0.0 (birth) to 1.0 (death).
+
+```csharp
+emitter.AddColorFade(
+    (0.0f, 1.0f, 1.0f, 1.0f, 0.0f),    // Start: white, transparent
+    (0.2f, 1.0f, 0.8f, 0.5f, 0.5f),    // 20%: orange, semi-visible
+    (0.5f, 1.0f, 0.5f, 0.0f, 1.0f),    // 50%: red-orange, fully visible
+    (1.0f, 0.5f, 0.2f, 0.1f, 0.0f));   // End: dark, transparent
+```
+
+##### `AddSizeOverTime(params (float time, float size)[] keyframes)`
+
+Animates particle size over lifetime.
+
+```csharp
+emitter.AddSizeOverTime(
+    (0.0f, 0.5f),  // Start small
+    (0.5f, 1.5f),  // Grow in middle
+    (1.0f, 0.2f)); // Shrink at end
+```
+
+##### `AddForceField(VFXFieldShape fieldShape = VFXFieldShape.Sphere, (float x, float y, float z)? scale = null, float forceDirected = 0.0f, float forceVortex = 0.0f, float forceRepulsive = 0.0f, float energyConservation = 0.2f)`
+
+Applies force field effects to particles.
+
+**Parameters:**
+- `fieldShape`: Shape of the force field (`VFXFieldShape.Cylinder`, `VFXFieldShape.Sphere`, etc.) - defaults to Sphere
+- `scale`: Size of the force field volume - defaults to (1, 1, 1) if not specified
+- `forceDirected`: Strength pulling toward field center (negative pushes away) - default 0.0
+- `forceVortex`: Rotational/swirling force strength - default 0.0
+- `forceRepulsive`: Outward explosive force (negative pulls inward) - default 0.0
+- `energyConservation`: How much velocity is preserved (0.0 = full dampening, 1.0 = no dampening) - default 0.2
+
+```csharp
+// Upward swirling fire effect
+emitter.AddForceField(
+    fieldShape: VFXFieldShape.Cylinder,
+    scale: (2.0f, 5.0f, 2.0f),
+    forceDirected: 0.1f,
+    forceVortex: 0.5f,
+    forceRepulsive: -3.0f,
+    energyConservation: 0.6f);
+```
+
+### Complete Examples
+
+#### Fire Effect with Sparks
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+
+var fireEntity = scene.CreateEntity("Fire");
+var vfx = fireEntity.AddParticleSystem();
+vfx.Control = "Play";
+
+// Fire emitter
+var fire = vfx.CreateBillboardEmitter("flames", (1.0f, 2.0f));
+var fireTexture = project.FindAsset("FIR001", AssetType.Texture);
+fire.SetTextureMaterial(fireTexture, hdrMultiplier: 10.0f, alphaAdditive: 0.8f);
+fire.SetFlipbookAnimation(8, 8, 0, 64);
+fire.SetPerSecondSpawner(20.0f);
+fire.AddInitialSize((0.7f, 1.2f));
+fire.AddInitialPosition((-0.35f, 0.0f, -0.35f), (0.35f, 0.5f, 0.35f));
+fire.AddInitialVelocity((-0.2f, 0.5f, -0.2f), (0.2f, 1.0f, 0.2f));
+fire.AddInitialRotation((-360.0f, 360.0f));
+fire.AddInitialColor((1.0f, 0.62f, 0.2f, 1.0f), (1.0f, 0.56f, 0.2f, 1.0f));
+fire.AddForceField(VFXFieldShape.Cylinder, (2.0f, 5.0f, 2.0f),
+    forceDirected: 0.1f, forceVortex: 0.5f, forceRepulsive: -3.0f);
+vfx.AddEmitter(fire);
+
+// Sparks emitter
+var sparks = vfx.CreateOrientedQuadEmitter("sparks", (0.5f, 1.5f));
+var dotaTexture = project.FindAsset("dota", AssetType.Texture);
+sparks.SetTextureMaterial(dotaTexture, hdrMultiplier: 50.0f);
+sparks.SetPerSecondSpawner(50.0f);
+sparks.AddInitialSize((0.1f, 0.25f), scaleUniform: 0.05f);
+sparks.AddInitialVelocity((-0.1f, 0.5f, -0.1f), (0.1f, 1.0f, 0.1f));
+sparks.AddInitialPosition((-0.6f, 0.0f, -0.6f), (0.6f, 1.0f, 0.6f));
+sparks.AddInitialColor((1.0f, 0.07f, 0.0f, 1.0f), (1.0f, 0.19f, 0.0f, 1.0f));
+vfx.AddEmitter(sparks);
+
+scene.Save();
+```
+
+#### Explosion Effect
+
+```csharp
+var explosionEntity = scene.CreateEntity("Explosion");
+var vfx = explosionEntity.AddParticleSystem();
+vfx.ResetSeconds = 3.0f; // Reset every 3 seconds
+vfx.Control = "Play";
+
+// Explosion fire flash
+var explosionFire = vfx.CreateBillboardEmitter("explosionfire", (1.0f, 1.3f));
+var expTexture = project.FindAsset("EXP001", AssetType.Texture);
+explosionFire.SetTextureMaterial(expTexture, hdrMultiplier: 50.0f);
+explosionFire.SetFlipbookAnimation(8, 8, 8, 56);
+explosionFire.SetBurstSpawner(10, oneShot: true);
+explosionFire.AddInitialSize((1.0f, 2.0f));
+explosionFire.AddInitialPosition((-0.2f, 0.0f, -0.2f), (0.2f, 0.0f, 0.2f));
+explosionFire.AddInitialVelocity((-0.5f, -0.2f, -0.5f), (0.5f, 0.5f, 0.5f));
+explosionFire.AddInitialRotation((-360.0f, 360.0f));
+explosionFire.AddColorFade(
+    (0.0f, 1.0f, 1.0f, 1.0f, 1.0f),
+    (0.5f, 0.3f, 0.3f, 0.3f, 0.25f),
+    (1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+vfx.AddEmitter(explosionFire);
+
+// Smoke plume
+var smoke = vfx.CreateBillboardEmitter("smoke", (1.0f, 2.0f));
+var smokeTexture = project.FindAsset("SMO001", AssetType.Texture);
+smoke.SetTextureMaterial(smokeTexture, hdrMultiplier: 1.0f);
+smoke.SetFlipbookAnimation(8, 8, 0, 64);
+smoke.SetBurstSpawner(10, oneShot: true);
+smoke.AddInitialVelocity((-0.4f, -0.4f, -0.4f), (0.4f, 0.4f, 0.4f));
+smoke.AddInitialRotation((-360.0f, 360.0f));
+smoke.AddInitialPosition((-0.3f, -0.3f, -0.3f), (0.3f, 0.3f, 0.3f));
+smoke.AddColorFade(
+    (0.0f, 0.5f, 0.25f, 0.1f, 1.0f),
+    (0.5f, 0.5f, 0.2f, 0.1f, 0.7f),
+    (1.0f, 0.1f, 0.1f, 0.1f, 0.0f));
+vfx.AddEmitter(smoke);
+
+// Sparks burst
+var sparks = vfx.CreateBillboardEmitter("sparks", (0.7f, 1.4f));
+var sparkTexture = project.FindAsset("dota", AssetType.Texture);
+sparks.SetTextureMaterial(sparkTexture, hdrR: 50.0f, hdrG: 20.0f, hdrB: 20.0f);
+sparks.SetBurstSpawner(50, oneShot: true, delay: (0.5f, 0.5f));
+sparks.AddInitialVelocity((-0.5f, -0.5f, -0.5f), (0.5f, 0.5f, 0.5f));
+sparks.AddInitialSize((0.1f, 0.2f), scaleUniform: 0.1f);
+sparks.AddInitialPosition((-0.6f, -0.6f, -0.6f), (0.6f, 0.6f, 0.6f));
+sparks.AddInitialColor((1.0f, 0.18f, 0.04f, 1.0f), (1.0f, 0.3f, 0.0f, 1.0f));
+sparks.AddForceField(VFXFieldShape.Sphere, (2.0f, 2.0f, 2.0f),
+    forceDirected: 0.3f, forceVortex: 0.5f, forceRepulsive: -0.3f);
+vfx.AddEmitter(sparks);
+
+scene.Save();
+```
+
+### Advanced: Custom Emitter Configuration
+
+For advanced use cases, you can directly access and modify emitter properties:
+
+```csharp
+var emitter = new VFXEmitter
+{
+    EmitterName = "CustomEffect",
+    ParticleLifetime = (2.0f, 3.0f),
+    MaxParticlesOverride = 200,
+    DrawPriority = 15,
+    SimulationSpace = "Local",
+    SortingPolicy = "ByDepth"
+};
+
+// Set custom shape
+emitter.SetShapeBuilder(VFXShapeType.Billboard, new Dictionary<string, object>
+{
+    ["SamplerPosition"] = "null",
+    ["SamplerSize"] = "null",
+    ["SamplerRotation"] = "null"
+});
+
+// Add custom updater
+emitter.AddUpdater("Gravity", new Dictionary<string, object>
+{
+    ["!UpdaterGravity"] = "",
+    ["GravitationalAcceleration"] = new Dictionary<string, object>
+    {
+        ["X"] = 0.0f,
+        ["Y"] = -9.8f,
+        ["Z"] = 0.0f
+    }
+});
+
+vfx.AddEmitter(emitter);
+```
+
+### Tips and Best Practices
+
+1. **Texture Requirements**: Ensure textures exist in your project before referencing them. Use `project.FindAsset()` to safely locate textures.
+
+2. **Performance**: Keep `MaxParticlesOverride` reasonable. Too many particles can impact performance.
+
+3. **Lifetime vs Loop Time**: Set `ResetSeconds` on the ParticleSystem to control when effects loop, and `ParticleLifetime` on emitters to control individual particle duration.
+
+4. **HDR Values**: Use HDR multipliers > 1.0 for glowing effects. Values of 10-50 create nice bloom/glow.
+
+5. **Additive Blending**: Use `alphaAdditive` for fire, explosions, and glowing effects. Use 0.0 for solid smoke or fog.
+
+6. **Color Curves**: Define at least 2 keyframes for color/size curves. More keyframes create smoother transitions.
+
+7. **Force Fields**: Experiment with force field combinations:
+   - Upward fire: negative repulsive force
+   - Explosion: positive repulsive force with high energy conservation
+   - Vortex: combine vortex force with directed force
+
+8. **Testing**: Create effects in a test scene first, then copy to your game scenes once perfected.
 
 ---
 
