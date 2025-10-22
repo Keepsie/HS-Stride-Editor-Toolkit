@@ -16,7 +16,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
 
         public VFXEmitter()
         {
-            Key = GuidHelper.NewGuid();
+            Key = GuidHelper.NewGuidNoDashes();
         }
 
         /// <summary>
@@ -93,6 +93,15 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
         {
             get => Get<string>("SortingPolicy");
             set => Set("SortingPolicy", value);
+        }
+
+        /// <summary>
+        /// Simulation space (World or Local)
+        /// </summary>
+        public string? SimulationSpace
+        {
+            get => Get<string>("SimulationSpace");
+            set => Set("SimulationSpace", value);
         }
 
         /// <summary>
@@ -182,7 +191,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
                 Properties["Spawners"] = new Dictionary<string, object>();
 
             var spawners = (Dictionary<string, object>)Properties["Spawners"];
-            var key = GuidHelper.NewGuid();
+            var key = GuidHelper.NewGuidNoDashes();
 
             spawnerData["!Spawner" + spawnerType] = "";
             spawners[key] = spawnerData;
@@ -199,7 +208,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
                 Properties["Initializers"] = new Dictionary<string, object>();
 
             var initializers = (Dictionary<string, object>)Properties["Initializers"];
-            var key = GuidHelper.NewGuid();
+            var key = GuidHelper.NewGuidNoDashes();
 
             initializerData["!Initial" + initializerType] = "";
             initializers[key] = initializerData;
@@ -216,7 +225,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
                 Properties["Updaters"] = new Dictionary<string, object>();
 
             var updaters = (Dictionary<string, object>)Properties["Updaters"];
-            var key = GuidHelper.NewGuid();
+            var key = GuidHelper.NewGuidNoDashes();
 
             updaterData["!Updater" + updaterType] = "";
             updaters[key] = updaterData;

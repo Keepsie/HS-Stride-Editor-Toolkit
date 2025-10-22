@@ -9,6 +9,9 @@ Hierarchy:
         - ref!! 8dae5b06-af4f-47a3-a2bd-2720c96644a8
         - ref!! 7bb84c09-277c-488d-bdb0-206e9550871e
         - ref!! 1a8fe902-fad4-4f89-a65d-7e25d8e172d3
+        - ref!! d8a6093a-dd5a-476a-ab14-3138ac5b55aa
+        - ref!! c9693534-e4b9-4b8f-a6bd-23fd6f4d0e3a
+        - ref!! fb633cd8-9c49-475b-a054-41dcf109aa17
     Parts:
         -   Entity:
                 Id: 1a8fe902-fad4-4f89-a65d-7e25d8e172d3
@@ -40,7 +43,7 @@ Hierarchy:
                     24a796ae3c985efde4ad09dae2f49a5a: !ModelComponent
                         Id: 4ec7989b-39e7-4ae4-a5c2-d89867de55b0
                         Model: fe366995-fb5b-40ab-909d-323d83d9af15:Cube (2)
-                        Materials: {}
+                        Materials: {}
             Base:
                 BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
                 BasePartId: b7259398-4ab3-4afe-a234-da67557e10a3
@@ -76,7 +79,7 @@ Hierarchy:
                         intArray: null
                         entityArray: null
                         Stuff2:
-                            32354a4815f7194d94d51dbcc2470590: 2
+                            32354a4815f7194d94d51dbcc2470590: 2
         -   Entity:
                 Id: 86043c07-5d0e-4526-bf8f-ae26510bf502
                 Name: CollisionWall
@@ -102,7 +105,7 @@ Hierarchy:
                                 Is2D: false
                                 Size: {X: 1.0, Y: 1.0, Z: 1.0}
                                 LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
-                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
             Base:
                 BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
                 BasePartId: e3dd57e0-e350-46b3-a941-e6e2affb71f9
@@ -120,10 +123,10 @@ Hierarchy:
                     406ecc1a40dafa46d61f3831da33fd6a: !ModelComponent
                         Id: 1a058991-5aec-47f8-82d8-58f69f62dd9f
                         Model: 8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1
-                        Materials: {}
+                        Materials: {}
                     e5b6f493aa467da352996830505dabe7: !TopDownRPG.Tester,TopDownRPG.Game
                         Id: bb16409b-10a2-4994-a031-d1e480129c3b
-                        health: 100
+                        health: 100
         -   Entity:
                 Id: 9b6301f0-93e0-4c31-bbfe-f098c69b20a8
                 Name: LootBox
@@ -138,7 +141,7 @@ Hierarchy:
                     92a01d27b6aa2e49b6f4555de61f78e4: !ModelComponent
                         Id: 7ebaeb28-d68a-455e-b4ee-ac04d55385f4
                         Model: 75180ab2-1195-4530-83f3-d9e1ce609790:Models/BoxF
-                        Materials: {}
+                        Materials: {}
                     9ff39e9a53a90d49bb7faec06f6d32ca: !StaticColliderComponent
                         Id: d96ea901-549e-4d1d-970c-9d9993b78f03
                         CollisionGroup: CustomFilter2
@@ -155,16 +158,16 @@ Hierarchy:
                                 Is2D: false
                                 Size: {X: 1.0, Y: 1.0, Z: 1.0}
                                 LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
-                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                     4e93d2aaca7cd64e9e2cdb87b6dea8c1: !TopDownRPG.Gameplay.CrateScript,TopDownRPG.Game
                         Id: 5503d0ed-5e35-4b7a-a958-dad588de9011
                         CoinGetEffect: 0728b818-ab18-42f3-aa67-7f2ed9cc88cd:VFXPrefabs/vfx-Dustcloud
                         CoinSpawnModel: 55259b28-5339-4142-a4a9-fe6a574d9cb7:LootGoldCoin
                         SoundEffect: 73dbcf5b-10da-4471-97d9-140f695e2fc5:Audio/crate_breaking
-                        Trigger: ref!! 959fb7bf-c375-46c8-82ec-eb28404813c2
+                        Trigger: ref!! 959fb7bf-c375-46c8-82ec-eb28404813c2
                     28cbe91f2b1efd4a865067a932c54649: !TopDownRPG.Gameplay.Trigger,TopDownRPG.Game
                         Id: 959fb7bf-c375-46c8-82ec-eb28404813c2
-                        TriggerCondition: StartOnly
+                        TriggerCondition: StartOnly
             Base:
                 BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
                 BasePartId: aa659fd0-1730-4b77-961b-3a3f1599a121
@@ -209,7 +212,7 @@ Hierarchy:
                                 Is2D: false
                                 Size: {X: 1.0, Y: 1.0, Z: 1.0}
                                 LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
-                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
             Base:
                 BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
                 BasePartId: 5abb5cfd-0239-415e-ab95-9ccc4a3ffb41
@@ -228,7 +231,7 @@ Hierarchy:
                     92a01d27b6aa2e49b6f4555de61f78e4: !ModelComponent
                         Id: 32474a6d-5cf5-4a76-8f6f-5fbfe9e29b9a
                         Model: 75180ab2-1195-4530-83f3-d9e1ce609790:Models/BoxF
-                        Materials: {}
+                        Materials: {}
                     9ff39e9a53a90d49bb7faec06f6d32ca: !StaticColliderComponent
                         Id: 5392153d-2ab1-490b-aac1-90caf1b4bb96
                         CollisionGroup: CustomFilter2
@@ -245,16 +248,16 @@ Hierarchy:
                                 Is2D: false
                                 Size: {X: 1.0, Y: 1.0, Z: 1.0}
                                 LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
-                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                                LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                     4e93d2aaca7cd64e9e2cdb87b6dea8c1: !TopDownRPG.Gameplay.CrateScript,TopDownRPG.Game
                         Id: 843118ee-bd4e-4ddd-a492-85b22967fac3
                         CoinGetEffect: 0728b818-ab18-42f3-aa67-7f2ed9cc88cd:VFXPrefabs/vfx-Dustcloud
                         CoinSpawnModel: 55259b28-5339-4142-a4a9-fe6a574d9cb7:LootGoldCoin
                         SoundEffect: 73dbcf5b-10da-4471-97d9-140f695e2fc5:Audio/crate_breaking
-                        Trigger: ref!! 1190a774-b656-4139-a4f3-24eaac41a258
+                        Trigger: ref!! 1190a774-b656-4139-a4f3-24eaac41a258
                     28cbe91f2b1efd4a865067a932c54649: !TopDownRPG.Gameplay.Trigger,TopDownRPG.Game
                         Id: 1190a774-b656-4139-a4f3-24eaac41a258
-                        TriggerCondition: StartOnly
+                        TriggerCondition: StartOnly
             Base:
                 BasePartAsset: 28904097-13e5-4f96-86b4-0f5a42785fc3:CubeGroupPrefab
                 BasePartId: d7e1e37c-01fb-4a83-81e5-e88dacc8a134

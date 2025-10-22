@@ -117,12 +117,40 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
         }
 
         /// <summary>
+        /// Sets a simple texture material with separate RGB HDR multipliers and additive blending
+        /// </summary>
+        public static VFXEmitter SetTextureMaterial(
+            this VFXEmitter emitter,
+            AssetEditing.AssetReference textureAsset,
+            float hdrR,
+            float hdrG,
+            float hdrB,
+            float alphaAdditive = 0.0f)
+        {
+            return SetTextureMaterial(emitter, textureAsset.Reference, hdrR, hdrG, hdrB, alphaAdditive);
+        }
+
+        /// <summary>
         /// Sets a simple texture material using texture reference string
         /// </summary>
         internal static VFXEmitter SetTextureMaterial(
             this VFXEmitter emitter,
             string textureReference,
             float hdrMultiplier = 1.0f,
+            float alphaAdditive = 0.0f)
+        {
+            return SetTextureMaterial(emitter, textureReference, hdrMultiplier, hdrMultiplier, hdrMultiplier, alphaAdditive);
+        }
+
+        /// <summary>
+        /// Sets a simple texture material using texture reference string with separate RGB HDR multipliers
+        /// </summary>
+        internal static VFXEmitter SetTextureMaterial(
+            this VFXEmitter emitter,
+            string textureReference,
+            float hdrR,
+            float hdrG,
+            float hdrB,
             float alphaAdditive = 0.0f)
         {
             var material = new Dictionary<string, object>
@@ -138,9 +166,9 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
                         ["!ComputeFloat4"] = "",
                         ["Value"] = new Dictionary<string, object>
                         {
-                            ["X"] = hdrMultiplier,
-                            ["Y"] = hdrMultiplier,
-                            ["Z"] = hdrMultiplier,
+                            ["X"] = hdrR,
+                            ["Y"] = hdrG,
+                            ["Z"] = hdrB,
                             ["W"] = 1.0f
                         }
                     },
@@ -169,10 +197,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
                         ["RightChild"] = new Dictionary<string, object>
                         {
                             ["!ComputeVertexStreamColor"] = "",
-                            ["Stream"] = new Dictionary<string, object>
-                            {
-                                ["!ColorVertexStreamDefinition"] = ""
-                            }
+                            ["Stream"] = "!ColorVertexStreamDefinition {}"
                         }
                     }
                 },
@@ -245,13 +270,18 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
         public static VFXEmitter SetPerSecondSpawner(
             this VFXEmitter emitter,
             float particlesPerSecond,
-            bool looping = true)
+            bool looping = true,
+            (float min, float max)? delay = null,
+            (float min, float max)? duration = null)
         {
+            var delayValue = delay ?? (0.0f, 0.0f);
+            var durationValue = duration ?? (1.0f, 1.0f);
+
             emitter.AddSpawner("PerSecond", new Dictionary<string, object>
             {
                 ["LoopCondition"] = looping ? "Looping" : "OneShot",
-                ["Delay"] = new Dictionary<string, object> { ["X"] = 0.0f, ["Y"] = 0.0f },
-                ["Duration"] = new Dictionary<string, object> { ["X"] = 1.0f, ["Y"] = 1.0f },
+                ["Delay"] = new Dictionary<string, object> { ["X"] = delayValue.min, ["Y"] = delayValue.max },
+                ["Duration"] = new Dictionary<string, object> { ["X"] = durationValue.min, ["Y"] = durationValue.max },
                 ["SpawnCount"] = particlesPerSecond
             });
 
@@ -601,7 +631,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
 
             foreach (var (time, value) in keyframes)
             {
-                var key = GuidHelper.NewGuid();
+                var key = GuidHelper.NewGuidNoDashes();
                 keyframeDict[key] = new Dictionary<string, object>
                 {
                     ["Key"] = time,
@@ -623,7 +653,7 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
 
             foreach (var (time, r, g, b, a) in keyframes)
             {
-                var key = GuidHelper.NewGuid();
+                var key = GuidHelper.NewGuidNoDashes();
                 keyframeDict[key] = new Dictionary<string, object>
                 {
                     ["Key"] = time,
