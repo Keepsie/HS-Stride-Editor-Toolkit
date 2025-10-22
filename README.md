@@ -102,31 +102,6 @@ for (int x = 0; x < 10; x++) {
 scene.Save();
 ```
 
-### 2. Bulk Add Colliders
-
-Add colliders to hundreds of imported models in seconds:
-
-```csharp
-var project = new StrideProject(@"C:\MyGame");
-var scene = project.LoadScene("Level1");
-
-// Find all entities with "BlockOut_" prefix
-var blockouts = scene.FindEntitiesByName("BlockOut_*");
-
-foreach (var entity in blockouts) {
-    // Skip if already has collider
-    if (entity.HasComponent("StaticColliderComponent")) continue;
-
-    var collider = entity.AddStaticCollider();
-    collider.AddBoxShape(10f, 2f, 10f);
-    collider.Friction = 0.5f;
-    collider.Restitution = 0.2f;
-}
-
-scene.Save();
-Console.WriteLine($"Added colliders to {blockouts.Count} entities");
-```
-
 ### 3. Create Prefabs Programmatically
 
 Mass-generate enemy types or props:
@@ -187,8 +162,6 @@ page.Save();
 project.Rescan();
 ```
 
-**Why this is powerful:** Describe your UI to ChatGPT/Claude and let AI generate the complete menu code using this API!
-
 ## ⚠️ IMPORTANT: Backup & Disclaimers
 
 ### 🚨 ALWAYS BACKUP YOUR SCENES AND PROJECT BEFORE USE
@@ -221,33 +194,7 @@ By using this toolkit, you acknowledge that:
 
 **Close and reopen GameStudio after running scripts** - Changes won't show until you restart.
 
-## 🔧 What You Can Do
-
-### Scene Editing
-
-- Load/save scenes (.sdscene)
-- Find entities by name, component type, or custom queries
-- Create/remove entities and components
-- Modify component properties
-- Instantiate prefabs
-- Entity organization: Folders (Stride/Unreal style) or Entity hierarchy (Unity style)
-
-### Asset Editing
-
-- Materials (.sdmat) - Textures, UV scale, shader properties
-- Textures (.sdtex) - Compression, streaming, source files
-- Animations (.sdanim) - Loop modes, root motion, skeleton references
-- Prefabs (.sdprefab) - Entity hierarchies, components
-- UI Pages (.sduipage) - Resolution, UI elements
-- Skeletons, SpriteSheets, Sounds, Effects
-
-### Asset Discovery
-
-- Scan entire project for assets
-- Find assets by name, type, or pattern matching
-- Get asset references for scene instantiation
-
-## 💬 Development & Contributions
+## � Development & Contributions
 
 This tool was built to fulfill my own needs for Stride editor automation. I'll update it when it makes sense and do my best to keep the docs current.
 

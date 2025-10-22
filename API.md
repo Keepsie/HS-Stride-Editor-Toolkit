@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -89,10 +89,9 @@ Internal script variables that aren't serialized by Stride won't be available. I
 9. [Typed Component Wrappers](#typed-component-wrappers)
 10. [Asset Scanning & References](#asset-scanning--references)
 11. [Direct Asset Editing](#direct-asset-editing)
-12. [Data Types & Utilities](#data-types--utilities)
+12. [Data Types](#data-types)
 13. [Error Handling](#error-handling)
-14. [Advanced Patterns](#advanced-patterns)
-15. [Best Practices & Tips](#best-practices--tips)
+14. [Advanced Workflows & Best Practices](#advanced-workflows--best-practices)
 
 ---
 
@@ -163,8 +162,7 @@ Load `.sdscene` files, find/create/modify entities and components, save changes.
 
 **Primary Classes:**
 
-- `StrideProject` - **Recommended** unified API (loads scenes by name)
-- `Scene` - Scene operations (also available via `Scene.Load()` for direct file access)
+- `Scene` - Scene operations
 - `Entity` - Represents a game object in the scene
 - `Component` - Represents a component attached to an entity
 
@@ -174,8 +172,7 @@ Scan Stride projects to discover and reference assets (prefabs, models, material
 
 **Primary Classes:**
 
-- `StrideProject` - **Recommended** (auto-scans on construction)
-- `ProjectScanner` - Direct scanner API (lower level)
+`StrideProject` -  auto-scans and allows you to load project assets by name only.
 
 ### Pillar 3: Direct Asset Editing
 
@@ -196,7 +193,6 @@ The `StrideProject` class provides a **unified, simplified API** for working wit
 
 - **Single entry point** - Give project path once, load assets/scenes by name
 - **Auto-scanning** - Automatically discovers all assets on construction
-- **Simpler** - No need to manage separate Scanner and Scene instances
 - **Cleaner code** - `LoadScene("Level1")` vs `Scene.Load(fullPath)`
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core`
@@ -285,7 +281,7 @@ var scene3 = project.LoadScene("Levels/Chapter1/Intro");
 
 ### Asset Loading Methods
 
-All asset loading methods follow the same pattern: `Load{AssetType}(string nameOrPath)`
+All asset loading methods follow the same pattern: `Load{AssetType}(string nameOrPath)`. Each of these methods returns a specific asset object (e.g., `MaterialAsset`, `TextureAsset`, `Prefab`) which represents the **editable programmatic instance** of that asset.
 
 #### `MaterialAsset LoadMaterial(string nameOrPath)`
 
@@ -308,15 +304,48 @@ All asset loading methods follow the same pattern: `Load{AssetType}(string nameO
 **Examples:**
 
 ```csharp
-// Load by name
+// Load by name - returns an editable MaterialAsset object
 var material = project.LoadMaterial("PlayerMat");
-var texture = project.LoadTexture("Skybox");
+var texture = project.LoadTexture("Skybox"); // Returns an editable TextureAsset object
 
 // Load by path
 var mat2 = project.LoadMaterial("Materials/Environment/Ground");
 var tex2 = project.LoadTexture("Textures/UI/Icons/Health");
 
 // All throw FileNotFoundException if not found
+```
+
+##### Generic Asset Loading (via AssetReference)
+
+Sometimes you may want to load an asset's editable representation after obtaining a generic `AssetReference`. You can use the static `Load()` method available on each specific asset type.
+
+```csharp
+// 1. Find an AssetReference first
+var anyAssetRef = project.FindAsset("MyDynamicAsset");
+
+if (anyAssetRef != null)
+{
+    // 2. Load the specific asset type using its static Load method and the FilePath from the AssetReference
+    switch (anyAssetRef.Type)
+    {
+        case AssetType.Material:
+            var loadedMaterial = MaterialAsset.Load(anyAssetRef.FilePath);
+            // Now you can work with 'loadedMaterial'
+            break;
+        case AssetType.Texture:
+            var loadedTexture = TextureAsset.Load(anyAssetRef.FilePath);
+            // Now you can work with 'loadedTexture'
+            break;
+        case AssetType.Prefab:
+            var loadedPrefab = Prefab.Load(anyAssetRef.FilePath);
+            // Now you can work with 'loadedPrefab'
+            break;
+        // ... handle other AssetType cases
+        default:
+            Console.WriteLine($"Asset {anyAssetRef.Name} is of type {anyAssetRef.Type} and cannot be directly loaded this way.");
+            break;
+    }
+}
 ```
 
 ### Asset Finding Methods
@@ -409,7 +438,10 @@ project.Rescan();
 
 #### `string? GetRawAssetSource(AssetReference rawAssetReference)`
 
-Gets the source file path for a RawAsset (.sdraw file points to actual content file in Resources/).
+Gets the source file path for a RawAsset (.sdraw file points to actual content file in Resources/, representing external data).
+
+**Note on RawAssets ("URL-like" references):**
+`RawAsset`s are designed to give you a way to reference arbitrary external data files (like JSON, XML, TXT, CSV) that are managed by your Stride project. The toolkit does not directly load assets from arbitrary web URLs over HTTP. Instead, `RawAsset` is used for files that reside within your project's file system or local resources, offering a mechanism to retrieve their actual content path.
 
 **Parameters:**
 
@@ -683,12 +715,12 @@ var targets = scene.FindEntities(e =>
 
 ##### `Entity CreateEntity(string name, string? folder = null)`
 
-Creates a new entity with a TransformComponent.
+Creates a new entity with a `TransformComponent`. This method is suitable for creating top-level entities or organizing them into editor folders (metadata only, no transform hierarchy). For entity-based parenting, see the overload below.
 
 **Parameters:**
 
 - `name` (string) - Entity name
-- `folder` (string?, optional) - Folder path (e.g., "Enemies/Bosses")
+- `folder` (string?, optional) - Optional folder path for organization in the editor (e.g., "Enemies/Bosses"). This defines an editor folder for organizational purposes and does not create a parent-child transform hierarchy.
 
 **Returns:** The newly created Entity
 
@@ -697,6 +729,8 @@ Creates a new entity with a TransformComponent.
 **Example:**
 
 ```csharp
+// Creates a new entity named "Powerup" and organizes it under an "Items" folder in the editor.
+// The entity itself will be a root entity in terms of transform hierarchy.
 var newEntity = scene.CreateEntity("Powerup", "Items");
 ```
 
@@ -936,62 +970,370 @@ project.Rescan();
 - `prefab.Save()` - Saves changes
 - `prefab.SaveAs(filePath)` - Saves to new location
 
+### Prefab Class
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.PrefabEditing`
+
+Represents an editable Stride Prefab asset (`.sdprefab`). This class allows for programmatic management of prefabs, including creating new ones, loading existing ones, and manipulating the entities within them.
+
+#### Loading and Creation
+
+##### `static Prefab Load(string filePath)`
+
+Loads a prefab asset from the specified `.sdprefab` file path.
+
+```csharp
+var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\Enemy.sdprefab");
+```
+
+##### `static Prefab Create(string name, string? filePath = null)`
+
+Creates a new empty prefab with the specified name. The prefab is not saved to disk until `Save()` or `SaveAs()` is called. It automatically creates a root entity for the prefab with a `TransformComponent`.
+
+**Parameters:**
+
+- `name` (string): Name of the root entity within the prefab.
+- `filePath` (string?, optional): Optional file path for the prefab. If not provided, it must be set later via `SaveAs()`.
+
+**Returns:** A new `Prefab` asset instance with an empty root entity.
+
+```csharp
+var newPrefab = Prefab.Create("MyNewCratePrefab", @"C:\MyGame\Assets\Prefabs\Crates\MyNewCratePrefab.sdprefab");
+// Add entities and components to newPrefab.GetRootEntity()
+```
+
+#### Properties
+
+##### `string Id`
+
+The unique GUID of this prefab. (Inherited from `IStrideAsset`).
+
+##### `string FilePath`
+
+The absolute file path where this prefab is stored. (Inherited from `IStrideAsset`).
+
+##### `List<Entity> AllEntities`
+
+A list of all entities contained within this prefab, including the root and its children.
+
+#### Entity Management Methods
+
+##### `Entity? GetRootEntity()`
+
+Gets the root entity of this prefab. This is the top-level entity in the prefab's hierarchy.
+
+**Returns:** The root `Entity` or `null` if no root entity exists (which shouldn't happen for a properly created prefab).
+
+**Example:**
+
+```csharp
+var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\Enemy.sdprefab");
+var root = prefab.GetRootEntity();
+
+if (root != null)
+{
+    // Modify root entity's transform
+    root.GetTransform().SetScale(1.5f, 1.5f, 1.5f);
+    prefab.Save();
+}
+```
+
+##### `Entity CreateEntity(string name, string? folder = null)`
+
+Creates a new entity within this prefab with a `TransformComponent`.
+
+**Parameters:**
+
+- `name` (string): The name of the new entity.
+- `folder` (string?, optional): Optional folder path for organization within the prefab (e.g., "WeaponMounts").
+
+**Returns:** The newly created `Entity`.
+
+**Example:**
+
+```csharp
+var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\House.sdprefab");
+
+// Add a new entity to the prefab
+var window = prefab.CreateEntity("Window", "Exterior");
+window.AddModel(); // Add a ModelComponent to the window entity
+prefab.Save();
+```
+
+##### `Entity CreateEntity(string name, string parent, ParentType parentType)`
+
+Creates a new entity within this prefab with specified parent organization (either a folder or another entity).
+
+**Parameters:**
+
+- `name` (string): The name of the new entity.
+- `parent` (string): The name of the parent folder or entity. Supports nested paths like "House/Floor/Room".
+- `parentType` (ParentType): Specifies whether `parent` refers to a folder (`ParentType.Folder`) or an entity (`ParentType.Entity`).
+
+**Returns:** The newly created `Entity`.
+
+**Example:**
+
+```csharp
+var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\House.sdprefab");
+
+// Create a door handle as a child of an existing "Door" entity within the prefab
+var doorHandle = prefab.CreateEntity("Handle", "Door", ParentType.Entity);
+doorHandle.AddModel(); // Add components to the handle
+prefab.Save();
+```
+
+##### `void RemoveEntity(Entity entity)`
+
+Removes an entity from this prefab.
+
+**Parameters:**
+
+- `entity` (Entity): The entity to remove.
+
+#### Entity Finding Methods
+
+These methods are similar to those found in the `Scene` class, but they operate specifically on the entities within this prefab.
+
+##### `Entity? FindEntityById(string id)`
+
+Finds an entity by its unique GUID within this prefab.
+
+##### `Entity? FindEntityByName(string name)`
+
+Finds the first entity with an exact name match within this prefab.
+
+##### `List<Entity> FindEntitiesByName(string pattern)`
+
+Finds all entities matching a wildcard pattern (`*` or `?`) within this prefab.
+
+##### `List<Entity> FindEntitiesWithComponent(string componentType)`
+
+Finds all entities that have a specific component type within this prefab.
+
+##### `List<Entity> FindEntities(Func<Entity, bool> predicate)`
+
+Finds entities using a custom predicate function (LINQ query) within this prefab.
+
+#### Persistence Methods
+
+##### `void Save()`
+
+Saves the prefab's current state back to its original file. (Inherited from `IStrideAsset`).
+
+##### `void SaveAs(string filePath)`
+
+Saves the prefab's current state to a new file path. (Inherited from `IStrideAsset`).
+
 ---
 
 ## UI Page Creation (Programmatically)
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.UIPageEditing`
 
-Create UI menus programmatically instead of using Stride's UI editor. Generate entire UI systems by code, or give this API to an LLM and have it build menus.
+The toolkit provides a powerful API for programmatically creating, modifying, and managing Stride UI pages without needing to use the Game Studio editor. This is ideal for generating entire UI systems, creating dynamic UI elements, or integrating with generative AI tools.
 
+### UIPage Class
 
+Represents a Stride UI page (`.sduipage` file) that can be loaded, modified, and saved.
 
-### Creating a New UI Page
+#### Loading and Creation
+
+##### `static UIPage Load(string filePath)`
+
+Loads a UI page from a `.sduipage` file on disk.
 
 ```csharp
-var project = new StrideProject(@"C:\MyGame");
-
-// Create UI page (automatically creates root Grid)
-var page = project.CreateUIPage("MainMenu", "UI/Menus");
-
-// Create canvas for positioning
-var canvas = page.CreateCanvas("menu_canvas", width: 800f, height: 600f);
-
-// Add title
-var title = page.CreateTextBlock("title", "My Awesome Game", canvas, fontSize: 50f);
-title.SetMargin(top: 100f);
-title.SetAlignment(horizontal: "Center");
-
-// Add buttons
-var startButton = page.CreateButton("start_btn", "Start Game", canvas, width: 300f, height: 60f);
-startButton.SetMargin(left: 250f, top: 250f);
-
-var settingsButton = page.CreateButton("settings_btn", "Settings", canvas, width: 300f, height: 60f);
-settingsButton.SetMargin(left: 250f, top: 330f);
-
-var quitButton = page.CreateButton("quit_btn", "Quit", canvas, width: 300f, height: 60f);
-quitButton.SetMargin(left: 250f, top: 410f);
-
-// Save
-page.Save();
-project.Rescan();
+var page = UIPage.Load(@"C:\MyGame\Assets\UI\MainMenu.sduipage");
 ```
 
-### AI-Powered UI Generation
+##### `static UIPage Create(string name, string? filePath = null)`
 
-**Give this API to ChatGPT/Claude:**
+Creates a new empty UI page with a root `Grid` element automatically added.
 
+**Parameters:**
+
+- `name` (string): The name of the UI page (and its root element).
+- `filePath` (string?, optional): The optional file path where the page will be saved. Can be set later via `SaveAs()`.
+
+**Returns:** A new `UIPage` instance with a root `Grid` container.
+
+```csharp
+var newPage = UIPage.Create("SettingsMenu");
+// This page now has a root Grid element named "SettingsMenu"
 ```
-"Using the HS.Stride.Editor.Toolkit API, create a settings menu with:
-- Title: 'Settings'
-- Volume slider (0-100)
-- Graphics quality dropdown (Low/Medium/High)
-- Fullscreen toggle
-- Back button
-- Use Canvas positioning with nice spacing"
+
+#### Properties
+
+##### `string Id`
+
+The unique GUID of the UI page.
+
+##### `string FilePath`
+
+The absolute file path where this UI page is stored.
+
+##### `Dictionary<string, float> Resolution`
+
+The current design resolution of the UI page (e.g., {"X":1920, "Y":1080, "Z":1000}).
+
+##### `List<UIElement> AllElements`
+
+A list of all `UIElement` instances within this page, including nested children.
+
+##### `List<UIElement> RootElements`
+
+A list of the top-level `UIElement` instances in the page's hierarchy (usually just one root `Grid`).
+
+#### Element Manipulation Methods
+
+##### `UIElement CreateElement(string type, string name, UIElement? parent = null)`
+
+Creates a new UI element of a specified type and adds it to the page.
+
+**Parameters:**
+
+- `type` (string): The type of UI element to create (e.g., "Grid", "TextBlock", "Button", "ImageElement", "Canvas", "StackPanel", "ScrollViewer", "EditText").
+- `name` (string): The unique name of the new element.
+- `parent` (UIElement?, optional): An optional parent `UIElement` to nest this new element under. If `null`, it attempts to attach to the page's root `Grid`.
+
+**Returns:** The newly created `UIElement`.
+
+**Example:**
+
+```csharp
+var page = UIPage.Create("MainMenu");
+var rootGrid = page.RootElements.First(); // Get the auto-created root Grid
+
+// Create a TextBlock as a child of the root grid
+var titleText = page.CreateElement("TextBlock", "GameTitle", rootGrid);
+titleText.Set("Text", "My Stride Game");
+
+// Create a Button and set its parent
+var startButton = page.CreateElement("Button", "StartButton", rootGrid);
 ```
 
-The AI will generate the complete C# code using the API!
+##### `bool RemoveElement(UIElement element)`
+
+Removes a UI element from the page and its parent.
+
+**Parameters:**
+
+- `element` (UIElement): The element to remove.
+
+**Returns:** `true` if the element was successfully removed, `false` otherwise.
+
+#### Element Finding Methods
+
+##### `UIElement? FindElementById(string id)`
+
+Finds a UI element by its unique GUID.
+
+##### `UIElement? FindElementByName(string name)`
+
+Finds the first UI element with an exact name match.
+
+##### `IEnumerable<UIElement> FindElementsByName(string pattern)`
+
+Finds all UI elements matching a wildcard pattern (`*` for any characters, `?` for a single character).
+
+##### `IEnumerable<UIElement> FindElementsByType(string type)`
+
+Finds all UI elements of a specific type (e.g., "TextBlock", "Button").
+
+##### `IEnumerable<UIElement> FindElements(Func<UIElement, bool> predicate)`
+
+Finds UI elements using a custom predicate (LINQ query).
+
+#### Page Management
+
+##### `void Save()`
+
+Saves the UI page back to its original file path. Throws `InvalidOperationException` if `FilePath` is not set.
+
+##### `void SaveAs(string filePath)`
+
+Saves the UI page to a new file path.
+
+---
+
+### UIElement Class
+
+Represents an individual UI element within a `UIPage`. This class provides methods to manipulate an element's properties and its relationship within the UI hierarchy.
+
+#### Properties
+
+##### `string Id`
+
+The unique GUID of the UI element.
+
+##### `string Name`
+
+The name of the UI element (e.g., "PlayerHealthBar", "SettingsButton").
+
+##### `string Type`
+
+The type of the UI element (e.g., "TextBlock", "Button", "Grid", "Canvas").
+
+##### `Dictionary<string, object> Properties`
+
+A dictionary containing all the UI element's properties (e.g., "Margin", "Color", "Text").
+
+##### `Dictionary<string, UIElement> Children`
+
+A dictionary of child UI elements (for container types like `Grid`, `Canvas`, `StackPanel`). The key is an internal hash, and the value is the child `UIElement`.
+
+##### `UIElement? Parent`
+
+A reference to the parent `UIElement` (null if it's a root element).
+
+##### `UIPage? ParentPage`
+
+A reference to the `UIPage` this element belongs to.
+
+#### Methods
+
+##### `T? Get<T>(string key)`
+
+Gets a property value of type `T` by its key. Performs automatic type conversion.
+
+##### `void Set(string key, object value)`
+
+Sets a property value by its key.
+
+##### `bool HasProperty(string key)`
+
+Checks if a specific property exists on this UI element.
+
+##### `List<UIElement> GetChildren()`
+
+Gets a list of all direct child UI elements.
+
+##### `void AddChild(UIElement child)`
+
+Adds a `UIElement` as a child to this element (making this element a container).
+
+**Example:**
+
+```csharp
+var parentCanvas = page.CreateElement("Canvas", "MyCanvas");
+var button = page.CreateElement("Button", "MyButton");
+parentCanvas.AddChild(button); // Nest the button under the canvas
+```
+
+##### `bool RemoveChild(UIElement child)`
+
+Removes a specified child `UIElement` from this element's children.
+
+##### `UIElement? FindChildByName(string name)`
+
+Finds a direct child UI element by exact name.
+
+##### `List<UIElement> GetDescendants()`
+
+Gets a list of all descendant UI elements (children, grandchildren, etc.) recursively.
+
+---
 
 ### Complete Pause Menu Example
 
@@ -1001,18 +1343,25 @@ var page = project.CreateUIPage("PauseMenu", "UI/Menus");
 
 // Background overlay
 var rootGrid = page.RootElements.First();
-var bgImage = page.CreateImage("background", width: 1280f, height: 720f, parent: rootGrid);
-bgImage.SetBackgroundColor(0, 0, 0, 180); // Semi-transparent black
+var bgImage = page.CreateElement("ImageElement", "background", rootGrid);
+bgImage.Set("Width", 1280f);
+bgImage.Set("Height", 720f);
+bgImage.Set("BackgroundColor", new Dictionary<string, object> { ["R"] = 0, ["G"] = 0, ["B"] = 0, ["A"] = 180 }); // Semi-transparent black
 
 // Menu container
-var menuCanvas = page.CreateCanvas("menu_container", parent: rootGrid, width: 600f, height: 500f);
-menuCanvas.SetAlignment(horizontal: "Center", vertical: "Center");
+var menuCanvas = page.CreateElement("Canvas", "menu_container", rootGrid);
+menuCanvas.Set("Width", 600f);
+menuCanvas.Set("Height", 500f);
+menuCanvas.Set("HorizontalAlignment", "Center");
+menuCanvas.Set("VerticalAlignment", "Center");
 
 // Title
-var title = page.CreateTextBlock("title", "GAME PAUSED", menuCanvas, fontSize: 40f);
-title.SetMargin(top: 50f);
-title.SetAlignment(horizontal: "Center");
-title.SetTextColor(255, 255, 255, 255);
+var title = page.CreateElement("TextBlock", "title", menuCanvas);
+title.Set("Text", "GAME PAUSED");
+title.Set("TextSize", 40f);
+title.Set("Margin", new Dictionary<string, object> { ["Top"] = 50f });
+title.Set("HorizontalAlignment", "Center");
+title.Set("TextColor", new Dictionary<string, object> { ["R"] = 255, ["G"] = 255, ["B"] = 255, ["A"] = 255 });
 
 // Buttons
 var buttons = new[]
@@ -1025,8 +1374,12 @@ var buttons = new[]
 
 foreach (var (name, text, yPos) in buttons)
 {
-    var btn = page.CreateButton(name, text, menuCanvas, width: 400f, height: 60f);
-    btn.SetMargin(left: 100f, top: yPos);
+    var btn = page.CreateElement("Button", name, menuCanvas);
+    var btnText = page.CreateElement("TextBlock", $"{name}Text", btn);
+    btnText.Set("Text", text);
+    btn.Set("Width", 400f);
+    btn.Set("Height", 60f);
+    btn.Set("Margin", new Dictionary<string, object> { ["Left"] = 100f, ["Top"] = yPos });
 }
 
 page.Save();
@@ -1042,82 +1395,99 @@ var page = project.CreateUIPage("GameHUD", "UI");
 var rootGrid = page.RootElements.First();
 
 // Health bar (bottom-left)
-var healthCanvas = page.CreateCanvas("health_container", parent: rootGrid);
-healthCanvas.SetMargin(left: 20f, bottom: 20f);
-healthCanvas.SetSize(300f, 50f);
-healthCanvas.SetAlignment(horizontal: "Left", vertical: "Bottom");
+var healthCanvas = page.CreateElement("Canvas", "health_container", rootGrid);
+healthCanvas.Set("Margin", new Dictionary<string, object> { ["Left"] = 20f, ["Bottom"] = 20f });
+healthCanvas.Set("Width", 300f);
+healthCanvas.Set("Height", 50f);
+healthCanvas.Set("HorizontalAlignment", "Left");
+healthCanvas.Set("VerticalAlignment", "Bottom");
 
-var healthBg = page.CreateImage("health_bg", parent: healthCanvas);
-healthBg.SetSize(300f, 50f);
-healthBg.SetBackgroundColor(60, 60, 60, 255);
+var healthBg = page.CreateElement("ImageElement", "health_bg", healthCanvas);
+healthBg.Set("Width", 300f);
+healthBg.Set("Height", 50f);
+healthBg.Set("BackgroundColor", new Dictionary<string, object> { ["R"] = 60, ["G"] = 60, ["B"] = 60, ["A"] = 255 });
 
-var healthFg = page.CreateImage("health_bar", parent: healthCanvas);
-healthFg.SetSize(300f, 50f);
-healthFg.SetBackgroundColor(200, 0, 0, 255);
+var healthFg = page.CreateElement("ImageElement", "health_bar", healthCanvas);
+healthFg.Set("Width", 300f);
+healthFg.Set("Height", 50f);
+healthFg.Set("BackgroundColor", new Dictionary<string, object> { ["R"] = 200, ["G"] = 0, ["B"] = 0, ["A"] = 255 });
 
-var healthText = page.CreateTextBlock("health_text", "100 / 100", healthCanvas);
-healthText.SetAlignment(horizontal: "Center", vertical: "Center");
-healthText.SetTextColor(255, 255, 255, 255);
+var healthText = page.CreateElement("TextBlock", "health_text", healthCanvas);
+healthText.Set("Text", "100 / 100");
+healthText.Set("HorizontalAlignment", "Center");
+healthText.Set("VerticalAlignment", "Center");
+healthText.Set("TextColor", new Dictionary<string, object> { ["R"] = 255, ["G"] = 255, ["B"] = 255, ["A"] = 255 });
 
 // Ammo counter (bottom-right)
-var ammoCanvas = page.CreateCanvas("ammo_container", parent: rootGrid);
-ammoCanvas.SetMargin(right: 20f, bottom: 20f);
-ammoCanvas.SetSize(200f, 100f);
-ammoCanvas.SetAlignment(horizontal: "Right", vertical: "Bottom");
+var ammoCanvas = page.CreateElement("Canvas", "ammo_container", rootGrid);
+ammoCanvas.Set("Margin", new Dictionary<string, object> { ["Right"] = 20f, ["Bottom"] = 20f });
+ammoCanvas.Set("Width", 200f);
+ammoCanvas.Set("Height", 100f);
+ammoCanvas.Set("HorizontalAlignment", "Right");
+ammoCanvas.Set("VerticalAlignment", "Bottom");
 
-var ammoText = page.CreateTextBlock("ammo_text", "30 / 120", ammoCanvas, fontSize: 60f);
-ammoText.SetAlignment(horizontal: "Right", vertical: "Center");
-ammoText.SetTextColor(255, 255, 0, 255);
+var ammoText = page.CreateElement("TextBlock", "ammo_text", ammoCanvas);
+ammoText.Set("Text", "30 / 120");
+ammoText.Set("TextSize", 60f);
+ammoText.Set("HorizontalAlignment", "Right");
+ammoText.Set("VerticalAlignment", "Center");
+ammoText.Set("TextColor", new Dictionary<string, object> { ["R"] = 255, ["G"] = 255, ["B"] = 0, ["A"] = 255 });
 
 page.Save();
 project.Rescan();
 ```
 
+---
+
 ### Key Methods
 
-**UIPage Creation:**
+Here's a summary of key methods for UI manipulation:
 
-- `project.CreateUIPage(name, relativePath)` - Creates new UI page
-- `UIPage.Load(filePath)` - Loads existing UI page
-- `page.Save()` / `page.SaveAs(filePath)` - Saves changes
+**UIPage Creation & Management:**
 
-**Element Creation:**
+- `project.CreateUIPage(name, relativePath)`: Creates a new UI page asset.
+- `UIPage.Load(filePath)`: Loads an existing UI page from a file.
+- `page.Save()` / `page.SaveAs(filePath)`: Saves changes to the UI page.
 
-- `page.CreateTextBlock(name, text, parent, fontSize, horizontalAlignment, verticalAlignment)` - Text element
-- `page.CreateButton(name, buttonText, parent, width, height)` - Button with text
-- `page.CreateImage(name, spriteSheet, frame, parent, width, height)` - Image element
-- `page.CreateCanvas(name, parent, width, height)` - Canvas container
-- `page.CreateGrid(name, parent)` - Grid container
-- `page.CreateStackPanel(name, parent)` - StackPanel container
-- `page.CreateScrollViewer(name, contentElement, parent)` - ScrollViewer with content
+**UIElement Creation:**
 
-**Element Manipulation:**
+- `page.CreateElement(type, name, parent)`: Creates and adds any type of UI element (e.g., "TextBlock", "Button", "Grid") to the page, optionally parenting it.
 
-- `element.SetMargin(left, top, right, bottom)` - Position (absolute)
-- `element.SetSize(width, height)` - Dimensions
-- `element.SetAlignment(horizontal, vertical)` - Alignment
-- `element.SetBackgroundColor(r, g, b, a)` - Background color
-- `element.SetTextColor(r, g, b, a)` - Text color (TextBlock only)
-- `element.SetVisibility(visible)` - Show/hide element
-- `element.SetSpriteSheet(propertyName, spriteSheet, frame)` - Set sprite
+**UIElement Manipulation (via UIElement instance):**
 
-**Finding Elements:**
+- `element.Set(propertyName, value)`: Sets any property on a UI element (e.g., "Text", "Width", "Height").
+- `element.Get<T>(propertyName)`: Gets a property value, with type conversion.
+- `element.SetMargin(left, top, right, bottom)`: Sets the element's margin.
+- `element.SetSize(width, height)`: Sets the element's dimensions.
+- `element.SetAlignment(horizontal, vertical)`: Sets the element's alignment.
+- `element.SetBackgroundColor(r, g, b, a)`: Sets the element's background color.
+- `element.SetTextColor(r, g, b, a)`: Sets text color (for TextBlock).
+- `element.AddChild(child)`: Adds a UIElement as a child to a container element.
+- `element.RemoveChild(child)`: Removes a child UIElement.
 
-- `page.FindElementById(id)` - Find by ID
-- `page.FindElementByName(name)` - Find by name
-- `page.FindElementsByName(pattern)` - Find by pattern (`*`, `?`)
-- `page.FindElementsByType(type)` - Find by type (Button, TextBlock, etc.)
+**UIElement Finding:**
+
+- `page.FindElementById(id)`: Finds a UI element by its ID.
+- `page.FindElementByName(name)`: Finds a UI element by exact name.
+- `page.FindElementsByName(pattern)`: Finds elements by wildcard name pattern.
+- `page.FindElementsByType(type)`: Finds elements by type.
+- `page.FindElements(predicate)`: Finds elements using a custom filter function.
+- `element.FindChildByName(name)`: Finds a direct child element by name.
+- `element.GetChildren()`: Gets all direct children.
+- `element.GetDescendants()`: Gets all children and grandchildren recursively.
 
 ### UI Element Types
 
-- **TextBlock** - Display text
-- **Button** - Clickable button (auto-creates TextBlock content)
-- **ImageElement** - Display sprites/textures
-- **Canvas** - Absolute positioning container
-- **Grid** - Grid layout container
-- **StackPanel** - Stack layout container
-- **ScrollViewer** - Scrollable content container
-- **EditText** - Text input field
+The `CreateElement` method supports the following common UI types (case-insensitive for `type` parameter):
+
+- **TextBlock**: Displays text.
+- **Button**: A clickable button.
+- **ImageElement**: Displays sprites or textures (e.g., health bars, icons).
+- **Canvas**: A container for absolute positioning of child elements.
+- **Grid**: A container for grid-based layout.
+- **StackPanel**: A container that stacks child elements horizontally or vertically.
+- **ScrollViewer**: A container that provides scrolling for its content.
+- **EditText**: An input field for text.
 
 ---
 
@@ -1462,6 +1832,19 @@ var name = component.Get<string>("CharacterName");
 
 // Nested properties
 var posX = component.Get<float>("Position.X");
+
+// Getting a List property (returns as Dictionary<string, object> by default)
+var myItems = component.Get<Dictionary<string, object>>("Inventory.Items");
+if (myItems != null)
+{
+    foreach (var itemEntry in myItems.Values)
+    {
+        if (itemEntry is Dictionary<string, object> item)
+        {
+            Console.WriteLine($"Item: {item["Name"]}, Quantity: {item["Quantity"]}");
+        }
+    }
+}
 ```
 
 ##### `void Set(string propertyName, object value)`
@@ -1491,6 +1874,19 @@ component.Set("JumpHeight", 2.0f);
 // Nested properties
 component.Set("Stats.Strength", 10);
 component.Set("Stats.Agility", 15);
+
+// Setting a List or Dictionary property requires recreating the underlying dictionary structure
+// For more convenient methods to modify collections, see "Working with Collections" further below.
+component.Set("Inventory.Capacity", 20); // Setting a simple property in a nested structure
+
+// Example of setting an entire list/array (e.g., of strings)
+// Note: Stride serializes collections as GUID-keyed dictionaries in YAML.
+// For simpler modification of lists/dictionaries, use the helper methods like AddToList(), SetDictionary(), SetList().
+component.Set("AllowedWeapons", new Dictionary<string, object>
+{
+    { Guid.NewGuid().ToString("N"), "Sword" },
+    { Guid.NewGuid().ToString("N"), "Axe" }
+});
 ```
 
 ##### `Dictionary<string, object>? GetMultiValueProperty(string propertyName)`
@@ -1524,6 +1920,10 @@ Sets a property that contains multiple fields (e.g., Vector3 with X,Y,Z or Color
 - `propertyName` (string) - Property name
 - `value` (Dictionary<string, object>) - Multi-value property data
 
+##### `Entity? GetEntityRef(string propertyName)`
+
+Gets an entity reference property by name and resolves it to an `Entity` object.
+
 ##### `void SetEntityRef(string propertyName, Entity entity)`
 
 Sets an entity reference property.
@@ -1533,9 +1933,15 @@ var player = scene.FindEntityByName("Player");
 aiComponent.SetEntityRef("Target", player);
 ```
 
+##### `AssetReference? GetAssetRef(string propertyName)`
+
+Gets an asset reference property by name and resolves it to an `AssetReference` object.
+**Note on Stride "URL-like" Asset References:** In Stride, assets are often referenced internally by a `GUID:Path` string (e.g., `"a1b2c3d4-e5f6-7890-abcd-ef1234567890:Textures/MyTexture"`). This method helps retrieve such references.
+
 ##### `void SetAssetRef(string propertyName, AssetReference asset)`
 
-Sets an asset reference property (Prefab, Texture, etc.).
+Sets an asset reference property (Prefab, Texture, Model, RawAsset, etc.).
+**Note on Stride "URL-like" Asset References:** This method automatically converts the provided `AssetReference` into Stride's standard `GUID:Path` string format (e.g., `"a1b2c3d4-e5f6-7890-abcd-ef1234567890:Textures/MyTexture"`) and sets it as the property value. This is how components link to assets programmatically.
 
 ```csharp
 var prefab = project.FindAsset("Enemy", AssetType.Prefab);
@@ -1549,8 +1955,8 @@ Adds an item to a property that is a List or an array.
 ```csharp
 var enemy1 = scene.FindEntityByName("Enemy1");
 var enemy2 = scene.FindEntityByName("Enemy2");
-spawnerScript.AddToList("SpawnTargets", $"ref!! {enemy1.Id}");
-spawnerScript.AddToList("SpawnTargets", $"ref!! {enemy2.Id}");
+spawnerScript.AddToList("SpawnTargets", enemy1); // Use Entity object directly
+spawnerScript.AddToList("SpawnTargets", enemy2); // Use Entity object directly
 ```
 
 ##### `void SetDictionary(string propertyName, object key, object value)`
@@ -1574,43 +1980,49 @@ spawner.SetList("SpawnPoints", new[] { $"ref!! {entity1.Id}", $"ref!! {entity2.I
 
 ---
 
+### Working with Collections (Lists, Arrays, Dictionaries)
+
+For more detailed examples and helper methods like `AddToList()`, `SetDictionary()`, and `SetList()` for modifying component properties that are collections, please refer to the "Writing Custom Component Properties" section under "Working with Custom Components" below.
+
+---
+
 ## Working with Custom Components (CRITICAL)
 
 This section is **essential** for anyone working with custom Stride components created in C#.
 
-### The Three Approaches
+### Component Interaction Strategies
 
-There are **three ways** to work with components in this toolkit:
+Working with components fundamentally involves getting and setting property values. The toolkit provides different **interaction strategies** that offer varying levels of convenience, type-safety, and code readability over this core `Get()`/`Set()` functionality.
 
-| Approach                    | Use Case                                                   | Pros                                           | Cons                           |
-| --------------------------- | ---------------------------------------------------------- | ---------------------------------------------- | ------------------------------ |
-| **Built-in Typed Wrappers** | Built-in Stride components (Transform, Model, Light, etc.) | Type-safe, IntelliSense, shape helpers         | Only for built-in components   |
-| **Direct Component Access** | Custom components, quick edits                             | Works with ANY component, no extra code needed | No compile-time type checking  |
-| **Custom Wrapper Classes**  | Your own custom components (recommended)                   | Type-safe, IntelliSense, reusable              | Requires writing wrapper class |
+| Strategy                          | Description                                                         | Primary Use Case                                                    | Benefits                                                     | Cautions                                                   |
+| :-------------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------------ | :----------------------------------------------------------- | :--------------------------------------------------------- |
+| **Direct Component Access**       | Using `Component.Get<T>()` and `Component.Set()` directly.        | Custom components, quick edits, dynamic property manipulation.      | Flexible, handles any component, no wrapper code needed.     | Verbose syntax, no compile-time type checking for property names. |
+| **Custom Wrapper Classes**        | Creating a dedicated C# class to abstract `Component.Get()`/`Set()`. | Your own frequently used custom components.                         | Type-safe, IntelliSense, reusable, cleaner code, custom helper methods. | Requires writing and maintaining wrapper class definitions. |
+| **Built-in Typed Wrappers**       | Toolkit-provided wrappers for core Stride components.               | Core Stride components (Transform, Model, Light, Colliders, Physics). | Highly convenient, type-safe, IntelliSense, specialized helper methods. | Limited to a predefined set of core Stride components.     |
 
-### Approach 1: Automatic Script Scanning (Easiest)
+### 1. Direct Component Access (The Foundation)
 
-**NEW:** The toolkit now automatically scans your C# scripts and extracts namespace, assembly name, and public properties. Just use the class name:
+This strategy involves directly using the `Component` class's generic `Get<T>()` and flexible `Set()` methods. It's the **foundational** way to interact with any component and is particularly effective for custom (C#) components. The toolkit leverages **automatic script scanning** to understand your component's properties, which then allows for validation in `Strict` mode and safe manipulation.
+
+This is the primary method for interacting with custom (C#) components. The toolkit leverages **automatic script scanning** to understand your component's properties, which then allows for validation in `Strict` mode and safe manipulation.
 
 ```csharp
 var project = new StrideProject(@"C:\MyGame");
 var scene = project.LoadScene("Level1");
 var player = scene.FindEntityByName("Player");
 
-// Add custom component by class name - automatic script scanning!
+// Add custom component by class name. The toolkit automatically scans your C# scripts
+// to resolve the full type and initialize properties with Stride-compatible defaults.
 var health = player.AddComponent("HealthComponent");
 
-// Properties are automatically initialized with correct defaults
-// - Primitives: 0, 0.0f, false, "null"
-// - References (Entity, Prefab, Model, etc.): "null"
-// - Collections (List<>, arrays, Dictionary<>): "null"
-
-// Set properties directly
+// Set properties directly using the flexible Set() method.
+// - In ProjectMode.Strict (default): This method validates that "MaxHealth" exists
+//   in your C# script's public properties and checks for type compatibility.
 health.Set("MaxHealth", 100.0f);
 health.Set("CurrentHealth", 100.0f);
 health.Set("Regeneration", 5.0f);
 
-// Read properties
+// Read properties using the generic Get<T>() method.
 var currentHP = health.Get<float>("CurrentHealth");
 var maxHP = health.Get<float>("MaxHealth");
 
@@ -1619,35 +2031,24 @@ Console.WriteLine($"Player HP: {currentHP}/{maxHP}");
 scene.Save();
 ```
 
-**How it works:**
+**Understanding `ProjectMode.Strict` vs. `ProjectMode.Loose`:**
 
-1. `AddComponent("ClassName")` searches the ProjectScanner cache for a script with that class name
-2. ScriptScanner extracts: namespace, assembly name (from .csproj), and all public fields/properties
-3. ScriptToComponent creates a properly formatted component with:
-   - Full type tag: `!Namespace.ClassName,AssemblyName` (or `!.ClassName,AssemblyName` if no namespace)
-   - All properties initialized with Stride-compatible default values
-4. Component is added to entity with correct YAML format
+The behavior of `Component.Set()` in Direct Component Access depends on the `ProjectMode` of your `StrideProject` instance:
 
-**Supports scripts with and without namespaces:**
+* **`ProjectMode.Strict` (Default):**
+  * **Validation:** The toolkit uses script scanning to ensure the property you're trying to `Set()` actually exists as a public property in your component's C# script and performs basic type checking.
+  * **Safety:** This helps catch typos and ensures you are only modifying properties that Stride will serialize and recognize. An `InvalidOperationException` is thrown if validation fails.
+* **`ProjectMode.Loose`:**
+  * **Flexibility:** Allows you to `Set()` any property name. No validation is performed against your C# script.
+  * **Caution:** Invalid property names (those not defined in your C# script or not serialized by Stride) will simply be ignored by Stride at runtime. Use this mode with caution for dynamic or advanced scenarios where you explicitly know what you're doing.
 
-```csharp
-// Script with namespace: MyGame.HealthComponent -> !MyGame.HealthComponent,MyGame
-// Script without namespace: HealthComponent -> !.HealthComponent,MyGame
-```
+**When to use Direct Component Access:**
 
-**⚠️ IMPORTANT:**
+- For quick scripts and one-off modifications.
+- When working with simple custom components where creating a full wrapper class is overkill.
+- Prototyping and testing.
 
-- Only properties that Stride serializes (visible in Stride's Property Grid) can be accessed
-- Entity must have ParentProject set (automatic when using `StrideProject.LoadScene()`)
-- For manual Scene.Load(), script scanning won't work (use full type name instead)
-
-**When to use:**
-
-- Quick scripts and one-off modifications
-- Simple components with few properties
-- Prototyping and testing
-
-### Approach 2: Create Custom Wrapper Classes (Recommended for Reusable Code)
+### 2. Custom Wrapper Classes (Enhancing Custom Components)
 
 For components you use frequently, create your own wrapper class (just like the built-in wrappers):
 
@@ -1748,29 +2149,56 @@ scene.Save();
 - When you want helper methods and validation
 - Team projects where IntelliSense helps other developers
 
+### 3. Built-in Typed Wrappers (Simplifying Core Stride Components)
+
+For common, built-in Stride components (like `TransformComponent`, `ModelComponent`, `LightComponent`, `StaticColliderComponent`, `RigidbodyComponent`), the toolkit provides **typed wrapper classes**. These wrappers offer highly convenient, type-safe access with IntelliSense and often include helper methods for common operations.
+
+**Examples of Built-in Wrappers:**
+
+* `TransformWrapper` (accessed via `entity.GetTransform()`)
+* `ModelWrapper` (accessed via `entity.GetModel()`)
+* `StaticColliderWrapper` (accessed via `entity.GetStaticCollider()`)
+* `RigidbodyWrapper` (accessed via `entity.GetRigidbody()`)
+* `LightWrapper` (accessed via `entity.GetLight()`)
+
+You can find more details in the [Typed Component Wrappers](#typed-component-wrappers) section.
+
+**When to use Built-in Typed Wrappers:**
+
+- Always, when working with the core Stride components they are designed for, as they simplify common tasks and provide type safety.
+
+---
+
 ### Comparison: The Same Operation Three Ways
 
-**Built-in Wrapper (Transform):**
+To illustrate the different approaches, here's how you might set a property:
+
+**Built-in Wrapper (Transform - Most Convenient):**
 
 ```csharp
+// Use GetTransform() to get the TransformWrapper
 var transform = entity.GetTransform();
-transform.SetPosition(10, 5, 0);
+transform.SetPosition(10, 5, 0); // Type-safe, specific method
 ```
 
-**Direct Access (Custom Component):**
+**Custom Wrapper (Your Own Health Component - Type-safe & Reusable):**
 
 ```csharp
-var health = entity.AddComponent("MyGame.HealthComponent");
-health.Set("MaxHealth", 100.0f);
-health.Set("CurrentHealth", 100.0f);
-```
-
-**Custom Wrapper (Your Own):**
-
-```csharp
+// Use your custom extension method to get/add your HealthWrapper
 var health = entity.AddHealth(maxHealth: 100.0f);
-health.Heal(50.0f);
+health.Heal(50.0f); // Type-safe, custom logic
 ```
+
+**Direct Component Access (Health Component - Flexible but Verbose):**
+
+```csharp
+// Use AddComponent() to get the generic Component object
+var healthComponent = entity.AddComponent("MyGame.HealthComponent");
+healthComponent.Set("MaxHealth", 100.0f); // Requires string property name
+healthComponent.Set("CurrentHealth", 100.0f);
+```
+
+---
 
 ### Understanding Custom Components
 
@@ -1959,27 +2387,25 @@ var enemy = scene.FindEntityByName("Enemy");
 var aiComponent = enemy.GetComponent("AIController");
 
 // Read entity reference
-var targetRef = aiComponent.Get<EntityRefData>("Target");
-if (targetRef != null)
+var targetEntity = aiComponent.GetEntityRef("Target")?.Resolve(scene);
+if (targetEntity != null)
 {
-    var targetEntity = targetRef.Resolve(scene);
-    Console.WriteLine($"AI is targeting: {targetEntity?.Name}");
+    Console.WriteLine($"AI is targeting: {targetEntity.Name}");
 }
 
 // Read asset reference
-var prefabRef = aiComponent.Get<AssetRefData>("SpawnPrefab");
-if (prefabRef != null)
+var prefabAsset = aiComponent.GetAssetRef("SpawnPrefab")?.Resolve(project);
+if (prefabAsset != null)
 {
-    var prefabAsset = prefabRef.Resolve(project);
-    Console.WriteLine($"Will spawn: {prefabAsset?.Name}");
+    Console.WriteLine($"Will spawn: {prefabAsset.Name}");
 }
 ```
 
 **Reference Data Types:**
 
 - `EntityRefData` - For entity references (format: `ref!! guid`)
-- `AssetRefData` - For asset references (format: `guid:path`)
-  - Works with: Prefab, Model, Material, Texture, RawAsset (UrlReference), etc.
+- `AssetRefData` - For asset references, representing Stride's "URL-like" `GUID:Path` string format.
+  - Used for linking to assets like Prefabs, Models, Materials, Textures, RawAssets (which themselves can point to external content), etc. The `AssetReference.Reference` property provides this `guid:path` string.
 
 Both types have a `Resolve()` method to get the actual object.
 
@@ -1998,14 +2424,14 @@ var spawnerScript = spawner.GetComponent("SpawnerScript");
 // Add entities to a List<Entity>
 var enemy1 = scene.FindEntityByName("Enemy1");
 var enemy2 = scene.FindEntityByName("Enemy2");
-spawnerScript.AddToList("SpawnTargets", $"ref!! {enemy1.Id}");
-spawnerScript.AddToList("SpawnTargets", $"ref!! {enemy2.Id}");
+spawnerScript.AddToList("SpawnTargets", enemy1); // Use Entity object directly
+spawnerScript.AddToList("SpawnTargets", enemy2); // Use Entity object directly
 
 // Add assets to a List<Prefab>
 var prefab1 = project.FindAsset("ZombiePrefab", AssetType.Prefab);
 var prefab2 = project.FindAsset("SkeletonPrefab", AssetType.Prefab);
-spawnerScript.AddToList("PrefabList", prefab1.Reference);
-spawnerScript.AddToList("PrefabList", prefab2.Reference);
+spawnerScript.AddToList("PrefabList", prefab1); // Use AssetReference object directly
+spawnerScript.AddToList("PrefabList", prefab2); // Use AssetReference object directly
 
 scene.Save();
 ```
@@ -2041,9 +2467,9 @@ var entity3 = scene.FindEntityByName("Point3");
 
 spawner.SetList("SpawnPoints", new[]
 {
-    $"ref!! {entity1.Id}",
-    $"ref!! {entity2.Id}",
-    $"ref!! {entity3.Id}"
+    entity1, // Use Entity object directly
+    entity2, // Use Entity object directly
+    entity3  // Use Entity object directly
 });
 
 scene.Save();
@@ -2521,124 +2947,7 @@ light.SetColor(1.0f, 0.8f, 0.6f, 1.0f);
 
 ---
 
-## Asset Scanning & References
-
-### ProjectScanner Class
-
-**Namespace:** `HS.Stride.Editor.Toolkit.Utilities`
-
-Scans a Stride project to discover and index all assets.
-
-#### Constructor
-
-##### `ProjectScanner(string projectPath)`
-
-Creates a scanner for the specified project.
-
-**Parameters:**
-
-- `projectPath` (string) - Path to the Stride project root folder
-
-**Throws:**
-
-- `ArgumentException` - If not a valid Stride project
-
-**Example:**
-
-```csharp
-var scanner = new ProjectScanner(@"C:\MyGame");
-```
-
-#### Methods
-
-##### `void Scan()`
-
-Scans the project and indexes all assets in the Assets folder.
-
-**Example:**
-
-```csharp
-scanner.Scan();
-Console.WriteLine($"Found {scanner.GetAllAssets().Count} assets");
-```
-
-##### Get Methods by Type
-
-- `List<AssetReference> GetPrefabs()`
-- `List<AssetReference> GetModels()`
-- `List<AssetReference> GetMaterials()`
-- `List<AssetReference> GetTextures()`
-- `List<AssetReference> GetScenes()`
-- `List<AssetReference> GetAnimations()`
-- `List<AssetReference> GetSkeletons()`
-- `List<AssetReference> GetSounds()`
-- `List<AssetReference> GetUIPages()`
-- `List<AssetReference> GetSpriteSheets()`
-- `List<AssetReference> GetEffects()`
-- `List<AssetReference> GetAllAssets()`
-- `List<AssetReference> GetAssets(AssetType type)`
-
-**Example:**
-
-```csharp
-var prefabs = scanner.GetPrefabs();
-var materials = scanner.GetMaterials();
-var allScenes = scanner.GetScenes();
-```
-
-##### `AssetReference? FindAsset(string name, AssetType? type = null)`
-
-Finds an asset by exact name match.
-
-**Parameters:**
-
-- `name` (string) - Asset name (without extension)
-- `type` (AssetType?, optional) - Filter by type
-
-**Returns:** AssetReference or null
-
-**Example:**
-
-```csharp
-var playerModel = scanner.FindAsset("PlayerCharacter", AssetType.Model);
-var anyPlayerAsset = scanner.FindAsset("PlayerCharacter"); // First match of any type
-```
-
-##### `List<AssetReference> FindAssets(string pattern, AssetType? type = null)`
-
-Finds assets matching a wildcard pattern.
-
-**Parameters:**
-
-- `pattern` (string) - Pattern with `*` or `?` wildcards
-- `type` (AssetType?, optional) - Filter by type
-
-**Returns:** List of matching assets
-
-**Example:**
-
-```csharp
-var enemies = scanner.FindAssets("Enemy_*", AssetType.Prefab);
-var allWeapons = scanner.FindAssets("Weapon*");
-```
-
-##### `AssetReference? FindAssetByPath(string path)`
-
-Finds an asset by its relative path (from Assets folder).
-
-**Parameters:**
-
-- `path` (string) - Relative path with forward slashes, no extension
-
-**Returns:** AssetReference or null
-
-**Example:**
-
-```csharp
-var asset = scanner.FindAssetByPath("Characters/Player/PlayerModel");
-```
-
-### AssetReference Class
+##### AssetReference Class
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
 
@@ -2772,7 +3081,7 @@ All asset classes implement the `IStrideAsset` interface with common methods:
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
 
-Edit material files (.sdmat).
+Represents an editable Stride Material asset (.sdmat).
 
 #### Loading
 
@@ -2780,54 +3089,78 @@ Edit material files (.sdmat).
 var material = MaterialAsset.Load(@"C:\MyGame\Assets\Materials\PlayerMat.sdmat");
 ```
 
+#### Properties
+
+##### `string Id`
+
+The asset's unique GUID (inherited from `IStrideAsset`).
+
+##### `string FilePath`
+
+The asset's absolute file path on disk (inherited from `IStrideAsset`).
+
 #### Methods
+
+##### `void Save()`
+
+Saves the material's current state back to its original file (inherited from `IStrideAsset`).
+
+##### `void SaveAs(string filePath)`
+
+Saves the material's current state to a new file (inherited from `IStrideAsset`).
 
 ##### `object? Get(string propertyName)`
 
 Gets a property value by name. Supports nested paths with dot notation.
-
-**NOTE:** Only properties saved in the .sdmat file (visible in Stride's Property Grid) can be accessed.
-
+**NOTE:** Only properties saved in the `.sdmat` file (visible in Stride's Property Grid) can be accessed.
 **Example:**
 
 ```csharp
-var texture = material.Get("Attributes.Texture");
+// Get the direct texture ID/path reference
+var textureReference = material.Get("Attributes.Diffuse.DiffuseMap.Texture");
+
+// Get a nested property like color components
+var diffuseColorR = material.Get("Attributes.Diffuse.Color.R");
 ```
 
 ##### `void Set(string propertyName, object value)`
 
 Sets a property value by name. Supports nested paths with dot notation.
-
 **NOTE:** Only properties that Stride serializes will persist when saved.
-
 **Example:**
 
 ```csharp
-material.Set("Attributes.Texture", newTextureRef.Reference);
+// Set the direct texture ID/path reference
+material.Set("Attributes.Diffuse.DiffuseMap.Texture", newTextureRef.Reference);
+
+// Set a nested property, e.g., diffuse color
+material.Set("Attributes.Diffuse.Color.R", 1.0f);
+material.Set("Attributes.Diffuse.Color.G", 0.5f);
+material.Set("Attributes.Diffuse.Color.B", 0.0f);
 ```
 
 ##### `string? GetDiffuseTexture()`
 
-Gets the diffuse texture reference.
+Gets the diffuse texture reference string (e.g., "guid:path").
 
 ##### `void SetDiffuseTexture(string textureReference)`
 
-Sets the diffuse texture reference.
+Sets the diffuse texture reference string.
 
 **Example:**
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var newTex = scanner.FindAsset("NewTexture", AssetType.Texture);
-
-material.SetDiffuseTexture(newTex.Reference);
-material.Save();
+var newTex = project.FindAsset("NewTexture", AssetType.Texture);
+if (newTex != null)
+{
+    material.SetDiffuseTexture(newTex.Reference);
+    material.Save();
+}
 ```
 
 ##### `(float X, float Y)? GetUVScale()`
 
-Gets the UV scale.
+Gets the UV scale values as a tuple (X, Y). Returns `null` if not found.
 
 ##### `void SetUVScale(float x, float y)`
 
@@ -2848,7 +3181,7 @@ Gets all properties as a dictionary (for inspection/debugging).
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
 
-Edit texture files (.sdtex).
+Represents an editable Stride Texture asset (.sdtex).
 
 #### Loading
 
@@ -2858,9 +3191,17 @@ var texture = TextureAsset.Load(@"C:\MyGame\Assets\Textures\Player.sdtex");
 
 #### Properties
 
+##### `string Id`
+
+The asset's unique GUID (inherited from `IStrideAsset`).
+
+##### `string FilePath`
+
+The asset's absolute file path on disk (inherited from `IStrideAsset`).
+
 ##### `bool IsStreamable`
 
-Enable/disable texture streaming.
+Gets or sets whether the texture is streamable.
 
 **Example:**
 
@@ -2869,9 +3210,9 @@ texture.IsStreamable = true;
 texture.Save();
 ```
 
-##### `bool PremultiplyAlpha`
+##### `bool? PremultiplyAlpha`
 
-Enable/disable premultiply alpha.
+Gets or sets whether to premultiply alpha (if Type is ColorTextureType).
 
 **Example:**
 
@@ -2882,34 +3223,52 @@ texture.Save();
 
 #### Methods
 
+##### `void Save()`
+
+Saves the texture's current state back to its original file (inherited from `IStrideAsset`).
+
+##### `void SaveAs(string filePath)`
+
+Saves the texture's current state to a new file (inherited from `IStrideAsset`).
+
 ##### `string? GetSource()`
 
-Gets the source file path.
+Gets the source file path for the texture. Returns the path without the `!file` prefix.
 
 ##### `void SetSource(string sourcePath)`
 
-Sets the source file path.
+Sets the source file path for the texture. The `!file` prefix will be automatically added.
 
 **Example:**
 
 ```csharp
+// Set source to a relative path within the project
 texture.SetSource("../Textures/player_diffuse.png");
 texture.Save();
+
+// Get the source path back
+var sourcePath = texture.GetSource(); // Will be "../Textures/player_diffuse.png"
 ```
 
-##### Generic Methods
+##### `object? Get(string propertyName)`
 
-Same as MaterialAsset:
+Gets a property value by name. Supports nested paths with dot notation.
+**NOTE:** Only properties saved in the `.sdtex` file (visible in Stride's Property Grid) can be accessed.
 
-- `Get(string propertyName)`
-- `Set(string propertyName, object value)`
-- `GetAllProperties()`
+##### `void Set(string propertyName, object value)`
+
+Sets a property value by name. Supports nested paths with dot notation.
+**NOTE:** Only properties that Stride serializes will persist when saved.
+
+##### `Dictionary<string, object> GetAllProperties()`
+
+Gets all properties as a dictionary (for inspection/debugging).
 
 ### AnimationAsset
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
 
-Edit animation files (.sdanim).
+Represents an editable Stride Animation asset (.sdanim).
 
 #### Loading
 
@@ -2919,9 +3278,17 @@ var anim = AnimationAsset.Load(@"C:\MyGame\Assets\Animations\Walk.sdanim");
 
 #### Properties
 
+##### `string Id`
+
+The asset's unique GUID (inherited from `IStrideAsset`).
+
+##### `string FilePath`
+
+The asset's absolute file path on disk (inherited from `IStrideAsset`).
+
 ##### `string? RepeatMode`
 
-Get/set repeat mode (e.g., "LoopInfinite", "PlayOnce").
+Gets or sets the repeat mode for the animation (e.g., "LoopInfinite", "PlayOnce").
 
 **Example:**
 
@@ -2930,19 +3297,49 @@ anim.RepeatMode = "LoopInfinite";
 anim.Save();
 ```
 
+##### `bool RootMotion`
+
+Gets or sets whether root motion is enabled for the animation.
+
+**Example:**
+
+```csharp
+anim.RootMotion = true;
+anim.Save();
+```
+
 #### Methods
+
+##### `void Save()`
+
+Saves the animation's current state back to its original file (inherited from `IStrideAsset`).
+
+##### `void SaveAs(string filePath)`
+
+Saves the animation's current state to a new file (inherited from `IStrideAsset`).
 
 ##### `string? GetSource()`
 
+Gets the source file path for the animation.
+
 ##### `void SetSource(string sourcePath)`
 
-Get/set animation source file.
+Sets the source file path for the animation.
+
+**Example:**
+
+```csharp
+anim.SetSource("../Animations/player_walk.fbx");
+anim.Save();
+```
 
 ##### `string? GetSkeletonReference()`
 
+Gets the reference to the skeleton asset used by this animation.
+
 ##### `void SetSkeletonReference(string skeletonReference)`
 
-Get/set skeleton reference.
+Sets the reference to the skeleton asset used by this animation.
 
 **Example:**
 
@@ -2957,95 +3354,46 @@ anim.Save();
 
 ##### `string? GetPreviewModel()`
 
+Gets the reference to the preview model asset for this animation.
+
 ##### `void SetPreviewModel(string modelReference)`
 
-Get/set preview model.
+Sets the reference to the preview model asset for this animation.
+
+**Example:**
+
+```csharp
+var scanner = new ProjectScanner(projectPath);
+scanner.Scan();
+var model = scanner.FindAsset("PlayerModel", AssetType.Model);
+
+anim.SetPreviewModel(model.Reference);
+anim.Save();
+```
+
+##### `object? Get(string propertyName)`
+
+Gets a property value by name. Supports nested paths with dot notation.
+**NOTE:** Only properties saved in the `.sdanim` file (visible in Stride's Property Grid) can be accessed.
+
+##### `void Set(string propertyName, object value)`
+
+Sets a property value by name. Supports nested paths with dot notation.
+**NOTE:** Only properties that Stride serializes will persist when saved.
+
+##### `Dictionary<string, object> GetAllProperties()`
+
+Gets all properties as a dictionary (for inspection/debugging).
 
 ### PrefabAsset
 
-**Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
-
-Edit prefab files (.sdprefab). Prefabs are essentially scenes with entities.
-
-⚠️ **WARNING - Advanced/Risky:** Editing prefab assets directly (adding/removing entities, modifying structure) can corrupt the YAML file. **Safer alternative:** Edit prefab instances in scenes instead of the prefab asset file.
-
-**Safe operations:** Querying entities, finding components (read-only)
-**Risky operations:** CreateEntity, RemoveEntity, modifying hierarchy, then Save()
-
-**Recommended workflow:** Load prefab → Query only. To modify, instantiate in a scene and edit there.
-
-#### Loading
-
-```csharp
-var prefab = PrefabAsset.Load(@"C:\MyGame\Assets\Prefabs\Enemy.sdprefab");
-```
-
-#### Properties
-
-##### `List<Entity> AllEntities`
-
-All entities in the prefab.
-
-#### Methods
-
-##### Entity Finding
-
-Same as Scene:
-
-- `Entity? FindEntityById(string id)`
-- `Entity? FindEntityByName(string name)`
-- `List<Entity> FindEntitiesByName(string pattern)`
-- `List<Entity> FindEntitiesWithComponent(string componentType)`
-- `List<Entity> FindEntities(Func<Entity, bool> predicate)`
-
-##### `Entity? GetRootEntity()`
-
-Gets the prefab's root entity.
-
-**Example:**
-
-```csharp
-var prefab = PrefabAsset.Load("Enemy.sdprefab");
-var root = prefab.GetRootEntity();
-
-// Modify root entity
-var transform = root.GetTransform();
-transform.SetScale(1.5f, 1.5f, 1.5f);
-
-prefab.Save();
-```
-
-##### Entity Manipulation
-
-Same as Scene:
-
-- `Entity CreateEntity(string name, string? folder = null)`
-- `Entity CreateEntity(string name, string parent, ParentType parentType)` - See Scene.CreateEntity documentation for details
-- `void RemoveEntity(Entity entity)`
-
-**Example:**
-
-```csharp
-var prefab = PrefabAsset.Load("House.sdprefab");
-
-// Add new entity to prefab with folder organization
-var window = prefab.CreateEntity("Window", "Exterior", ParentType.Folder);
-
-// Or create with entity hierarchy
-var doorHandle = prefab.CreateEntity("Handle", "Door", ParentType.Entity);
-
-// Find entities in prefab
-var doors = prefab.FindEntitiesByName("Door*");
-var modelsInPrefab = prefab.FindEntitiesWithComponent("ModelComponent");
-
-prefab.Save();
-```
+For detailed information on creating and manipulating Prefab assets, please see the [Prefab Creation (Programmatically)](#prefab-creation-programmatically) section, which includes the full `Prefab` class API.
 
 ### UIPageAsset
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
 
-Edit UI page files (.sdpage).
+Represents an editable Stride UI Page asset (.sduipage).
 
 #### Loading
 
@@ -3053,15 +3401,33 @@ Edit UI page files (.sdpage).
 var page = UIPageAsset.Load(@"C:\MyGame\Assets\UI\MainMenu.sdpage");
 ```
 
+#### Properties
+
+##### `string Id`
+
+The asset's unique GUID (inherited from `IStrideAsset`).
+
+##### `string FilePath`
+
+The asset's absolute file path on disk (inherited from `IStrideAsset`).
+
 #### Methods
+
+##### `void Save()`
+
+Saves the UI page's current state back to its original file (inherited from `IStrideAsset`).
+
+##### `void SaveAs(string filePath)`
+
+Saves the UI page's current state to a new file (inherited from `IStrideAsset`).
 
 ##### `(float X, float Y, float Z)? GetDesignResolution()`
 
-Gets the design resolution.
+Gets the design resolution (width, height, depth) of the UI page. Returns `null` if not found.
 
 ##### `void SetDesignResolution(float x, float y, float z)`
 
-Sets the design resolution.
+Sets the design resolution of the UI page.
 
 **Example:**
 
@@ -3070,22 +3436,160 @@ page.SetDesignResolution(1920, 1080, 1000);
 page.Save();
 ```
 
-##### Generic Methods
+##### `object? Get(string propertyName)`
 
-- `Get(string propertyName)`
-- `Set(string propertyName, object value)`
-- `GetAllProperties()`
+Gets a property value by name. Supports nested paths with dot notation.
+**NOTE:** Only properties saved in the `.sduipage` file (visible in Stride's Property Grid) can be accessed.
 
-### SoundAsset, SkeletonAsset, SpriteSheetAsset, EffectAsset
+##### `void Set(string propertyName, object value)`
 
-All follow the same pattern with:
+Sets a property value by name. Supports nested paths with dot notation.
+**NOTE:** Only properties that Stride serializes will persist when saved.
 
-- `static Load(string filePath)`
-- `Get(string propertyName)` / `Set(string propertyName, object value)`
-- `GetAllProperties()`
-- `Save()` / `SaveAs(string filePath)`
+##### `Dictionary<string, object> GetAllProperties()`
 
-**NOTE:** All Get/Set methods only work with properties that Stride serializes to the asset file.
+Gets all properties as a dictionary (for inspection/debugging).
+
+### Generic Asset Editing: SoundAsset, SkeletonAsset, SpriteSheetAsset, EffectAsset
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
+
+These asset types typically involve fewer direct manipulation methods than `MaterialAsset` or `UIPageAsset`. For `SoundAsset`, `SkeletonAsset`, `SpriteSheetAsset`, and `EffectAsset`, interactions primarily involve loading the asset and then using the generic `Get()` and `Set()` methods to modify their properties.
+
+They all implement the `IStrideAsset` interface, providing:
+
+- `string Id` - The asset's unique GUID.
+- `string FilePath` - The asset's absolute file path on disk.
+- `void Save()` - Saves the asset's current state back to its original file.
+- `void SaveAs(string filePath)` - Saves the asset's current state to a new file.
+
+These assets can be loaded using their static `Load(string filePath)` method.
+
+#### SoundAsset
+
+Represents an editable Stride Sound asset (`.sdsnd`).
+
+##### Loading
+
+```csharp
+var sound = SoundAsset.Load(@"C:\MyGame\Assets\Sounds\Explosion.sdsnd");
+```
+
+##### Properties & Methods (Generic)
+
+Sound assets often have properties like `Stream`, `Spatialized`, `Volume`, or `Loop`. You can access and modify these using the generic `Get` and `Set` methods.
+
+**Example:**
+
+```csharp
+// Load a sound asset
+var sound = SoundAsset.Load(@"C:\MyGame\Assets\Sounds\Explosion.sdsnd");
+
+// Get and set properties
+var isStreamed = sound.Get<bool>("Stream");
+sound.Set("Volume", 0.75f);
+sound.Set("Spatialized", true);
+sound.Save();
+
+// Get all properties for inspection
+var allSoundProps = sound.GetAllProperties();
+foreach (var prop in allSoundProps)
+{
+    Console.WriteLine($"Sound Property - {prop.Key}: {prop.Value}");
+}
+```
+
+#### SkeletonAsset
+
+Represents an editable Stride Skeleton asset (`.sdskel`).
+
+##### Loading
+
+```csharp
+var skeleton = SkeletonAsset.Load(@"C:\MyGame\Assets\Characters\PlayerSkeleton.sdskel");
+```
+
+##### Properties & Methods (Generic)
+
+Skeleton assets may have properties related to their bone structure or retargeting.
+
+**Example:**
+
+```csharp
+// Load a skeleton asset
+var skeleton = SkeletonAsset.Load(@"C:\MyGame\Assets\Characters\PlayerSkeleton.sdskel");
+
+// Access generic properties
+var rootBoneName = skeleton.Get<string>("RootBone");
+skeleton.Set("EnableRetargeting", true);
+skeleton.Save();
+```
+
+#### SpriteSheetAsset
+
+Represents an editable Stride Sprite Sheet asset (`.sdsheet`).
+
+##### Loading
+
+```csharp
+var spriteSheet = SpriteSheetAsset.Load(@"C:\MyGame\Assets\UI\Icons.sdsheet");
+```
+
+##### Properties & Methods (Generic)
+
+Sprite sheets contain definitions for individual sprites. Properties might include texture references or metadata per sprite.
+
+**Example:**
+
+```csharp
+// Load a sprite sheet asset
+var spriteSheet = SpriteSheetAsset.Load(@"C:\MyGame\Assets\UI\Icons.sdsheet");
+
+// Access generic properties (e.g., source texture)
+var sourceTextureRef = spriteSheet.Get<string>("Texture");
+
+// Modify properties (e.g., adding a new sprite or modifying existing frames)
+// Note: More complex modifications might require deeper inspection of YAML structure
+spriteSheet.Set("Sprites.new_icon.Region.X", 0);
+spriteSheet.Set("Sprites.new_icon.Region.Y", 0);
+spriteSheet.Save();
+```
+
+#### EffectAsset
+
+Represents an editable Stride Effect asset (`.sdfx`).
+
+##### Loading
+
+```csharp
+var effect = EffectAsset.Load(@"C:\MyGame\Assets\Materials\MyCustomEffect.sdfx");
+```
+
+##### Properties & Methods (Generic)
+
+Effect assets often define shader parameters.
+
+**Example:**
+
+```csharp
+// Load an effect asset
+var effect = EffectAsset.Load(@"C:\MyGame\Assets\Materials\MyCustomEffect.sdfx");
+
+// Access generic properties (e.g., tweaking shader uniforms)
+var blendMode = effect.Get<string>("BlendState");
+effect.Set("MyShaderParameter.Strength", 0.5f);
+effect.Save();
+```
+
+##### Generic Get/Set Methods
+
+All these asset types support the following generic methods:
+
+- `object? Get(string propertyName)`: Gets a property value by name, supporting dot notation for nested properties.
+- `void Set(string propertyName, object value)`: Sets a property value by name, supporting dot notation for nested properties.
+- `Dictionary<string, object> GetAllProperties()`: Returns all properties as a dictionary for inspection.
+
+**NOTE:** All `Get` and `Set` methods only work with properties that Stride serializes to the asset file and are visible in Stride's Property Grid.
 
 ---
 
@@ -3173,38 +3677,6 @@ Represents an RGBA color.
 var light = entity.GetLight();
 light.SetColor(1.0f, 0.5f, 0.0f, 1.0f);
 ```
-
-### Utilities
-
-#### GuidHelper
-
-**Namespace:** `HS.Stride.Editor.Toolkit.Utilities`
-
-##### `static string NewGuid()`
-
-Generates a new GUID string (with hyphens).
-
-##### `static string NewGuidNoDashes()`
-
-Generates a new GUID string without hyphens (for component keys and internal use).
-
-#### PathHelper
-
-**Namespace:** `HS.Stride.Editor.Toolkit.Utilities`
-
-##### `static bool IsStrideProject(string path)`
-
-Checks if a path is a valid Stride project.
-
-#### FileHelper
-
-**Namespace:** `HS.Stride.Editor.Toolkit.Utilities`
-
-##### `static bool SaveFile(string content, string filePath)`
-
-Saves content to a file.
-
-**Returns:** `true` if successful, `false` if IO error
 
 ---
 
@@ -3343,11 +3815,17 @@ catch (IOException ex)
 
 ---
 
-## Advanced Patterns
+## Advanced Workflows & Best Practices
 
-### Batch Operations
+This section provides guidance on common usage patterns, performance considerations, safety practices, and advanced workflows to help you get the most out of the toolkit.
 
-#### Replace All Placeholders with Prefabs
+### 1. Batch Operations and Automation
+
+Leverage the toolkit's file-based nature for mass modifications and automated tasks.
+
+#### Replacing Placeholders with Prefabs
+
+This example demonstrates how to find placeholder entities in a scene and replace them with actual prefab instances based on their names.
 
 ```csharp
 var scanner = new ProjectScanner(projectPath);
@@ -3357,7 +3835,7 @@ var scene = Scene.Load("Level1.sdscene");
 var placeholders = scene.FindEntitiesByName("Placeholder_*");
 foreach (var placeholder in placeholders)
 {
-    // Extract prefab name from placeholder
+    // Extract prefab name from placeholder's name
     var prefabName = placeholder.Name.Replace("Placeholder_", "");
     var prefab = scanner.FindAsset(prefabName, AssetType.Prefab);
 
@@ -3367,10 +3845,10 @@ foreach (var placeholder in placeholders)
         var transform = placeholder.GetTransform();
         var pos = transform.GetPosition();
 
-        // Instantiate prefab
+        // Instantiate prefab at placeholder's position
         var instance = scene.InstantiatePrefab(prefab, pos, placeholder.Folder);
 
-        // Remove placeholder
+        // Remove the original placeholder entity
         scene.RemoveEntity(placeholder);
 
         Console.WriteLine($"Replaced {placeholder.Name} with {prefab.Name}");
@@ -3382,26 +3860,27 @@ scene.Save();
 
 #### Batch Modify Materials Across All Scenes
 
+This example shows how to iterate through multiple scenes and modify material properties based on certain criteria.
+
 ```csharp
 var scanner = new ProjectScanner(projectPath);
 scanner.Scan();
 
-var newTexture = scanner.FindAsset("NewGroundTexture", AssetType.Texture);
+var newTexture = scanner.FindAsset("NewGroundTexture", AssetType.Texture); // An asset to apply
 
 foreach (var sceneRef in scanner.GetScenes())
 {
     var scene = Scene.Load(sceneRef.FilePath);
 
-    // Find all entities with ground materials
+    // Find all entities with models that use a "Ground" material
     var groundObjects = scene.FindEntities(e =>
     {
         if (!e.HasComponent("ModelComponent"))
             return false;
 
         var model = e.GetModel();
-        var materials = model.Materials;
-
-        return materials.Values.Any(m =>
+        // Check if any of the model's materials contain "Ground" in their name
+        return model.Materials.Values.Any(m =>
         {
             var matDict = m as Dictionary<string, object>;
             return matDict != null &&
@@ -3414,169 +3893,170 @@ foreach (var sceneRef in scanner.GetScenes())
     foreach (var obj in groundObjects)
     {
         var model = obj.GetModel();
-        // Modify materials...
+        foreach (var materialSlot in model.Materials.Values)
+        {
+            // Assuming materialSlot is a Component (MaterialComponent)
+            var materialComponent = materialSlot as Component;
+            if (materialComponent != null &&
+                materialComponent.Get<string>("Name").Contains("Ground") &&
+                newTexture != null)
+            {
+                // Set the diffuse texture for the material
+                materialComponent.Set("Diffuse.Texture", newTexture.Reference);
+            }
+        }
     }
 
     scene.Save();
-    Console.WriteLine($"Updated {sceneRef.Name}: {groundObjects.Count} objects");
+    Console.WriteLine($"Updated {sceneRef.Name}: {groundObjects.Count} objects with new ground texture.");
 }
 ```
 
 #### Procedural Level Generation
 
+Automate the creation of complex scenes using prefab instantiation and entity manipulation.
+
 ```csharp
 var scanner = new ProjectScanner(projectPath);
 scanner.Scan();
-var scene = Scene.Load("ProcGenLevel.sdscene");
+var scene = Scene.Load("ProcGenLevel.sdscene"); // Load an empty or template scene
 
 var tilePrefab = scanner.FindAsset("FloorTile", AssetType.Prefab);
 var wallPrefab = scanner.FindAsset("Wall", AssetType.Prefab);
 
-// Generate a 10x10 grid
+// Generate a 10x10 grid level
 for (int x = 0; x < 10; x++)
 {
     for (int z = 0; z < 10; z++)
     {
-        // Floor tiles
+        // Place floor tiles
         var pos = new Vector3Data(x * 2.0f, 0, z * 2.0f);
-        scene.InstantiatePrefab(tilePrefab, pos, "Floor");
+        scene.InstantiatePrefab(tilePrefab, pos, "FloorTiles"); // Parent under a "FloorTiles" folder
 
-        // Walls on edges
+        // Place walls on the edges of the grid
         if (x == 0 || x == 9 || z == 0 || z == 9)
         {
             var wallPos = new Vector3Data(x * 2.0f, 1.0f, z * 2.0f);
-            scene.InstantiatePrefab(wallPrefab, wallPos, "Walls");
+            scene.InstantiatePrefab(wallPrefab, wallPos, "Walls"); // Parent under a "Walls" folder
         }
     }
 }
 
 scene.Save();
+Console.WriteLine("Procedurally generated level saved!");
 ```
 
-### Custom Component Workflows
+### 2. Custom Component Workflows
+
+Efficiently manage and validate custom C# components within your Stride project.
 
 #### Health System Balancing
+
+Adjust properties of custom components across multiple entities based on game design requirements.
 
 ```csharp
 var scene = Scene.Load("Level1.sdscene");
 
-// Find all entities with health
+// Find all entities with health components
 var healthEntities = scene.FindEntitiesWithComponent("HealthComponent");
 
-// Categorize by type
+// Categorize targets by type for selective balancing
 var players = healthEntities.Where(e => e.Name.Contains("Player")).ToList();
 var enemies = healthEntities.Where(e => e.Name.Contains("Enemy")).ToList();
 var bosses = healthEntities.Where(e => e.Name.Contains("Boss")).ToList();
 
-// Balance based on difficulty
-float difficultyMultiplier = 1.5f; // Hard mode
+// Apply balancing changes based on difficulty settings
+float difficultyMultiplier = 1.5f; // Example: Hard mode setting
 
 foreach (var enemy in enemies)
 {
     var health = enemy.GetComponent("HealthComponent");
     var baseHP = health.Get<float>("MaxHealth");
-    var newHP = baseHP * difficultyMultiplier;
+    var newHP = baseHP * difficultyMultiplier; // Increase enemy health
 
     health.Set("MaxHealth", newHP);
-    health.Set("CurrentHealth", newHP);
+    health.Set("CurrentHealth", newHP); // Set current health to new max
+
+    Console.WriteLine($"Buffed {enemy.Name}: {currentMax} -> {newHP} HP");
 }
 
 foreach (var boss in bosses)
 {
     var health = boss.GetComponent("HealthComponent");
     var baseHP = health.Get<float>("MaxHealth");
-    var newHP = baseHP * (difficultyMultiplier * 2.0f); // Bosses scale more
+    var newHP = baseHP * (difficultyMultiplier * 2.0f); // Bosses scale even more
 
     health.Set("MaxHealth", newHP);
     health.Set("CurrentHealth", newHP);
 
-    // Also increase boss damage
+    // If the boss also has an AttackComponent, increase its damage
     if (boss.HasComponent("AttackComponent"))
     {
         var attack = boss.GetComponent("AttackComponent");
         var baseDamage = attack.Get<float>("Damage");
         attack.Set("Damage", baseDamage * difficultyMultiplier);
     }
+    Console.WriteLine($"Buffed {boss.Name}: {currentMax} -> {newHP} HP");
 }
 
 scene.Save();
-Console.WriteLine($"Balanced {enemies.Count} enemies and {bosses.Count} bosses");
+Console.WriteLine($"Balanced {enemies.Count} enemies and {bosses.Count} bosses for hard mode.");
 ```
 
 #### Custom Component Validation
+
+Implement checks to ensure custom components adhere to game design rules or prevent common errors.
 
 ```csharp
 var scene = Scene.Load("Level1.sdscene");
 var errors = new List<string>();
 
-// Find all spawners
+// Find all entities with a custom SpawnerComponent
 var spawners = scene.FindEntitiesWithComponent("SpawnerComponent");
 
 foreach (var spawner in spawners)
 {
     var comp = spawner.GetComponent("SpawnerComponent");
 
-    // Validate spawn interval
+    // Validate spawn interval property
     var interval = comp.Get<float>("SpawnInterval");
     if (interval < 1.0f)
     {
-        errors.Add($"{spawner.Name}: Spawn interval too low ({interval}s)");
+        errors.Add($"{spawner.Name}: Spawn interval too low ({interval}s). Must be at least 1.0s.");
     }
 
-    // Validate max spawns
+    // Validate max spawns property
     var maxSpawns = comp.Get<int>("MaxSpawns");
     if (maxSpawns <= 0)
     {
-        errors.Add($"{spawner.Name}: Invalid max spawns ({maxSpawns})");
+        errors.Add($"{spawner.Name}: Invalid max spawns ({maxSpawns}). Must be greater than 0.");
     }
 
-    // Validate prefab reference
-    var prefabRef = comp.Get<string>("PrefabToSpawn");
-    if (string.IsNullOrEmpty(prefabRef))
+    // Validate if a prefab is assigned to "PrefabToSpawn"
+    if (comp.GetAssetRef("PrefabToSpawn") == null)
     {
-        errors.Add($"{spawner.Name}: No prefab assigned");
+        errors.Add($"{spawner.Name}: No prefab assigned to 'PrefabToSpawn' property.");
     }
 }
 
 if (errors.Any())
 {
-    Console.WriteLine("Validation errors:");
+    Console.WriteLine("Validation errors found:");
     errors.ForEach(Console.WriteLine);
 }
 else
 {
-    Console.WriteLine($"All {spawners.Count} spawners validated successfully");
+    Console.WriteLine($"All {spawners.Count} spawners validated successfully!");
 }
 ```
 
-### Asset Pipeline Automation
+### 3. Asset Pipeline Automation
 
-#### Auto-Enable Texture Streaming
-
-```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-
-var textures = scanner.GetTextures();
-int modified = 0;
-
-foreach (var texRef in textures)
-{
-    var texture = TextureAsset.Load(texRef.FilePath);
-
-    // Enable streaming for large textures
-    if (!texture.IsStreamable)
-    {
-        texture.IsStreamable = true;
-        texture.Save();
-        modified++;
-    }
-}
-
-Console.WriteLine($"Enabled streaming on {modified} textures");
-```
+Automate routine tasks such as setting properties across numerous assets.
 
 #### Set All Animations to Loop
+
+Ensure that specific animations (e.g., "Idle", "Walk", "Run") are set to loop indefinitely.
 
 ```csharp
 var scanner = new ProjectScanner(projectPath);
@@ -3595,20 +4075,18 @@ foreach (var animRef in animations.Where(a =>
     {
         anim.RepeatMode = "LoopInfinite";
         anim.Save();
-        Console.WriteLine($"Set {animRef.Name} to loop");
+        Console.WriteLine($"Set {animRef.Name} to loop indefinitely.");
     }
 }
 ```
 
----
+### 4. Performance Considerations
 
-## Best Practices & Tips
-
-### Performance
+Optimize your toolkit scripts for efficiency, especially when dealing with large projects.
 
 #### Use Lazy Loading Effectively
 
-Components are loaded from YAML only when accessed. This improves performance for large scenes.
+Components are loaded from YAML only when accessed. This ensures that you only parse data when it's genuinely needed, significantly improving performance for large scenes or prefabs.
 
 ```csharp
 // ✓ Efficient - only loads required components
@@ -3616,47 +4094,56 @@ var scene = Scene.Load("HugeScene.sdscene");
 var players = scene.FindEntitiesByName("Player*");
 foreach (var player in players)
 {
-    var transform = player.GetTransform(); // Loads only transform
+    var transform = player.GetTransform(); // The TransformComponent is loaded only when GetTransform() is called
+    // ... other operations that only access specific components
 }
 
-// ✗ Inefficient - loads all components
+// ✗ Less Efficient - forces loading of all components initially (via .Components property)
 var scene = Scene.Load("HugeScene.sdscene");
 foreach (var entity in scene.AllEntities)
 {
-    foreach (var comp in entity.Components.Values) // Forces load of all
+    foreach (var comp in entity.Components.Values) // Accessing .Components property here loads all components of *this entity*
     {
-        // ...
+        // Avoid iterating through all components if you only need a specific one
     }
 }
 ```
 
 #### Batch Similar Operations
 
+Group your file I/O operations and modifications to minimize overhead.
+
 ```csharp
-// ✓ Load once, modify many, save once
+// ✓ Efficient: Load the scene once, perform all modifications, then save once.
 var scene = Scene.Load("Level1.sdscene");
 
 var enemies = scene.FindEntitiesByName("Enemy_*");
 foreach (var enemy in enemies)
 {
-    // Modify...
+    // Perform multiple modifications on the enemy entity or its components
+    enemy.GetTransform().SetPosition(0, 0, 0);
+    enemy.GetComponent("HealthComponent").Set("CurrentHealth", 100f);
 }
 
-scene.Save(); // One save
+scene.Save(); // One save operation after all changes are made
 
-// ✗ Load/save repeatedly
+// ✗ Inefficient: Repeatedly loading and saving the same scene is slow.
 foreach (var enemyName in new[] { "Enemy_1", "Enemy_2", "Enemy_3" })
 {
-    var scene = Scene.Load("Level1.sdscene");
+    var scene = Scene.Load("Level1.sdscene"); // Load scene repeatedly
     var enemy = scene.FindEntityByName(enemyName);
     // Modify...
-    scene.Save();
+    scene.Save(); // Save scene repeatedly
 }
 ```
 
-### Safety
+### 5. Safety and Error Handling
+
+Implement robust checks to prevent issues and handle unexpected scenarios gracefully.
 
 #### Always Validate Before Accessing
+
+Before attempting to access properties or components, always check if they exist to prevent `NullReferenceException`s.
 
 ```csharp
 // ✓ Safe
@@ -3664,25 +4151,51 @@ if (entity.HasComponent("HealthComponent"))
 {
     var health = entity.GetComponent("HealthComponent");
     var hp = health.Get<float>("CurrentHealth");
+    // ... further safe operations
 }
 
-// ✗ Unsafe - may throw NullReferenceException
+// ✗ Unsafe - risks NullReferenceException if "HealthComponent" doesn't exist
 var health = entity.GetComponent("HealthComponent");
 var hp = health.Get<float>("CurrentHealth");
 ```
 
 #### Use Null-Coalescing for Defaults
 
+Provide fallback default values when retrieving properties that might be missing or `null`.
+
 ```csharp
+// Using null-coalescing operator to provide a default speed if "MoveSpeed" is not found
 var speed = controller?.Get<float>("MoveSpeed") ?? 5.0f;
 var maxHP = health?.Get<float>("MaxHealth") ?? 100.0f;
 ```
 
-### Debugging
+#### Handle File Operations with Try-Catch
+
+Wrap file-related operations in `try-catch` blocks to manage potential `IOException`s or `FileNotFoundException`s.
+
+```csharp
+try
+{
+    scene.Save();
+    Console.WriteLine($"Scene saved successfully to {scene.FilePath}");
+}
+catch (IOException ex)
+{
+    Console.Error.WriteLine($"ERROR: Failed to save scene {scene.FilePath}. Details: {ex.Message}");
+}
+catch (Exception ex)
+{
+    Console.Error.WriteLine($"An unexpected error occurred while saving: {ex.Message}");
+}
+```
+
+### 6. Debugging and Inspection
+
+Tools and techniques for understanding and debugging your scene and component data.
 
 #### Inspect Component Properties
 
-When working with unfamiliar components:
+When working with unfamiliar components or debugging, print out all properties of a component to understand its structure.
 
 ```csharp
 var component = entity.GetComponent("UnknownComponent");
@@ -3700,6 +4213,8 @@ if (component != null)
 
 #### Inspect Asset Properties
 
+Similarly, you can inspect all raw properties of an asset for debugging purposes.
+
 ```csharp
 var material = MaterialAsset.Load("SomeMaterial.sdmat");
 var allProps = material.GetAllProperties();
@@ -3710,83 +4225,33 @@ foreach (var prop in allProps)
 }
 ```
 
-### Naming Conventions
+### 7. Naming Conventions and Organization
+
+Maintain a clean and searchable project structure.
 
 #### Use Consistent Entity Names
 
+Adopt a clear naming convention for entities, especially when using wildcard searches.
+
 ```csharp
-// ✓ Good - easy to query
+// ✓ Good - Easy to query using patterns
 "Enemy_Goblin_01", "Enemy_Goblin_02", "Enemy_Orc_01"
 
 var allEnemies = scene.FindEntitiesByName("Enemy_*");
 var allGoblins = scene.FindEntitiesByName("Enemy_Goblin_*");
 
-// ✗ Inconsistent - hard to query
+// ✗ Inconsistent - Hard to query and manage
 "Goblin1", "enemy_orc", "Orc_Enemy_03"
 ```
 
 #### Use Folders for Organization
 
+Organize entities within scenes or prefabs into logical folders.
+
 ```csharp
+// Create entities within specific folders
 var enemy = scene.CreateEntity("Goblin_01", "Enemies/Goblins");
 var item = scene.CreateEntity("HealthPotion", "Items/Consumables");
 ```
 
-### Common Patterns
-
-#### Find-Modify-Save Pattern
-
-```csharp
-var scene = Scene.Load("Level.sdscene");
-var entity = scene.FindEntityByName("Player");
-
-var transform = entity.GetTransform();
-transform.SetPosition(0, 0, 0);
-
-scene.Save();
-```
-
-#### Scan-Find-Apply Pattern
-
-```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-
-var prefab = scanner.FindAsset("Enemy", AssetType.Prefab);
-var scene = Scene.Load("Level.sdscene");
-
-scene.InstantiatePrefab(prefab, Vector3Data.Zero);
-scene.Save();
-```
-
-### Migration from Manual Editing
-
-If you previously edited scenes manually in Stride GameStudio:
-
-**Before (Manual):**
-
-1. Open scene in editor
-2. Find entity
-3. Modify properties
-4. Save scene
-5. Repeat for each scene
-
-**After (Toolkit):**
-
-```csharp
-var scenes = new[] { "Level1.sdscene", "Level2.sdscene", "Level3.sdscene" };
-
-foreach (var scenePath in scenes)
-{
-    var scene = Scene.Load(scenePath);
-    var player = scene.FindEntityByName("Player");
-
-    var transform = player.GetTransform();
-    transform.SetPosition(0, 10, 0);
-
-    scene.Save();
-}
-```
-
-**Document Version:** 1.0.0
-**Last Updated:** 10/09/2025
+###**Document Version:** 1.1.0
