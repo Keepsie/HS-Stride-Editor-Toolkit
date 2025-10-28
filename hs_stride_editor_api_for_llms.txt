@@ -2,8 +2,8 @@ HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
 
 **Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
-**Version:** 1.2.0
-**API Version:** 1.2.0
+**Version:** 1.2.1
+**API Version:** 1.2.1
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 **Package:** HS.Stride.Editor.Toolkit
