@@ -135,6 +135,13 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
         /// </summary>
         private static string InsertNewEntities(string rawContent, List<Entity> newEntities)
         {
+            // First, check if Parts: [] exists and remove the [] to prepare for entities
+            var partsEmptyArrayPattern = "    Parts: []";
+            if (rawContent.Contains(partsEmptyArrayPattern))
+            {
+                rawContent = rawContent.Replace(partsEmptyArrayPattern, "    Parts:");
+            }
+
             // Find the last entity in the Parts section
             // We'll insert new entities right after the last entity
             var lines = rawContent.Split('\n');
@@ -157,8 +164,21 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
 
             if (lastEntityEndLine == -1)
             {
-                // Couldn't find entities, append at the end
-                lastEntityEndLine = lines.Length - 1;
+                // No entities found - find the Parts: line and insert after it
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Trim().StartsWith("Parts:"))
+                    {
+                        lastEntityEndLine = i;
+                        break;
+                    }
+                }
+
+                if (lastEntityEndLine == -1)
+                {
+                    // Couldn't find Parts: line, append at the end
+                    lastEntityEndLine = lines.Length - 1;
+                }
             }
 
             // Generate YAML for new entities

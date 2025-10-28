@@ -80,6 +80,84 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             return scene;
         }
+
+        /// <summary>
+        /// Creates a new blank scene and saves it to the Assets folder.
+        /// The scene is immediately saved to disk and returned ready for editing.
+        /// The scene will be automatically registered in the project scanner after calling Rescan().
+        /// </summary>
+        /// <param name="name">Name of the scene</param>
+        /// <param name="relativePath">Relative path from Assets folder (e.g., "Scenes/Level1" or just "Level1")</param>
+        /// <returns>The created Scene ready for editing</returns>
+        /// <example>
+        /// <code>
+        /// var project = new StrideProject(@"C:\MyGame");
+        /// var scene = project.CreateScene("Level1", "Scenes/Level1");
+        ///
+        /// // Start editing immediately
+        /// scene.CreateEntity("Player");
+        /// scene.Save();
+        ///
+        /// // Rescan to register in project
+        /// project.Rescan();
+        /// </code>
+        /// </example>
+        public Scene CreateScene(string name, string? relativePath = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            // Build file path
+            string filePath;
+            if (string.IsNullOrWhiteSpace(relativePath))
+            {
+                // Default: save in Assets root
+                filePath = Path.Combine(_assetsPath, $"{name}.sdscene");
+            }
+            else
+            {
+                // Handle relative path
+                var cleanPath = relativePath.Replace("/", Path.DirectorySeparatorChar.ToString());
+
+                // If path doesn't end with .sdscene, treat it as a directory and add filename
+                if (!cleanPath.EndsWith(".sdscene", StringComparison.OrdinalIgnoreCase))
+                {
+                    filePath = Path.Combine(_assetsPath, cleanPath, $"{name}.sdscene");
+                }
+                else
+                {
+                    filePath = Path.Combine(_assetsPath, cleanPath);
+                }
+            }
+
+            // Ensure directory exists
+            var directory = Path.GetDirectoryName(filePath);
+            if (directory != null && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            // Generate blank scene YAML
+            var sceneId = GuidHelper.NewGuid();
+            var blankSceneYaml = $@"!SceneAsset
+Id: {sceneId}
+SerializedVersion: {{Stride: 3.1.0.1}}
+Tags: []
+ChildrenIds: []
+Offset: {{X: 0.0, Y: 0.0, Z: 0.0}}
+Hierarchy:
+    RootParts: []
+    Parts: []";
+
+            // Save to disk immediately
+            FileHelper.SaveFile(blankSceneYaml, filePath);
+
+            // Load and return the scene
+            var scene = Scene.Load(filePath);
+            scene.SetParentProject(this);
+
+            return scene;
+        }
         
         /// <summary>
         /// Rescans the project for assets.
