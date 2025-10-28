@@ -348,7 +348,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 {
                     existingEntity.RemoveComponent("TransformComponent");
                 }
-                
+
                 // 5. Create and immediately delete an entity
                 var tempEntity = manager.CreateEntity("TempEntity");
                 manager.RemoveEntity(tempEntity);
@@ -359,19 +359,19 @@ namespace HS.Stride.Editor.Toolkit.Tests
 
                 // Assert - Verify all changes persisted correctly
                 var reloadedContent = StrideYamlScene.ParseScene(tempPath);
-                
+
                 // Verify new entities exist
                 reloadedContent.Entities.Should().Contain(e => e.Name == "ComplexEntity1");
                 reloadedContent.Entities.Should().Contain(e => e.Name == "ComplexEntity2");
-                
+
                 // Verify temp entity doesn't exist
                 reloadedContent.Entities.Should().NotContain(e => e.Name == "TempEntity");
-                
+
                 // Verify existing entity was modified
                 var modifiedEntity = reloadedContent.Entities.FirstOrDefault(e => e.Id == existingEntity.Id);
                 modifiedEntity.Should().NotBeNull();
                 modifiedEntity.Name.Should().Be("ModifiedExisting");
-                
+
                 // Verify components on new entities
                 var reloadedEntity1 = reloadedContent.Entities.First(e => e.Name == "ComplexEntity1");
                 reloadedEntity1.GetComponent("ComponentA").Should().NotBeNull();
@@ -381,6 +381,39 @@ namespace HS.Stride.Editor.Toolkit.Tests
             {
                 if (File.Exists(tempPath))
                     File.Delete(tempPath);
+            }
+        }
+
+        [Test]
+        public void AddEntityToBlankScene_WithPartsEmptyArray_ShouldProduceValidYaml()
+        {
+            // Arrange - Get test project and create a blank scene
+            var testProjectPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Example Scenes", "TestProject");
+            var project = new StrideProject(testProjectPath);
+
+            var sceneName = $"BlankTestScene_{Guid.NewGuid()}";
+            var scene = project.CreateScene(sceneName);
+
+            try
+            {
+                // Act - Add entity to blank scene
+                var newEntity = scene.CreateEntity("NewEntity");
+                scene.Save();
+
+                // Assert - Verify the scene can be reloaded without errors
+                scene.Reload();
+                scene.AllEntities.Should().ContainSingle();
+                scene.AllEntities.First().Name.Should().Be("NewEntity");
+
+                // Verify the YAML doesn't contain "Parts: []" anymore
+                var savedYaml = File.ReadAllText(scene.FilePath);
+                savedYaml.Should().NotContain("Parts: []");
+                savedYaml.Should().Contain("Parts:");
+            }
+            finally
+            {
+                if (File.Exists(scene.FilePath))
+                    File.Delete(scene.FilePath);
             }
         }
     }

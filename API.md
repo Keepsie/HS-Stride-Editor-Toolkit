@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.2.0
+**Version:** 1.2.1
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -278,6 +278,39 @@ var scene2 = project.LoadScene("Scenes/MainMenu");
 
 // Nested folders
 var scene3 = project.LoadScene("Levels/Chapter1/Intro");
+```
+
+#### `Scene CreateScene(string name, string? relativePath = null)`
+
+Creates a new blank scene and saves it to the Assets folder. The scene is immediately saved to disk and returned ready for editing.
+
+**Parameters:**
+
+- `name` (string) - Name of the scene
+- `relativePath` (string?, optional) - Relative path from Assets folder (e.g., "Scenes/Level1" or just "Level1")
+
+**Returns:** `Scene` instance ready for editing
+
+**Throws:**
+
+- `ArgumentNullException` - If name is null/whitespace
+
+**Examples:**
+
+```csharp
+// Create scene in Assets root
+var scene1 = project.CreateScene("Level1");
+
+// Create scene in subfolder
+var scene2 = project.CreateScene("BossLevel", "Scenes/Chapter1");
+
+// Start editing immediately
+var player = scene1.CreateEntity("Player");
+player.AddTransform();
+scene1.Save();
+
+// Rescan to register in project
+project.Rescan();
 ```
 
 ### Asset Loading Methods

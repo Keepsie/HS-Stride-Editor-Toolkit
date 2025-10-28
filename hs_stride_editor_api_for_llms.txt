@@ -68,6 +68,7 @@ Control validation behavior for component properties:
 **Scene Loading Methods:**
 
 *   `Scene LoadScene(string sceneNameOrPath)`: Loads a scene by name (e.g., "Level1") or relative path (e.g., "Scenes/Level1").
+*   `Scene CreateScene(string name, string? relativePath = null)`: Creates a new blank scene, saves it to the Assets folder, and returns it ready for editing. Example: `var scene = project.CreateScene("Level1", "Scenes/Chapter1");`
 
 **Asset Loading Methods (return editable asset objects):**
 

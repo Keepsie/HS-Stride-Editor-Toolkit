@@ -186,6 +186,208 @@ namespace HS.Stride.Editor.Toolkit.Tests
         }
 
         [Test]
+        public void CreateScene_WithNameOnly_ShouldCreateSceneInAssetsRoot()
+        {
+            // Arrange
+            var sceneName = $"TestScene_{Guid.NewGuid()}";
+
+            try
+            {
+                // Act
+                var scene = _project.CreateScene(sceneName);
+
+                // Assert
+                scene.Should().NotBeNull();
+                scene.FilePath.Should().Contain(sceneName);
+                scene.FilePath.Should().EndWith(".sdscene");
+                File.Exists(scene.FilePath).Should().BeTrue();
+                scene.AllEntities.Should().BeEmpty();
+            }
+            finally
+            {
+                // Cleanup
+                var scenePath = Path.Combine(_project.AssetsPath, $"{sceneName}.sdscene");
+                if (File.Exists(scenePath))
+                    File.Delete(scenePath);
+            }
+        }
+
+        [Test]
+        public void CreateScene_WithRelativePath_ShouldCreateSceneInSubfolder()
+        {
+            // Arrange
+            var sceneName = $"TestScene_{Guid.NewGuid()}";
+            var relativePath = $"TestScenes/{sceneName}";
+
+            try
+            {
+                // Act
+                var scene = _project.CreateScene(sceneName, relativePath);
+
+                // Assert
+                scene.Should().NotBeNull();
+                scene.FilePath.Should().Contain("TestScenes");
+                scene.FilePath.Should().Contain(sceneName);
+                scene.FilePath.Should().EndWith(".sdscene");
+                File.Exists(scene.FilePath).Should().BeTrue();
+            }
+            finally
+            {
+                // Cleanup
+                var scenePath = Path.Combine(_project.AssetsPath, "TestScenes", $"{sceneName}.sdscene");
+                if (File.Exists(scenePath))
+                    File.Delete(scenePath);
+
+                var folderPath = Path.Combine(_project.AssetsPath, "TestScenes");
+                if (Directory.Exists(folderPath) && !Directory.EnumerateFileSystemEntries(folderPath).Any())
+                    Directory.Delete(folderPath);
+            }
+        }
+
+        [Test]
+        public void CreateScene_WithFullRelativePathAndExtension_ShouldCreateScene()
+        {
+            // Arrange
+            var sceneName = $"TestScene_{Guid.NewGuid()}";
+            var relativePath = $"TestScenes/{sceneName}.sdscene";
+
+            try
+            {
+                // Act
+                var scene = _project.CreateScene(sceneName, relativePath);
+
+                // Assert
+                scene.Should().NotBeNull();
+                scene.FilePath.Should().EndWith($"TestScenes{Path.DirectorySeparatorChar}{sceneName}.sdscene");
+                File.Exists(scene.FilePath).Should().BeTrue();
+            }
+            finally
+            {
+                // Cleanup
+                var scenePath = Path.Combine(_project.AssetsPath, "TestScenes", $"{sceneName}.sdscene");
+                if (File.Exists(scenePath))
+                    File.Delete(scenePath);
+
+                var folderPath = Path.Combine(_project.AssetsPath, "TestScenes");
+                if (Directory.Exists(folderPath) && !Directory.EnumerateFileSystemEntries(folderPath).Any())
+                    Directory.Delete(folderPath);
+            }
+        }
+
+        [Test]
+        public void CreateScene_NullName_ShouldThrow()
+        {
+            // Act
+            Action act = () => _project.CreateScene(null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Test]
+        public void CreateScene_EmptyName_ShouldThrow()
+        {
+            // Act
+            Action act = () => _project.CreateScene("");
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Test]
+        public void CreateScene_ShouldBeEditableImmediately()
+        {
+            // Arrange
+            var sceneName = $"TestScene_{Guid.NewGuid()}";
+
+            try
+            {
+                // Act
+                var scene = _project.CreateScene(sceneName);
+                var entity = scene.CreateEntity("TestEntity");
+                scene.Save();
+
+                // Assert
+                scene.AllEntities.Should().ContainSingle();
+                scene.AllEntities.First().Name.Should().Be("TestEntity");
+
+                // Reload and verify persistence
+                scene.Reload();
+                scene.AllEntities.Should().ContainSingle();
+                scene.AllEntities.First().Name.Should().Be("TestEntity");
+            }
+            finally
+            {
+                // Cleanup
+                var scenePath = Path.Combine(_project.AssetsPath, $"{sceneName}.sdscene");
+                if (File.Exists(scenePath))
+                    File.Delete(scenePath);
+            }
+        }
+
+        [Test]
+        public void CreateScene_ShouldHaveValidSceneStructure()
+        {
+            // Arrange
+            var sceneName = $"TestScene_{Guid.NewGuid()}";
+
+            try
+            {
+                // Act
+                var scene = _project.CreateScene(sceneName);
+
+                // Assert
+                scene.Id.Should().NotBeNullOrEmpty();
+                scene.FilePath.Should().NotBeNullOrEmpty();
+                scene.AllEntities.Should().BeEmpty();
+
+                // Check YAML structure
+                var yaml = File.ReadAllText(scene.FilePath);
+                yaml.Should().Contain("!SceneAsset");
+                yaml.Should().Contain("Id:");
+                yaml.Should().Contain("SerializedVersion:");
+                yaml.Should().Contain("Hierarchy:");
+                yaml.Should().Contain("RootParts: []");
+                yaml.Should().Contain("Parts: []");
+            }
+            finally
+            {
+                // Cleanup
+                var scenePath = Path.Combine(_project.AssetsPath, $"{sceneName}.sdscene");
+                if (File.Exists(scenePath))
+                    File.Delete(scenePath);
+            }
+        }
+
+        [Test]
+        public void CreateScene_ShouldBeLoadableAfterRescan()
+        {
+            // Arrange
+            var sceneName = $"TestScene_{Guid.NewGuid()}";
+
+            try
+            {
+                // Act
+                var createdScene = _project.CreateScene(sceneName);
+                _project.Rescan();
+
+                var loadedScene = _project.LoadScene(sceneName);
+
+                // Assert
+                loadedScene.Should().NotBeNull();
+                loadedScene.Id.Should().Be(createdScene.Id);
+                loadedScene.FilePath.Should().Be(createdScene.FilePath);
+            }
+            finally
+            {
+                // Cleanup
+                var scenePath = Path.Combine(_project.AssetsPath, $"{sceneName}.sdscene");
+                if (File.Exists(scenePath))
+                    File.Delete(scenePath);
+            }
+        }
+
+        [Test]
         public void IntegrationTest_LoadSceneAndModify()
         {
             // Load scene
