@@ -4865,5 +4865,3 @@ Organize entities within scenes or prefabs into logical folders.
 var enemy = scene.CreateEntity("Goblin_01", "Enemies/Goblins");
 var item = scene.CreateEntity("HealthPotion", "Items/Consumables");
 ```
-
-###**Document Version:** 1.1.0
