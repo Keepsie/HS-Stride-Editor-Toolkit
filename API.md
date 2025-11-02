@@ -13,7 +13,7 @@ A library for creating custom editor tools for Stride. Batch task automation for
 The toolkit can be run in two modes when working with custom components:
 
 - **Strict mode (default)**: Throws an exception if you try to set a property that doesn't exist in the corresponding C# script. This helps catch typos and ensures you're only setting properties that Stride will recognize.
-- **Loose mode**: Allows setting any property on a component, even if it's not defined in the C# script. This offers more flexibility for dynamic scenarios but is less safe, as invalid properties will be ignored by Stride at runtime.
+- **Loose mode**: Allows setting any property on a component, even if it's not defined in the C# script. This offers more flexibility for dynamic scenarios but is less safe, as invalid properties will cause an error when launching stride. A good scenario for this is if you're updating the scripts and the toolkit doesn't know about the changes yet. 
 
 You can set the mode when creating a `StrideProject` instance.
 
