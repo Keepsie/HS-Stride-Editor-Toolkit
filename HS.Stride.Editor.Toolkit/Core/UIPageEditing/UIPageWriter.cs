@@ -11,6 +11,9 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
     {
         public static void Write(UIPage page, UIPageContent content)
         {
+            // Validate and build the save path
+            string filePath = ValidateAndBuildUIPagePath(content);
+
             var sb = new StringBuilder();
 
             // Header
@@ -44,8 +47,64 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                 WriteUIElement(sb, element);
             }
 
+            // Ensure directory exists
+            var directory = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
+
             // Write to file
-            File.WriteAllText(content.FilePath, sb.ToString());
+            File.WriteAllText(filePath, sb.ToString());
+
+            // Update content with the final path
+            content.FilePath = filePath;
+        }
+
+        /// <summary>
+        /// Validates and builds the save path for a UI page.
+        /// Handles empty paths, relative paths, and ensures saves are within the project.
+        /// </summary>
+        private static string ValidateAndBuildUIPagePath(UIPageContent content)
+        {
+            var filePath = content.FilePath;
+
+            // Case 1: Empty or whitespace path - save to Assets root with UI page ID or default name
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                if (content.ParentProject == null)
+                    throw new InvalidOperationException("Cannot save UI page: no file path set and no parent project available. Load or create UI pages via StrideProject.");
+
+                // Use root element name or ID as filename fallback
+                var rootElement = content.Elements.FirstOrDefault(e => content.RootElementIds.Contains(e.Id));
+                var name = rootElement?.Name ?? (!string.IsNullOrWhiteSpace(content.Id) ? content.Id.Substring(0, 8) : "UIPage");
+                return Path.Combine(content.ParentProject.AssetsPath, $"{name}.sduipage");
+            }
+
+            // Case 2: Relative path - build from ParentProject.AssetsPath
+            if (!Path.IsPathRooted(filePath))
+            {
+                if (content.ParentProject == null)
+                    throw new InvalidOperationException($"Cannot save UI page with relative path '{filePath}': no parent project available. Load or create UI pages via StrideProject.");
+
+                filePath = Path.Combine(content.ParentProject.AssetsPath, filePath);
+            }
+
+            // Case 3: Full path - validate it's inside the project assets folder
+            if (content.ParentProject != null)
+            {
+                var assetsPath = Path.GetFullPath(content.ParentProject.AssetsPath);
+                var targetPath = Path.GetFullPath(Path.GetDirectoryName(filePath) ?? filePath);
+
+                if (!targetPath.StartsWith(assetsPath, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException($"Cannot save UI page outside project Assets folder. Attempted path: {filePath}");
+            }
+
+            // Ensure .sduipage extension
+            if (!filePath.EndsWith(".sduipage", StringComparison.OrdinalIgnoreCase))
+            {
+                filePath += ".sduipage";
+            }
+
+            return filePath;
         }
 
         private static void WriteUIElement(StringBuilder sb, UIElement element)

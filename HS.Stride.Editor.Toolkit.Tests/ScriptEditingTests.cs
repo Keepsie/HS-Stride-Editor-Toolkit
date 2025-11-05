@@ -275,7 +275,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var project = new StrideProject(_testProjectPath);
             var scene = project.LoadScene("Testing");
             var entity = scene.FindEntityByName("Box1x1x1");
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_script_add_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_script_add_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
@@ -286,7 +287,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 component.Set("isActive", true);
                 component.Set("playerName", "TestPlayer");
 
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
 
                 // Assert - Verify YAML contains all properties
                 var yaml = File.ReadAllText(tempPath);
@@ -421,10 +422,11 @@ namespace HS.Stride.Editor.Toolkit.Tests
             component.Get<int>("anotherFakeOne").Should().Be(12345);
 
             // Verify they get written to YAML (even though they won't be recognized by Stride)
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_loose_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_loose_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
             try
             {
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
                 var yaml = File.ReadAllText(tempPath);
 
                 // The properties will be in the YAML (user's responsibility if Stride doesn't recognize them)
@@ -471,13 +473,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var project = new StrideProject(_testProjectPath);
             var scene = project.LoadScene("Testing");
             var entity = scene.FindEntityByName("Box1x1x1");
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_defaults_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_defaults_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
                 // Act - Add component WITHOUT setting any properties
                 var component = entity.AddComponent("SimpleScript");
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
 
                 // Assert - ALL properties should be in YAML with default values
                 var yaml = File.ReadAllText(tempPath);
@@ -516,7 +519,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var project = new StrideProject(_testProjectPath);
             var scene = project.LoadScene("Testing");
             var entity = scene.FindEntityByName("Box1x1x1");
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_full_workflow_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_full_workflow_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
@@ -554,7 +558,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 component.Get<string>("stringValue").Should().Be("Hello World");
 
                 // ACT 4: Save to YAML
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
 
                 // Assert YAML contains correct values
                 var yaml = File.ReadAllText(tempPath);
@@ -902,7 +906,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var project = new StrideProject(_testProjectPath);
             var scene = project.LoadScene("Testing");
             var entity = scene.FindEntityByName("Box1x1x1");
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_namespaced_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_namespaced_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
@@ -925,7 +930,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 component.Get<string>("playerName").Should().Be("TestHero");
 
                 // Save
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
 
                 // Verify YAML
                 var yaml = File.ReadAllText(tempPath);

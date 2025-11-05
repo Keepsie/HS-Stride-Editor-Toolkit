@@ -18,6 +18,96 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
         #region YAML Writing
 
         /// <summary>
+        /// Saves scene to disk with automatic path validation and correction.
+        /// Ensures the scene is saved within the project's Assets folder.
+        /// </summary>
+        public static void SaveScene(SceneContent sceneContent)
+        {
+            // Validate and build the save path
+            string filePath = ValidateAndBuildScenePath(sceneContent);
+
+            // Generate YAML
+            string yaml = GenerateSceneYaml(sceneContent);
+
+            // Ensure directory exists
+            var directory = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
+
+            // Save to disk
+            File.WriteAllText(filePath, yaml);
+
+            // Update content with the final path
+            sceneContent.FilePath = filePath;
+        }
+
+        /// <summary>
+        /// Builds a full file path from a relative path and project.
+        /// </summary>
+        public static string BuildScenePath(string relativePath, StrideProject project)
+        {
+            if (project == null)
+                throw new ArgumentNullException(nameof(project));
+
+            var cleanPath = relativePath.Replace("/", Path.DirectorySeparatorChar.ToString());
+            var filePath = Path.Combine(project.AssetsPath, cleanPath);
+
+            if (!filePath.EndsWith(".sdscene", StringComparison.OrdinalIgnoreCase))
+            {
+                filePath += ".sdscene";
+            }
+
+            return filePath;
+        }
+
+        /// <summary>
+        /// Validates and builds the save path for a scene.
+        /// Handles empty paths, relative paths, and ensures saves are within the project.
+        /// </summary>
+        private static string ValidateAndBuildScenePath(SceneContent sceneContent)
+        {
+            var filePath = sceneContent.FilePath;
+
+            // Case 1: Empty or whitespace path - save to Assets root with scene ID or default name
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                if (sceneContent.ParentProject == null)
+                    throw new InvalidOperationException("Cannot save scene: no file path set and no parent project available. Load or create scenes via StrideProject.");
+
+                // Use scene ID as filename fallback
+                var name = !string.IsNullOrWhiteSpace(sceneContent.Id) ? sceneContent.Id.Substring(0, 8) : "Scene";
+                return Path.Combine(sceneContent.ParentProject.AssetsPath, $"{name}.sdscene");
+            }
+
+            // Case 2: Relative path - build from ParentProject.AssetsPath
+            if (!Path.IsPathRooted(filePath))
+            {
+                if (sceneContent.ParentProject == null)
+                    throw new InvalidOperationException($"Cannot save scene with relative path '{filePath}': no parent project available. Load or create scenes via StrideProject.");
+
+                filePath = Path.Combine(sceneContent.ParentProject.AssetsPath, filePath);
+            }
+
+            // Case 3: Full path - validate it's inside the project assets folder
+            if (sceneContent.ParentProject != null)
+            {
+                var assetsPath = Path.GetFullPath(sceneContent.ParentProject.AssetsPath);
+                var targetPath = Path.GetFullPath(Path.GetDirectoryName(filePath) ?? filePath);
+
+                if (!targetPath.StartsWith(assetsPath, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException($"Cannot save scene outside project Assets folder. Attempted path: {filePath}");
+            }
+
+            // Ensure .sdscene extension
+            if (!filePath.EndsWith(".sdscene", StringComparison.OrdinalIgnoreCase))
+            {
+                filePath += ".sdscene";
+            }
+
+            return filePath;
+        }
+
+        /// <summary>
         /// Generates scene YAML using surgical editing - only regenerates modified entities.
         /// Unmodified entities are left byte-for-byte identical from raw content.
         /// New entities are inserted at appropriate locations.

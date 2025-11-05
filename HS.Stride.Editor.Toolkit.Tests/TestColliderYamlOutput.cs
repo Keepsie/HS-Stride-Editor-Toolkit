@@ -21,10 +21,11 @@ namespace HS.Stride.Editor.Toolkit.Tests
             
             // Instantiate a prefab with collider shapes
             var newInstance = scene.InstantiatePrefab(prefabAsset!);
-            
+
             // Get the YAML
-            var tempPath = Path.Combine(Path.GetTempPath(), "test_prefab_output.sdscene");
-            scene.SaveAs(tempPath);
+            var testSceneName = "test_prefab_output.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
+            scene.SaveAs(testSceneName);
             var yaml = File.ReadAllText(tempPath);
             
             // Output to console so we can see it

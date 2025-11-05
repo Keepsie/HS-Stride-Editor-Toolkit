@@ -30,7 +30,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var scene = project.LoadScene("Testing");
             var prefabAsset = project.FindAsset("LootBox", AssetType.Prefab);
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_no_folder_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_prefab_no_folder_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
@@ -38,7 +39,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 var newInstance = scene.InstantiatePrefab(prefabAsset!, new Vector3Data(10.0f, 0.0f, 0.0f));
 
                 // Save the scene
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
 
                 // Assert - Read the raw YAML and verify Base section indentation
                 var yamlContent = File.ReadAllText(tempPath);
@@ -82,13 +83,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
             
             // Load a scene we know Stride can load (created by Stride itself)
             var workingScene = project.LoadScene("Testing");
-            
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_stride_format_{Guid.NewGuid()}.sdscene");
+
+            var testSceneName = $"test_stride_format_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
                 // Act - Save and reload to ensure our format matches
-                workingScene.SaveAs(tempPath);
+                workingScene.SaveAs(testSceneName);
                 var reloaded = Scene.Load(tempPath);
 
                 // Assert - Verify all prefab instances maintained their data

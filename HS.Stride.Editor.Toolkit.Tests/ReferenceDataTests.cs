@@ -201,7 +201,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var component = entity!.AddComponent("NoNameSpace");
             var prefabAsset = project.FindAsset("LootBox", Core.AssetEditing.AssetType.Prefab);
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_assetref_{Guid.NewGuid()}.sdscene");
+            var tempPath = Path.Combine(project.AssetsPath, "TestScenes", $"test_assetref_{Guid.NewGuid()}.sdscene");
 
             try
             {
@@ -225,8 +225,13 @@ namespace HS.Stride.Editor.Toolkit.Tests
             }
             finally
             {
+                // Cleanup
                 if (File.Exists(tempPath))
                     File.Delete(tempPath);
+
+                var folderPath = Path.Combine(project.AssetsPath, "TestScenes");
+                if (Directory.Exists(folderPath) && !Directory.EnumerateFileSystemEntries(folderPath).Any())
+                    Directory.Delete(folderPath);
             }
         }
 
@@ -240,7 +245,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var entity2 = scene.FindEntityByName("Testing NoNameSpace");
             var component = entity1!.AddComponent("NoNameSpace");
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_entityref_{Guid.NewGuid()}.sdscene");
+            var tempPath = Path.Combine(project.AssetsPath, "TestScenes", $"test_entityref_{Guid.NewGuid()}.sdscene");
 
             try
             {
@@ -268,8 +273,13 @@ namespace HS.Stride.Editor.Toolkit.Tests
             }
             finally
             {
+                // Cleanup
                 if (File.Exists(tempPath))
                     File.Delete(tempPath);
+
+                var folderPath = Path.Combine(project.AssetsPath, "TestScenes");
+                if (Directory.Exists(folderPath) && !Directory.EnumerateFileSystemEntries(folderPath).Any())
+                    Directory.Delete(folderPath);
             }
         }
 

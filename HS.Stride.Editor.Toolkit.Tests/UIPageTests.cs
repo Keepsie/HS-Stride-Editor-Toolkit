@@ -108,7 +108,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void Create_NewUIPage_ShouldCreateEmptyPageWithRootGrid()
         {
             // Act
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
 
             // Assert
             page.Should().NotBeNull();
@@ -125,12 +126,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void Create_ThenSave_ShouldWriteValidUIPageFile()
         {
             // Arrange
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_new_page_{Guid.NewGuid()}.sduipage");
+            var project = new StrideProject(_testProjectPath);
+            var testPageName = $"test_new_page_{Guid.NewGuid()}.sduipage";
+            var tempPath = Path.Combine(project.AssetsPath, testPageName);
 
             try
             {
-                // Act - Create and save
-                var page = UIPage.Create("MyMenu", tempPath);
+                // Act - Create and save with full path
+                var page = project.CreateUIPage("MyMenu", tempPath);
                 TestContext.WriteLine($"Created page, root name: '{page.RootElements.First().Name}'");
 
                 page.Save();
@@ -161,7 +164,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void CreateElement_ValidParameters_ShouldCreateElement()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
 
             // Act
             var element = page.CreateElement("TextBlock", "test_text");
@@ -177,7 +181,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void CreateElement_WithParent_ShouldAddToParentChildren()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
             var canvas = page.CreateElement("Canvas", "test_canvas");
 
             // Act
@@ -192,7 +197,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void RemoveElement_ExistingElement_ShouldRemoveElement()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
             var element = page.CreateElement("TextBlock", "to_remove");
 
             // Act
@@ -206,7 +212,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void CreateTextBlock_ShouldCreateTextBlockWithDefaults()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
 
             // Act
             var textBlock = page.CreateTextBlock("title", "Welcome");
@@ -223,7 +230,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void CreateButton_ShouldCreateButtonWithTextContent()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
 
             // Act
             var button = page.CreateButton("start_btn", "Start Game");
@@ -244,7 +252,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void CreateImage_ShouldCreateImageElementWithDefaults()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
 
             // Act
             var image = page.CreateImage("logo");
@@ -260,7 +269,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void CreateCanvas_ShouldCreateCanvasContainer()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
 
             // Act
             var canvas = page.CreateCanvas("menu_canvas", width: 640.0f, height: 480.0f);
@@ -276,7 +286,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void SetMargin_ShouldSetMarginProperties()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
             var element = page.CreateElement("TextBlock", "test");
 
             // Act
@@ -294,7 +305,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void SetSize_ShouldSetWidthAndHeight()
         {
             // Arrange
-            var page = UIPage.Create("TestPage");
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
             var element = page.CreateElement("ImageElement", "test");
 
             // Act
@@ -309,12 +321,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void Create_ComplexUIPage_ThenSave_ShouldPersistAllElements()
         {
             // Arrange
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_complex_page_{Guid.NewGuid()}.sduipage");
+            var project = new StrideProject(_testProjectPath);
+            var testPageName = $"test_complex_page_{Guid.NewGuid()}.sduipage";
+            var tempPath = Path.Combine(project.AssetsPath, testPageName);
 
             try
             {
-                // Act - Create complex UI page
-                var page = UIPage.Create("MainMenu", tempPath);
+                // Act - Create complex UI page with full path
+                var page = project.CreateUIPage("MainMenu", tempPath);
 
                 var rootGrid = page.RootElements.First();
 
@@ -370,13 +384,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
         {
             // Arrange
             var project = new StrideProject(_testProjectPath);
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_project_page_{Guid.NewGuid()}.sduipage");
+            var testPageName = $"test_project_page_{Guid.NewGuid()}.sduipage";
+            var tempPath = Path.Combine(project.AssetsPath, testPageName);
 
             try
             {
                 // Act - Create UI page through project
                 var page = project.CreateUIPage("TestMenu");
-                page.SaveAs(tempPath);
+                page.SaveAs(testPageName);
 
                 // Assert
                 File.Exists(tempPath).Should().BeTrue();
