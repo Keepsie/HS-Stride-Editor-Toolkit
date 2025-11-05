@@ -34,12 +34,13 @@ namespace HS.Stride.Editor.Toolkit.Core.PrefabEditing
 
         /// <summary>
         /// Creates a new prefab with the specified name and root entity.
-        /// The prefab is not saved to disk until Save() or SaveAs() is called.
+        /// The prefab is not saved to disk until Save() is called.
+        /// INTERNAL: Use StrideProject.CreatePrefab() instead.
         /// </summary>
         /// <param name="name">Name of the root entity</param>
-        /// <param name="filePath">Optional file path for the prefab (used when saving with Save())</param>
+        /// <param name="filePath">File path for the prefab</param>
         /// <returns>A new PrefabAsset with an empty root entity</returns>
-        public static Prefab Create(string name, string? filePath = null)
+        internal static Prefab Create(string name, string? filePath = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
@@ -94,20 +95,42 @@ namespace HS.Stride.Editor.Toolkit.Core.PrefabEditing
         /// </summary>
         public void Save()
         {
-            var yaml = StrideYamlPrefab.GeneratePrefabYaml(_prefabContent);
-            FileHelper.SaveFile(yaml, _prefabContent.FilePath);
+            StrideYamlPrefab.SavePrefab(_prefabContent);
         }
 
         /// <summary>
         /// Saves the prefab's current state to a new file.
+        /// If ParentProject exists, takes a relative path from Assets folder.
+        /// If no ParentProject, takes a full file path.
+        /// If path ends with / or \, uses root entity name as filename.
         /// </summary>
-        public void SaveAs(string filePath)
+        public void SaveAs(string path)
         {
-            if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException(nameof(filePath));
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentNullException(nameof(path));
 
-            var yaml = StrideYamlPrefab.GeneratePrefabYaml(_prefabContent);
-            FileHelper.SaveFile(yaml, filePath);
+            string fullPath;
+
+            if (_prefabContent.ParentProject != null)
+            {
+                // If path ends with separator, append root entity name
+                if (path.EndsWith("/") || path.EndsWith("\\"))
+                {
+                    var rootEntity = GetRootEntity();
+                    var fileName = rootEntity?.Name ?? "Prefab";
+                    path = path + fileName;
+                }
+
+                fullPath = StrideYamlParser.StrideYamlPrefab.BuildPrefabPath(path, _prefabContent.ParentProject);
+            }
+            else
+            {
+                // No project context, treat as full path
+                fullPath = path;
+            }
+
+            _prefabContent.FilePath = fullPath;
+            StrideYamlPrefab.SavePrefab(_prefabContent);
         }
 
         /// <summary>

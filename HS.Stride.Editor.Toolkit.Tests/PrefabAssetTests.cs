@@ -11,11 +11,13 @@ namespace HS.Stride.Editor.Toolkit.Tests
     public class PrefabAssetTests
     {
         private string _testPrefabPath;
+        private string _testProjectPath;
 
         [SetUp]
         public void Setup()
         {
             _testPrefabPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Example Assets", "Background.sdprefab");
+            _testProjectPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Example Scenes", "TestProject");
         }
 
         [Test]
@@ -205,8 +207,11 @@ namespace HS.Stride.Editor.Toolkit.Tests
         [Test]
         public void Create_NewPrefab_ShouldCreateEmptyPrefabWithRootEntity()
         {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+
             // Act
-            var prefab = Prefab.Create("TestPrefab");
+            var prefab = project.CreatePrefab("TestPrefab", "Prefabs/TestPrefab");
 
             // Assert
             prefab.Should().NotBeNull();
@@ -223,12 +228,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void Create_ThenSave_ShouldWriteValidPrefabFile()
         {
             // Arrange
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_new_prefab_{Guid.NewGuid()}.sdprefab");
+            var project = new StrideProject(_testProjectPath);
+            var testPrefabName = $"test_new_prefab_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
-                // Act - Create and save
-                var prefab = Prefab.Create("MyCrate", tempPath);
+                // Act - Create and save with relative path
+                var prefab = project.CreatePrefab("MyCrate", testPrefabName);
                 prefab.Save();
 
                 // Assert - File should exist and be loadable
@@ -250,12 +257,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
         public void Create_AddEntities_ThenSave_ShouldPersistAllEntities()
         {
             // Arrange
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_with_entities_{Guid.NewGuid()}.sdprefab");
+            var project = new StrideProject(_testProjectPath);
+            var testPrefabName = $"test_prefab_with_entities_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
-                // Act - Create prefab
-                var prefab = Prefab.Create("House", tempPath);
+                // Act - Create prefab with relative path
+                var prefab = project.CreatePrefab("House", testPrefabName);
 
                 var root = prefab.GetRootEntity();
                 root.Should().NotBeNull();

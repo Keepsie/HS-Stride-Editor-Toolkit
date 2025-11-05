@@ -364,6 +364,9 @@ Hierarchy:
             // Set ParentProject on prefab (propagates to all entities)
             prefab.SetParentProject(this);
 
+            // Save to disk immediately
+            prefab.Save();
+
             return prefab;
         }
 
@@ -381,12 +384,16 @@ Hierarchy:
                 // Fallback: check if it's a direct file path
                 if (File.Exists(nameOrPath) && nameOrPath.EndsWith(".sduipage", StringComparison.OrdinalIgnoreCase))
                 {
-                    return UIPage.Load(nameOrPath);
+                    var page = UIPage.Load(nameOrPath);
+                    page.SetParentProject(this);
+                    return page;
                 }
                 throw new FileNotFoundException($"UI page not found: {nameOrPath}");
             }
 
-            return UIPage.Load(asset.FilePath);
+            var loadedPage = UIPage.Load(asset.FilePath);
+            loadedPage.SetParentProject(this);
+            return loadedPage;
         }
 
         /// <summary>
@@ -450,6 +457,9 @@ Hierarchy:
 
             // Create the UI page
             var page = UIPage.Create(name, filePath);
+
+            // Set ParentProject on UI page
+            page.SetParentProject(this);
 
             return page;
         }

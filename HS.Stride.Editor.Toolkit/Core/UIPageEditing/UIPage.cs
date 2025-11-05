@@ -57,12 +57,13 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         }
 
         /// <summary>
-        /// Creates a new empty UI page with a root Grid element
+        /// Creates a new empty UI page with a root Grid element.
+        /// INTERNAL: Use StrideProject.CreateUIPage() instead.
         /// </summary>
         /// <param name="name">Name of the UI page</param>
-        /// <param name="filePath">Optional file path (can be set later via SaveAs)</param>
+        /// <param name="filePath">File path for the UI page</param>
         /// <returns>A new UIPage with a root Grid container</returns>
-        public static UIPage Create(string name, string? filePath = null)
+        internal static UIPage Create(string name, string? filePath = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
@@ -302,22 +303,37 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// </summary>
         public void Save()
         {
-            if (string.IsNullOrEmpty(_content.FilePath))
-                throw new InvalidOperationException("FilePath is not set. Use SaveAs instead.");
-
             UIPageWriter.Write(this, _content);
         }
 
         /// <summary>
-        /// Saves the UI page to a new file path
+        /// Saves the UI page to a new file path.
+        /// If ParentProject exists, takes a relative path from Assets folder.
+        /// If no ParentProject, takes a full file path.
+        /// If path ends with / or \, uses first root element name as filename.
         /// </summary>
-        /// <param name="filePath">The file path to save to</param>
-        public void SaveAs(string filePath)
+        /// <param name="path">Relative path from Assets folder or full file path</param>
+        public void SaveAs(string path)
         {
-            if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException(nameof(filePath));
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentNullException(nameof(path));
 
-            _content.FilePath = filePath;
+            if (_content.ParentProject != null)
+            {
+                // If path ends with separator, append first root element name
+                if (path.EndsWith("/") || path.EndsWith("\\"))
+                {
+                    var fileName = "UIPage";
+                    if (_content.RootElementIds.Count > 0)
+                    {
+                        var rootElement = _content.Elements.FirstOrDefault(e => e.Id == _content.RootElementIds[0]);
+                        fileName = rootElement?.Name ?? "UIPage";
+                    }
+                    path = path + fileName;
+                }
+            }
+
+            _content.FilePath = path;
             UIPageWriter.Write(this, _content);
         }
 
@@ -325,5 +341,13 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// Gets the internal content object (for writer access)
         /// </summary>
         internal UIPageContent GetContent() => _content;
+
+        /// <summary>
+        /// Sets the parent project for this UI page (enables path resolution and validation)
+        /// </summary>
+        internal void SetParentProject(StrideProject project)
+        {
+            _content.ParentProject = project;
+        }
     }
 }

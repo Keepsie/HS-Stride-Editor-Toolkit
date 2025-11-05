@@ -252,12 +252,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
             component.AddToList("entityList", $"ref!! {target1.Id}");
             component.AddToList("entityList", $"ref!! {target2.Id}");
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_{Guid.NewGuid()}.sdscene");
+            // Use relative path within project Assets folder
+            var testSceneName = $"test_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
                 // Act - Save and reload
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName); // Use relative path
                 var reloaded = Scene.Load(tempPath);
 
                 // Assert
@@ -292,12 +294,14 @@ namespace HS.Stride.Editor.Toolkit.Tests
             component.SetDictionary("AnimationClips", "Walk", "walk-asset");
             component.SetDictionary("AnimationClips", "Run", "run-asset");
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_{Guid.NewGuid()}.sdscene");
+            // Use relative path within project Assets folder
+            var testSceneName = $"test_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
                 // Act - Save and reload
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName); // Use relative path
                 var reloaded = Scene.Load(tempPath);
 
                 // Assert

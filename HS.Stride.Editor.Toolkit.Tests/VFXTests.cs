@@ -15,6 +15,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
     {
         private string _testScenePath;
         private string _vfxPrefabsPath;
+        private string _testProjectPath;
 
         [SetUp]
         public void Setup()
@@ -23,6 +24,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var projectRoot = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", ".."));
             _testScenePath = Path.Combine(projectRoot, "Example Scenes", "TestProject", "Assets", "Testing.sdscene");
             _vfxPrefabsPath = Path.Combine(projectRoot, "Example Assets", "VFXPrefabs");
+            _testProjectPath = Path.Combine(projectRoot, "Example Scenes", "TestProject");
         }
 
         [Test]
@@ -371,7 +373,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             originalParticleComponent.Should().NotBeNull("Original should have ParticleSystemComponent");
 
             // Act - Recreate the VFX using our API
-            var recreatedPrefab = Prefab.Create("Click_Recreated");
+            var project = new StrideProject(_testProjectPath);
+            var recreatedPrefab = project.CreatePrefab("Click_Recreated", "Prefabs/Click_Recreated");
             var recreatedEntity = recreatedPrefab.GetRootEntity();
             var vfx = recreatedEntity!.AddParticleSystem();
 
@@ -442,14 +445,16 @@ namespace HS.Stride.Editor.Toolkit.Tests
 
             vfx.AddEmitter(emitter);
 
-            // Save both to temp files
-            var tempOriginalPath = Path.Combine(Path.GetTempPath(), $"vfx-click-original-{Guid.NewGuid()}.sdprefab");
-            var tempRecreatedPath = Path.Combine(Path.GetTempPath(), $"vfx-click-recreated-{Guid.NewGuid()}.sdprefab");
+            // Save both to temp files in project Assets folder
+            var testOriginalName = $"vfx-click-original-{Guid.NewGuid()}.sdprefab";
+            var testRecreatedName = $"vfx-click-recreated-{Guid.NewGuid()}.sdprefab";
+            var tempOriginalPath = Path.Combine(project.AssetsPath, testOriginalName);
+            var tempRecreatedPath = Path.Combine(project.AssetsPath, testRecreatedName);
 
             try
             {
-                originalPrefab.SaveAs(tempOriginalPath);
-                recreatedPrefab.SaveAs(tempRecreatedPath);
+                originalPrefab.SaveAs(tempOriginalPath); // full path OK for loaded prefab
+                recreatedPrefab.SaveAs(testRecreatedName); // relative path for project-created prefab
 
                 // Assert - Compare structures
                 var originalWrapper = new ParticleSystemWrapper(originalParticleComponent!);
@@ -513,7 +518,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             originalComponent.Should().NotBeNull();
 
             // Act - Recreate
-            var recreatedPrefab = Prefab.Create("Smoke_Recreated");
+            var project = new StrideProject(_testProjectPath);
+            var recreatedPrefab = project.CreatePrefab("Smoke_Recreated", "Prefabs/Smoke_Recreated");
             var recreatedEntity = recreatedPrefab.GetRootEntity();
             var vfx = recreatedEntity!.AddParticleSystem();
 
@@ -656,7 +662,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             originalComponent.Should().NotBeNull();
 
             // Act - Recreate
-            var recreatedPrefab = Prefab.Create("Bullettrail_Recreated");
+            var project = new StrideProject(_testProjectPath);
+            var recreatedPrefab = project.CreatePrefab("Bullettrail_Recreated", "Prefabs/Bullettrail_Recreated");
             var recreatedEntity = recreatedPrefab.GetRootEntity();
             var vfx = recreatedEntity!.AddParticleSystem();
 
@@ -734,7 +741,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var originalPrefabPath = Path.Combine(_vfxPrefabsPath, "vfx-Click.sdprefab");
             var originalPrefab = Prefab.Load(originalPrefabPath);
 
-            var recreatedPrefab = Prefab.Create("Click_Recreated");
+            var project = new StrideProject(_testProjectPath);
+            var recreatedPrefab = project.CreatePrefab("Click_Recreated", "Prefabs/Click_Recreated");
             var entity = recreatedPrefab.GetRootEntity();
             var vfx = entity!.AddParticleSystem();
 
@@ -756,14 +764,16 @@ namespace HS.Stride.Editor.Toolkit.Tests
             emitter.AddInitialPosition((0.0f, 0.1f, 0.0f), (0.0f, 0.1f, 0.0f));
             vfx.AddEmitter(emitter);
 
-            // Act - Save to temp files
-            var tempOriginalPath = Path.Combine(Path.GetTempPath(), $"original-{Guid.NewGuid()}.sdprefab");
-            var tempRecreatedPath = Path.Combine(Path.GetTempPath(), $"recreated-{Guid.NewGuid()}.sdprefab");
+            // Act - Save to temp files in project Assets folder
+            var testOriginalName = $"original-{Guid.NewGuid()}.sdprefab";
+            var testRecreatedName = $"recreated-{Guid.NewGuid()}.sdprefab";
+            var tempOriginalPath = Path.Combine(project.AssetsPath, testOriginalName);
+            var tempRecreatedPath = Path.Combine(project.AssetsPath, testRecreatedName);
 
             try
             {
-                originalPrefab.SaveAs(tempOriginalPath);
-                recreatedPrefab.SaveAs(tempRecreatedPath);
+                originalPrefab.SaveAs(tempOriginalPath); // full path OK for loaded prefab
+                recreatedPrefab.SaveAs(testRecreatedName); // relative path for project-created prefab
 
                 // Read YAML content
                 var originalYaml = File.ReadAllText(tempOriginalPath);

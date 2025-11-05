@@ -34,5 +34,10 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// Raw YAML content (for preservation of unmodified sections)
         /// </summary>
         public string RawContent { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Parent StrideProject (enables path resolution and validation)
+        /// </summary>
+        public StrideProject? ParentProject { get; set; }
     }
 }

@@ -17,6 +17,97 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
         #region YAML Writing
 
         /// <summary>
+        /// Saves prefab to disk with automatic path validation and correction.
+        /// Ensures the prefab is saved within the project's Assets folder.
+        /// </summary>
+        public static void SavePrefab(PrefabContent prefabContent)
+        {
+            // Validate and build the save path
+            string filePath = ValidateAndBuildPrefabPath(prefabContent);
+
+            // Generate YAML
+            string yaml = GeneratePrefabYaml(prefabContent);
+
+            // Ensure directory exists
+            var directory = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
+
+            // Save to disk
+            File.WriteAllText(filePath, yaml);
+
+            // Update content with the final path
+            prefabContent.FilePath = filePath;
+        }
+
+        /// <summary>
+        /// Builds a full file path from a relative path and project.
+        /// </summary>
+        public static string BuildPrefabPath(string relativePath, StrideProject project)
+        {
+            if (project == null)
+                throw new ArgumentNullException(nameof(project));
+
+            var cleanPath = relativePath.Replace("/", Path.DirectorySeparatorChar.ToString());
+            var filePath = Path.Combine(project.AssetsPath, cleanPath);
+
+            if (!filePath.EndsWith(".sdprefab", StringComparison.OrdinalIgnoreCase))
+            {
+                filePath += ".sdprefab";
+            }
+
+            return filePath;
+        }
+
+        /// <summary>
+        /// Validates and builds the save path for a prefab.
+        /// Handles empty paths, relative paths, and ensures saves are within the project.
+        /// </summary>
+        private static string ValidateAndBuildPrefabPath(PrefabContent prefabContent)
+        {
+            var filePath = prefabContent.FilePath;
+
+            // Case 1: Empty or whitespace path - save to Assets root with prefab name
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                if (prefabContent.ParentProject == null)
+                    throw new InvalidOperationException("Cannot save prefab: no file path set and no parent project available. Load or create prefabs via StrideProject.");
+
+                // Use root entity name as filename
+                var rootEntity = prefabContent.Entities.FirstOrDefault(e => prefabContent.RootEntityIds.Contains(e.Id));
+                var name = rootEntity?.Name ?? "Prefab";
+                return Path.Combine(prefabContent.ParentProject.AssetsPath, $"{name}.sdprefab");
+            }
+
+            // Case 2: Relative path - build from ParentProject.AssetsPath
+            if (!Path.IsPathRooted(filePath))
+            {
+                if (prefabContent.ParentProject == null)
+                    throw new InvalidOperationException($"Cannot save prefab with relative path '{filePath}': no parent project available. Load or create prefabs via StrideProject.");
+
+                filePath = Path.Combine(prefabContent.ParentProject.AssetsPath, filePath);
+            }
+
+            // Case 3: Full path - validate it's inside the project assets folder
+            if (prefabContent.ParentProject != null)
+            {
+                var assetsPath = Path.GetFullPath(prefabContent.ParentProject.AssetsPath);
+                var targetPath = Path.GetFullPath(Path.GetDirectoryName(filePath) ?? filePath);
+
+                if (!targetPath.StartsWith(assetsPath, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException($"Cannot save prefab outside project Assets folder. Attempted path: {filePath}");
+            }
+
+            // Ensure .sdprefab extension
+            if (!filePath.EndsWith(".sdprefab", StringComparison.OrdinalIgnoreCase))
+            {
+                filePath += ".sdprefab";
+            }
+
+            return filePath;
+        }
+
+        /// <summary>
         /// Generates complete prefab YAML from PrefabContent.
         /// </summary>
         public static string GeneratePrefabYaml(PrefabContent prefabContent)

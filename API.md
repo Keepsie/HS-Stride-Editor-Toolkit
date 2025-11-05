@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.2.1
+**Version:** 1.3.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -1020,22 +1020,6 @@ Loads a prefab asset from the specified `.sdprefab` file path.
 var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\Enemy.sdprefab");
 ```
 
-##### `static Prefab Create(string name, string? filePath = null)`
-
-Creates a new empty prefab with the specified name. The prefab is not saved to disk until `Save()` or `SaveAs()` is called. It automatically creates a root entity for the prefab with a `TransformComponent`.
-
-**Parameters:**
-
-- `name` (string): Name of the root entity within the prefab.
-- `filePath` (string?, optional): Optional file path for the prefab. If not provided, it must be set later via `SaveAs()`.
-
-**Returns:** A new `Prefab` asset instance with an empty root entity.
-
-```csharp
-var newPrefab = Prefab.Create("MyNewCratePrefab", @"C:\MyGame\Assets\Prefabs\Crates\MyNewCratePrefab.sdprefab");
-// Add entities and components to newPrefab.GetRootEntity()
-```
-
 #### Properties
 
 ##### `string Id`
@@ -1181,22 +1165,6 @@ Loads a UI page from a `.sduipage` file on disk.
 var page = UIPage.Load(@"C:\MyGame\Assets\UI\MainMenu.sduipage");
 ```
 
-##### `static UIPage Create(string name, string? filePath = null)`
-
-Creates a new empty UI page with a root `Grid` element automatically added.
-
-**Parameters:**
-
-- `name` (string): The name of the UI page (and its root element).
-- `filePath` (string?, optional): The optional file path where the page will be saved. Can be set later via `SaveAs()`.
-
-**Returns:** A new `UIPage` instance with a root `Grid` container.
-
-```csharp
-var newPage = UIPage.Create("SettingsMenu");
-// This page now has a root Grid element named "SettingsMenu"
-```
-
 #### Properties
 
 ##### `string Id`
@@ -1236,7 +1204,8 @@ Creates a new UI element of a specified type and adds it to the page.
 **Example:**
 
 ```csharp
-var page = UIPage.Create("MainMenu");
+var project = new StrideProject(@"C:\MyGame");
+var page = project.CreateUIPage("MainMenu", "UI/MainMenu");
 var rootGrid = page.RootElements.First(); // Get the auto-created root Grid
 
 // Create a TextBlock as a child of the root grid
@@ -2232,6 +2201,17 @@ custom.Set("MaxHealth", 100.0f);
 
 ```csharp
 entity.RemoveComponent("StaticColliderComponent");
+```
+
+##### Component Cloning Method
+
+- `Component CloneComponent(Component sourceComponent)` - Clones a component from another entity, copying all properties with new GUIDs
+
+**Example:**
+
+```csharp
+var healthComponent = sourceEntity.GetComponent("HealthComponent");
+targetEntity.CloneComponent(healthComponent);
 ```
 
 ##### Hierarchy Navigation Methods

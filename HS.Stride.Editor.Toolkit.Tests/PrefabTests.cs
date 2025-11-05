@@ -109,14 +109,15 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var rootEntity = prefab.AllEntities.First(e => e.Name == "CubeGroupPrefab");
             var transform = rootEntity.GetTransform();
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_{Guid.NewGuid()}.sdprefab");
+            var testPrefabName = $"test_prefab_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
                 // Act - Modify prefab
                 transform!.SetPosition(5.0f, 10.0f, 15.0f);
 
-                prefab.SaveAs(tempPath);
+                prefab.SaveAs(testPrefabName);
 
                 // Reload and verify
                 var reloaded = project.LoadPrefab(tempPath);
@@ -146,14 +147,15 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var prefabInstance = scene.FindEntityByName("CubeGroupPrefab");
             var transform = prefabInstance!.GetTransform();
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_scene_{Guid.NewGuid()}.sdscene");
+            var testSceneName = $"test_scene_{Guid.NewGuid()}.sdscene";
+            var tempPath = Path.Combine(project.AssetsPath, testSceneName);
 
             try
             {
                 // Act - Modify the prefab instance
                 transform!.SetPosition(100.0f, 0.0f, 0.0f);
 
-                scene.SaveAs(tempPath);
+                scene.SaveAs(testSceneName);
 
                 // Reload and verify
                 var reloaded = Scene.Load(tempPath);
@@ -186,7 +188,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var prefab = project.LoadPrefab("CubeGroupPrefab");
             var cubeEntity = prefab.AllEntities.First(e => e.Name == "Cube (2)");
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_component_{Guid.NewGuid()}.sdprefab");
+            var testPrefabName = $"test_prefab_component_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
@@ -195,7 +198,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 customComp.Set("health", 500);
                 customComp.Set("speed", 9.5f);
 
-                prefab.SaveAs(tempPath);
+                prefab.SaveAs(testPrefabName);
 
                 // Reload and verify
                 var reloaded = project.LoadPrefab(tempPath);
@@ -341,7 +344,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             // Arrange
             var project = new StrideProject(_testProjectPath);
             var prefab = project.LoadPrefab("CubeGroupPrefab");
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_folder_{Guid.NewGuid()}.sdprefab");
+            var testPrefabName = $"test_prefab_folder_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
@@ -354,7 +358,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 newEntity.Folder.Should().Be("TestFolder");
 
                 // Save and verify
-                prefab.SaveAs(tempPath);
+                prefab.SaveAs(testPrefabName);
                 var yaml = File.ReadAllText(tempPath);
                 yaml.Should().Contain("Folder: TestFolder");
             }
@@ -371,7 +375,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             // Arrange
             var project = new StrideProject(_testProjectPath);
             var prefab = project.LoadPrefab("CubeGroupPrefab");
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_nested_{Guid.NewGuid()}.sdprefab");
+            var testPrefabName = $"test_prefab_nested_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
@@ -391,7 +396,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 level3.Should().NotBeNull("Level3 should be auto-created");
 
                 // Verify hierarchy
-                prefab.SaveAs(tempPath);
+                prefab.SaveAs(testPrefabName);
                 var reloaded = project.LoadPrefab(tempPath);
 
                 reloaded.FindEntityByName("Level1").Should().NotBeNull();
@@ -533,7 +538,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var project = new StrideProject(_testProjectPath);
             var prefab = project.LoadPrefab("CubeGroupPrefab");
             var root = prefab.GetRootEntity();
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_child_mod_{Guid.NewGuid()}.sdprefab");
+            var testPrefabName = $"test_prefab_child_mod_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
@@ -544,7 +550,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 var transform = lootBox!.GetTransform();
                 transform!.SetPosition(10.0f, 20.0f, 30.0f);
 
-                prefab.SaveAs(tempPath);
+                prefab.SaveAs(testPrefabName);
 
                 // Reload and verify
                 var reloaded = project.LoadPrefab(tempPath);
@@ -596,7 +602,8 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var project = new StrideProject(_testProjectPath);
             var prefab = project.LoadPrefab("CubeGroupPrefab");
             var rootEntity = prefab.GetRootEntity();
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_prefab_type_{Guid.NewGuid()}.sdprefab");
+            var testPrefabName = $"test_prefab_type_{Guid.NewGuid()}.sdprefab";
+            var tempPath = Path.Combine(project.AssetsPath, testPrefabName);
 
             try
             {
@@ -611,7 +618,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
                 component.Type.Should().NotBe("!Tester", "Should not be a bare tag name");
 
                 // Save and verify the YAML is correct
-                prefab.SaveAs(tempPath);
+                prefab.SaveAs(testPrefabName);
                 var yaml = File.ReadAllText(tempPath);
 
                 // YAML should contain the full type name
@@ -642,7 +649,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
 
             // Arrange
             var project = new StrideProject(_testProjectPath);
-            var tempPath = Path.Combine(Path.GetTempPath(), $"test_new_prefab_{Guid.NewGuid()}.sdprefab");
+            var tempPath = Path.Combine(project.AssetsPath, "TestScenes", $"test_new_prefab_{Guid.NewGuid()}.sdprefab");
 
             try
             {

@@ -245,24 +245,50 @@ namespace HS.Stride.Editor.Toolkit.Core.SceneEditing
         /// </summary>
         public void Save()
         {
-            var yaml = StrideYamlScene.GenerateSceneYaml(_sceneContent);
-            FileHelper.SaveFile(yaml, _sceneContent.FilePath);
+            StrideYamlScene.SaveScene(_sceneContent);
             Reload();
         }
 
         /// <summary>
         /// Saves the scene's current state to a new file.
+        /// If ParentProject exists, takes a relative path from Assets folder.
+        /// If no ParentProject, takes a full file path.
+        /// If path ends with / or \, uses first root entity name as filename.
         /// </summary>
-        /// <param name="filePath">Path where to save the scene</param>
-        /// <exception cref="ArgumentNullException">Thrown if filePath is null or empty</exception>
-        public void SaveAs(string filePath)
+        /// <param name="path">Relative path from Assets folder or full file path</param>
+        /// <exception cref="ArgumentNullException">Thrown if path is null or empty</exception>
+        public void SaveAs(string path)
         {
-            if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentNullException(nameof(filePath));
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentNullException(nameof(path));
 
-            var yaml = StrideYamlScene.GenerateSceneYaml(_sceneContent);
-            FileHelper.SaveFile(yaml, filePath);
-            _sceneContent = StrideYamlScene.ParseScene(filePath);
+            string fullPath;
+
+            if (_sceneContent.ParentProject != null)
+            {
+                // If path ends with separator, append first root entity name or scene ID
+                if (path.EndsWith("/") || path.EndsWith("\\"))
+                {
+                    var fileName = "Scene";
+                    if (_sceneContent.RootEntityIds.Count > 0)
+                    {
+                        var rootEntity = _sceneContent.Entities.FirstOrDefault(e => e.Id == _sceneContent.RootEntityIds[0]);
+                        fileName = rootEntity?.Name ?? "Scene";
+                    }
+                    path = path + fileName;
+                }
+
+                fullPath = StrideYamlParser.StrideYamlScene.BuildScenePath(path, _sceneContent.ParentProject);
+            }
+            else
+            {
+                // No project context, treat as full path
+                fullPath = path;
+            }
+
+            _sceneContent.FilePath = fullPath;
+            StrideYamlScene.SaveScene(_sceneContent);
+            Reload();
         }
     }
 }

@@ -200,6 +200,81 @@ namespace HS.Stride.Editor.Toolkit.Core
         }
 
         /// <summary>
+        /// Clones a component from another entity to this entity, copying all its properties.
+        /// </summary>
+        /// <param name="sourceComponent">The component to clone</param>
+        /// <returns>The newly cloned component</returns>
+        /// <exception cref="ArgumentNullException">Thrown if sourceComponent is null</exception>
+        public Component CloneComponent(Component sourceComponent)
+        {
+            if (sourceComponent == null)
+                throw new ArgumentNullException(nameof(sourceComponent));
+
+            // Create new component with new GUIDs
+            var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
+            var component = new Component
+            {
+                Key = componentKey,
+                Type = sourceComponent.Type,
+                Id = Utilities.GuidHelper.NewGuid(),
+                Properties = DeepCopyProperties(sourceComponent.Properties),
+                ParentEntity = this
+            };
+
+            Components[componentKey] = component;
+            IsModified = true;
+            return component;
+        }
+
+        /// <summary>
+        /// Deep copies a properties dictionary, handling nested dictionaries and lists.
+        /// Entity/component/asset references are preserved (not remapped).
+        /// </summary>
+        private Dictionary<string, object> DeepCopyProperties(Dictionary<string, object> source)
+        {
+            var copy = new Dictionary<string, object>();
+
+            foreach (var kvp in source)
+            {
+                copy[kvp.Key] = DeepCopyPropertyValue(kvp.Value);
+            }
+
+            return copy;
+        }
+
+        /// <summary>
+        /// Deep copies a property value, handling all types (primitives, dictionaries, lists, references).
+        /// </summary>
+        private object DeepCopyPropertyValue(object value)
+        {
+            if (value is Dictionary<string, object> dict)
+            {
+                // Recursively copy nested dictionaries (Vector3, Color, etc.)
+                var newDict = new Dictionary<string, object>();
+                foreach (var kvp in dict)
+                {
+                    newDict[kvp.Key] = DeepCopyPropertyValue(kvp.Value);
+                }
+                return newDict;
+            }
+            else if (value is List<object> list)
+            {
+                // Copy lists (arrays)
+                var newList = new List<object>();
+                foreach (var item in list)
+                {
+                    newList.Add(DeepCopyPropertyValue(item));
+                }
+                return newList;
+            }
+            else
+            {
+                // Primitives, strings (including "ref!! guid" and "guid:path" references)
+                return value;
+            }
+        }
+
+        /// <summary>
         /// Checks if this entity has a component of the specified type.
         /// </summary>
         /// <param name="componentType">The component type name to check</param>

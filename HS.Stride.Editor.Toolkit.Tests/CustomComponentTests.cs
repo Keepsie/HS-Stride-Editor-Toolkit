@@ -220,5 +220,81 @@ namespace HS.Stride.Editor.Toolkit.Tests
                     File.Delete(tempPath);
             }
         }
+
+        [Test]
+        public void CloneComponent_ShouldCopyAllProperties()
+        {
+            // Arrange
+            var scene = Scene.Load(_testScenePath);
+            var sourceEntity = scene.FindEntities(e => e.HasComponent("CharacterComponent")).FirstOrDefault();
+
+            if (sourceEntity == null)
+            {
+                Assert.Inconclusive("No entity with CharacterComponent found");
+                return;
+            }
+
+            var sourceComponent = sourceEntity.GetComponent("CharacterComponent");
+            var targetEntity = scene.FindEntityByName("Camera");
+            targetEntity.Should().NotBeNull("Camera entity should exist for testing");
+
+            // Act
+            var clonedComponent = targetEntity.CloneComponent(sourceComponent);
+
+            // Assert - Verify clone has same properties
+            clonedComponent.Should().NotBeNull();
+            clonedComponent.Type.Should().Be(sourceComponent.Type, "Type should match");
+            clonedComponent.Get<float>("FallSpeed").Should().Be(sourceComponent.Get<float>("FallSpeed"));
+            clonedComponent.Get<float>("Friction").Should().Be(sourceComponent.Get<float>("Friction"));
+            clonedComponent.Get<bool>("CanSleep").Should().Be(sourceComponent.Get<bool>("CanSleep"));
+            clonedComponent.Get<string>("CollisionGroup").Should().Be(sourceComponent.Get<string>("CollisionGroup"));
+
+            // Assert - Verify clone has NEW GUIDs
+            clonedComponent.Id.Should().NotBe(sourceComponent.Id, "Clone should have new component ID");
+            clonedComponent.Key.Should().NotBe(sourceComponent.Key, "Clone should have new component Key");
+
+            // Assert - Verify clone is attached to target entity
+            targetEntity.HasComponent("CharacterComponent").Should().BeTrue();
+            targetEntity.GetComponent("CharacterComponent").Should().Be(clonedComponent);
+
+            // Assert - Verify modifying clone doesn't affect original
+            clonedComponent.Set("FallSpeed", 99.0f);
+            clonedComponent.Get<float>("FallSpeed").Should().Be(99.0f);
+            sourceComponent.Get<float>("FallSpeed").Should().NotBe(99.0f, "Original should be unchanged");
+        }
+
+        [Test]
+        public void CloneComponent_WithNestedProperties_ShouldDeepCopy()
+        {
+            // Arrange
+            var scene = Scene.Load(_testScenePath);
+            var sourceEntity = scene.FindEntityByName("Camera");
+            sourceEntity.Should().NotBeNull();
+
+            var transform = sourceEntity.GetTransform();
+            transform.Should().NotBeNull();
+
+            var targetEntity = scene.FindEntityByName("Directional light");
+            targetEntity.Should().NotBeNull();
+
+            // Act - Clone transform component (has nested Vector3 properties)
+            var clonedTransform = targetEntity.CloneComponent(transform.Component);
+
+            // Assert - Verify nested properties are copied
+            var originalPosition = transform.Component.GetMultiValueProperty("Position");
+            var clonedPosition = clonedTransform.GetMultiValueProperty("Position");
+
+            clonedPosition.Should().NotBeNull();
+            clonedPosition["X"].Should().Be(originalPosition["X"]);
+            clonedPosition["Y"].Should().Be(originalPosition["Y"]);
+            clonedPosition["Z"].Should().Be(originalPosition["Z"]);
+
+            // Assert - Verify deep copy (not reference copy)
+            clonedPosition.Should().NotBeSameAs(originalPosition, "Should be deep copy, not reference");
+
+            // Modify clone and verify original unchanged
+            clonedPosition["X"] = 999.0f;
+            originalPosition["X"].Should().NotBe(999.0f, "Original nested property should be unchanged");
+        }
     }
 }
