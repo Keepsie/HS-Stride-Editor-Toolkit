@@ -8,7 +8,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
     /// Represents a Stride UI page (.sduipage file) that can be loaded, modified, and saved.
     /// Similar to Scene/Prefab but for UI elements.
     /// </summary>
-    public class UIPage
+    public class UIPage : IStrideAsset
     {
         private readonly UIPageContent _content;
 
@@ -19,6 +19,34 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// Design resolution for the UI page
         /// </summary>
         public Dictionary<string, float> Resolution => _content.Resolution;
+
+        /// <summary>
+        /// Gets the design resolution as a tuple (X, Y, Z).
+        /// </summary>
+        /// <returns>Design resolution tuple or null if not set</returns>
+        public (float X, float Y, float Z)? GetDesignResolution()
+        {
+            if (_content.Resolution.ContainsKey("X") &&
+                _content.Resolution.ContainsKey("Y") &&
+                _content.Resolution.ContainsKey("Z"))
+            {
+                return (_content.Resolution["X"], _content.Resolution["Y"], _content.Resolution["Z"]);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Sets the design resolution.
+        /// </summary>
+        /// <param name="x">Width resolution</param>
+        /// <param name="y">Height resolution</param>
+        /// <param name="z">Depth resolution</param>
+        public void SetDesignResolution(float x, float y, float z)
+        {
+            _content.Resolution["X"] = x;
+            _content.Resolution["Y"] = y;
+            _content.Resolution["Z"] = z;
+        }
 
         /// <summary>
         /// All UI elements in the page
@@ -92,8 +120,9 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// <param name="type">The UI element type (e.g., "Grid", "TextBlock", "Button", "ImageElement")</param>
         /// <param name="name">The name of the element</param>
         /// <param name="parent">Optional parent element to nest this element under</param>
+        /// <param name="autoAttach">If true and parent is null, auto-attaches to root Grid. Set to false for button content.</param>
         /// <returns>The newly created UI element</returns>
-        public UIElement CreateElement(string type, string name, UIElement? parent = null)
+        public UIElement CreateElement(string type, string name, UIElement? parent = null, bool autoAttach = true)
         {
             if (string.IsNullOrWhiteSpace(type))
                 throw new ArgumentNullException(nameof(type));
@@ -206,12 +235,12 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
             // Add to page
             _content.Elements.Add(element);
 
-            // Add to parent (or root Grid if parent is null)
+            // Add to parent (or root Grid if parent is null and autoAttach is true)
             if (parent != null)
             {
                 parent.AddChild(element);
             }
-            else
+            else if (autoAttach)
             {
                 // Auto-attach to root Grid when no parent is specified
                 var rootGrid = RootElements.FirstOrDefault();
@@ -348,6 +377,101 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         internal void SetParentProject(StrideProject project)
         {
             _content.ParentProject = project;
+        }
+
+        /// <summary>
+        /// Gets a property value by name. Supports nested paths with dot notation.
+        /// e.g. "Design.Resolution", "Hierarchy.RootParts"
+        /// NOTE: This is a compatibility method for migration from UIPageAsset.
+        /// Prefer using structured properties like Resolution, GetDesignResolution(), etc.
+        /// </summary>
+        /// <param name="propertyName">The property name or path</param>
+        /// <returns>The property value or null if not found</returns>
+        public object? Get(string propertyName)
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException(nameof(propertyName));
+
+            return GetNestedProperty(_content.Properties, propertyName);
+        }
+
+        /// <summary>
+        /// Sets a property value by name. Supports nested paths with dot notation.
+        /// NOTE: This is a compatibility method for migration from UIPageAsset.
+        /// Prefer using structured properties like SetDesignResolution(), etc.
+        /// Only properties that Stride serializes will persist when saved.
+        /// </summary>
+        /// <param name="propertyName">The property name or path</param>
+        /// <param name="value">The value to set</param>
+        public void Set(string propertyName, object value)
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException(nameof(propertyName));
+
+            SetNestedProperty(_content.Properties, propertyName, value);
+        }
+
+        /// <summary>
+        /// Gets all properties as a dictionary.
+        /// NOTE: This is a compatibility method for migration from UIPageAsset.
+        /// </summary>
+        /// <returns>Dictionary of all properties</returns>
+        public Dictionary<string, object> GetAllProperties()
+        {
+            return _content.Properties;
+        }
+
+        private object? GetNestedProperty(Dictionary<string, object> dict, string path)
+        {
+            var parts = path.Split('.');
+            object? current = dict;
+
+            foreach (var part in parts)
+            {
+                if (current is Dictionary<string, object> currentDict)
+                {
+                    if (currentDict.ContainsKey(part))
+                    {
+                        current = currentDict[part];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return current;
+        }
+
+        private void SetNestedProperty(Dictionary<string, object> dict, string path, object value)
+        {
+            var parts = path.Split('.');
+            var current = dict;
+
+            for (int i = 0; i < parts.Length - 1; i++)
+            {
+                var part = parts[i];
+                if (!current.ContainsKey(part))
+                {
+                    current[part] = new Dictionary<string, object>();
+                }
+
+                if (current[part] is Dictionary<string, object> nextDict)
+                {
+                    current = nextDict;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Cannot navigate through non-dictionary property '{part}' in path '{path}'");
+                }
+            }
+
+            current[parts[^1]] = value;
         }
     }
 }

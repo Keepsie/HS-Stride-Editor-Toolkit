@@ -36,6 +36,12 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         public string RawContent { get; set; } = string.Empty;
 
         /// <summary>
+        /// All properties of the UI page stored as key-value pairs for generic access.
+        /// This enables compatibility with UIPageAsset's Get/Set API.
+        /// </summary>
+        public Dictionary<string, object> Properties { get; set; } = new();
+
+        /// <summary>
         /// Parent StrideProject (enables path resolution and validation)
         /// </summary>
         public StrideProject? ParentProject { get; set; }
