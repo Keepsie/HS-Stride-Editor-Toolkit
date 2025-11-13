@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.3.0
+**Version:** 1.4.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -1425,6 +1425,7 @@ project.Rescan();
 ### Key Methods
 
 **UIPage Creation & Management:**
+
 - `project.CreateUIPage(name, relativePath)`: Creates a new UI page asset.
 - `UIPage.Load(filePath)`: Loads an existing UI page from a file.
 - `page.Save()` / `page.SaveAs(filePath)`: Saves changes to the UI page.
@@ -1432,6 +1433,7 @@ project.Rescan();
 - `page.SetDesignResolution(x, y, z)`: Sets the design resolution.
 
 **Element Creation Helpers:**
+
 - `page.CreateElement(type, name, parent)`: Creates any UI element type.
 - `page.CreateTextBlock(name, text, parent, fontSize, alignment...)`: Creates a text label.
 - `page.CreateButton(name, text, parent, width, height)`: Creates a button with text.
@@ -1447,6 +1449,7 @@ project.Rescan();
 - `page.CreateScrollBar(name, isVertical, parent, width, height)`: Creates a scrollbar.
 
 **Layout & Sizing:**
+
 - `element.SetSize(width, height)`: Sets width and height.
 - `element.SetWidth(width)` / `element.SetHeight(height)`: Sets individual dimensions.
 - `element.SetMargin(left, top, right, bottom)`: Sets margins for positioning.
@@ -1454,6 +1457,7 @@ project.Rescan();
 - `element.SetAlignment(horizontal, vertical)`: Sets alignment ("Left", "Center", "Right", "Top", "Bottom", "Stretch").
 
 **Colors & Appearance:**
+
 - `element.SetBackgroundColor(r, g, b, a)`: Sets background color.
 - `element.SetTextColor(r, g, b, a)`: Sets text color (TextBlock).
 - `element.SetColor(r, g, b, a)`: Sets tint color (ImageElement).
@@ -1461,6 +1465,7 @@ project.Rescan();
 - `element.SetVisibility(visible)`: Shows or hides element.
 
 **Assets (Using AssetReference):**
+
 - `element.SetFont(fontAsset)`: Sets font for TextBlock.
 - `element.SetSprite(spriteSheetAsset, frame)`: Sets sprite from sheet.
 - `element.SetTexture(textureAsset)`: Sets texture directly.
@@ -1468,6 +1473,7 @@ project.Rescan();
 - `element.SetPressedTexture/SetNotPressedTexture/SetMouseOverTexture`: Button images from textures.
 
 **Element Finding:**
+
 - `page.FindElementById(id)`: Finds element by ID.
 - `page.FindElementByName(name)`: Finds element by exact name.
 - `page.FindElementsByName(pattern)`: Finds elements by wildcard pattern.
@@ -1475,6 +1481,7 @@ project.Rescan();
 - `page.FindElements(predicate)`: Finds elements using custom filter.
 
 **Hierarchy:**
+
 - `element.AddChild(child)`: Adds a child element.
 - `element.RemoveChild(child)`: Removes a child element.
 - `element.GetChildren()`: Gets all direct children.
@@ -1640,6 +1647,7 @@ Represents a single particle emitter within a particle system. Each emitter cont
 Creates a billboard emitter (particles always face the camera).
 
 **Parameters:**
+
 - `name`: Optional emitter name (e.g., "fire", "smoke", "sparks") - defaults to null
 - `lifetime`: Particle lifetime range in seconds (min, max) - defaults to (1.0, 1.0)
 
@@ -1652,6 +1660,7 @@ var smoke = vfx.CreateBillboardEmitter("smoke", (5.0f, 7.0f));
 Creates an oriented quad emitter (particles oriented by velocity direction - good for sparks, trails).
 
 **Parameters:**
+
 - `name`: Optional emitter name - defaults to null
 - `lifetime`: Particle lifetime range - defaults to (0.5, 1.5)
 - `scaleLength`: Scale particle length based on velocity - default true
@@ -1667,6 +1676,7 @@ var sparks = vfx.CreateOrientedQuadEmitter("sparks", (0.5f, 1.5f),
 Creates a ribbon/trail emitter (particles connect into a continuous trail).
 
 **Parameters:**
+
 - `name`: Optional emitter name
 - `lifetime`: Particle lifetime range - defaults to (1.0, 1.0)
 - `segments`: Number of segments in the ribbon - default 15
@@ -1734,6 +1744,7 @@ emitter.SortingPolicy = "ByOrder"; // For ribbons
 Sets the particle texture with HDR color multiplier and additive blending.
 
 **Parameters:**
+
 - `texture`: Texture asset reference
 - `hdrMultiplier`: HDR brightness multiplier (values > 1.0 create glow)
 - `alphaAdditive`: Additive blending amount (0.0 = normal, 1.0 = fully additive)
@@ -1758,6 +1769,7 @@ emitter.SetTextureMaterial(fireTexture,
 Enables flipbook/spritesheet animation for the texture.
 
 **Parameters:**
+
 - `xDivisions`: Number of columns in the spritesheet
 - `yDivisions`: Number of rows in the spritesheet
 - `startFrame`: Starting frame index (0-based)
@@ -1775,6 +1787,7 @@ emitter.SetFlipbookAnimation(8, 8, 0, 64);
 Spawns a burst of particles all at once.
 
 **Parameters:**
+
 - `particleCount`: Number of particles to spawn
 - `oneShot`: If true, spawns once and stops; if false, repeats
 - `delay`: Optional delay range before spawning (min, max) in seconds
@@ -1789,6 +1802,7 @@ emitter.SetBurstSpawner(50, oneShot: true, delay: (0.5f, 0.5f));
 Spawns particles continuously over time.
 
 **Parameters:**
+
 - `particlesPerSecond`: Spawn rate
 - `looping`: If true, repeats; if false, runs once
 - `delay`: Optional delay before starting
@@ -1901,6 +1915,7 @@ emitter.AddSizeOverTime(
 Applies force field effects to particles.
 
 **Parameters:**
+
 - `fieldShape`: Shape of the force field (`VFXFieldShape.Cylinder`, `VFXFieldShape.Sphere`, etc.) - defaults to Sphere
 - `scale`: Size of the force field volume - defaults to (1, 1, 1) if not specified
 - `forceDirected`: Strength pulling toward field center (negative pushes away) - default 0.0
@@ -2068,6 +2083,7 @@ vfx.AddEmitter(emitter);
 6. **Color Curves**: Define at least 2 keyframes for color/size curves. More keyframes create smoother transitions.
 
 7. **Force Fields**: Experiment with force field combinations:
+   
    - Upward fire: negative repulsive force
    - Explosion: positive repulsive force with high energy conservation
    - Vortex: combine vortex force with directed force
@@ -2590,11 +2606,11 @@ This section is **essential** for anyone working with custom Stride components c
 
 Working with components fundamentally involves getting and setting property values. The toolkit provides different **interaction strategies** that offer varying levels of convenience, type-safety, and code readability over this core `Get()`/`Set()` functionality.
 
-| Strategy                          | Description                                                         | Primary Use Case                                                    | Benefits                                                     | Cautions                                                   |
-| :-------------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------------ | :----------------------------------------------------------- | :--------------------------------------------------------- |
-| **Direct Component Access**       | Using `Component.Get<T>()` and `Component.Set()` directly.        | Custom components, quick edits, dynamic property manipulation.      | Flexible, handles any component, no wrapper code needed.     | Verbose syntax, no compile-time type checking for property names. |
-| **Custom Wrapper Classes**        | Creating a dedicated C# class to abstract `Component.Get()`/`Set()`. | Your own frequently used custom components.                         | Type-safe, IntelliSense, reusable, cleaner code, custom helper methods. | Requires writing and maintaining wrapper class definitions. |
-| **Built-in Typed Wrappers**       | Toolkit-provided wrappers for core Stride components.               | Core Stride components (Transform, Model, Light, Colliders, Physics). | Highly convenient, type-safe, IntelliSense, specialized helper methods. | Limited to a predefined set of core Stride components.     |
+| Strategy                    | Description                                                          | Primary Use Case                                                      | Benefits                                                                | Cautions                                                          |
+|:--------------------------- |:-------------------------------------------------------------------- |:--------------------------------------------------------------------- |:----------------------------------------------------------------------- |:----------------------------------------------------------------- |
+| **Direct Component Access** | Using `Component.Get<T>()` and `Component.Set()` directly.           | Custom components, quick edits, dynamic property manipulation.        | Flexible, handles any component, no wrapper code needed.                | Verbose syntax, no compile-time type checking for property names. |
+| **Custom Wrapper Classes**  | Creating a dedicated C# class to abstract `Component.Get()`/`Set()`. | Your own frequently used custom components.                           | Type-safe, IntelliSense, reusable, cleaner code, custom helper methods. | Requires writing and maintaining wrapper class definitions.       |
+| **Built-in Typed Wrappers** | Toolkit-provided wrappers for core Stride components.                | Core Stride components (Transform, Model, Light, Colliders, Physics). | Highly convenient, type-safe, IntelliSense, specialized helper methods. | Limited to a predefined set of core Stride components.            |
 
 ### 1. Direct Component Access (The Foundation)
 
