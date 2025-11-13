@@ -314,7 +314,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     }
                     else
                     {
-                        sb.AppendLine($"                {propertyName}: {value}");
+                        sb.AppendLine($"                {propertyName}: {EscapeYamlString(strValue)}");
                     }
                 }
                 else if (value is Dictionary<string, object> dict)
@@ -331,13 +331,67 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                 }
                 else if (value is string str && !string.IsNullOrEmpty(str))
                 {
-                    sb.AppendLine($"                {propertyName}: {str}");
+                    sb.AppendLine($"                {propertyName}: {EscapeYamlString(str)}");
+                }
+                else if (value is float floatValue)
+                {
+                    // Ensure floats always have decimal point
+                    sb.AppendLine($"                {propertyName}: {floatValue.ToString("0.0###############", System.Globalization.CultureInfo.InvariantCulture)}");
                 }
                 else
                 {
                     sb.AppendLine($"                {propertyName}: {value}");
                 }
             }
+        }
+
+        /// <summary>
+        /// Escapes a string value for YAML if it contains special characters
+        /// </summary>
+        private static string EscapeYamlString(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // Check if string needs quoting (contains special YAML characters)
+            bool needsQuoting = value.Contains(':') ||
+                                value.Contains('{') ||
+                                value.Contains('}') ||
+                                value.Contains('[') ||
+                                value.Contains(']') ||
+                                value.Contains(',') ||
+                                value.Contains('&') ||
+                                value.Contains('*') ||
+                                value.Contains('#') ||
+                                value.Contains('?') ||
+                                value.Contains('|') ||
+                                value.Contains('-') && value.StartsWith("-") ||
+                                value.Contains('>') ||
+                                value.Contains('<') ||
+                                value.Contains('=') ||
+                                value.Contains('!') ||
+                                value.Contains('%') ||
+                                value.Contains('@') ||
+                                value.Contains('`') ||
+                                value.Contains('"') ||
+                                value.Contains('\'') ||
+                                value.Contains('\\') ||
+                                value.Contains('\n') ||
+                                value.Contains('\r') ||
+                                value.Contains('\t') ||
+                                value.StartsWith(" ") ||
+                                value.EndsWith(" ");
+
+            if (!needsQuoting)
+                return value;
+
+            // Use double quotes and escape internal quotes, backslashes, and special characters
+            value = value.Replace("\\", "\\\\")
+                         .Replace("\"", "\\\"")
+                         .Replace("\n", "\\n")
+                         .Replace("\r", "\\r")
+                         .Replace("\t", "\\t");
+            return $"\"{value}\"";
         }
     }
 }

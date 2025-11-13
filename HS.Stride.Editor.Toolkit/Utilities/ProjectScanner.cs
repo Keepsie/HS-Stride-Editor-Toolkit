@@ -286,6 +286,7 @@ namespace HS.Stride.Editor.Toolkit.Utilities
                 ".sdpage" => AssetType.UIPage,
                 ".sduilib" => AssetType.UILibrary,
                 ".sdspritefnt" => AssetType.SpriteFont,
+                ".sdfnt" => AssetType.SpriteFont,
                 ".sdskybox" => AssetType.Skybox,
                 ".sdvideo" => AssetType.Video,
                 ".sdrendertex" => AssetType.RenderTexture,

@@ -325,7 +325,7 @@ All asset loading methods follow the same pattern: `Load{AssetType}(string nameO
 
 #### `PrefabAsset LoadPrefab(string nameOrPath)`
 
-#### `UIPageAsset LoadUIPage(string nameOrPath)`
+#### `UIPage LoadUIPage(string nameOrPath)`
 
 #### `SoundAsset LoadSound(string nameOrPath)`
 
@@ -1344,31 +1344,26 @@ Gets a list of all descendant UI elements (children, grandchildren, etc.) recurs
 var project = new StrideProject(@"C:\MyGame");
 var page = project.CreateUIPage("PauseMenu", "UI/Menus");
 
-// Background overlay
 var rootGrid = page.RootElements.First();
-var bgImage = page.CreateElement("ImageElement", "background", rootGrid);
-bgImage.Set("Width", 1280f);
-bgImage.Set("Height", 720f);
-bgImage.Set("BackgroundColor", new Dictionary<string, object> { ["R"] = 0, ["G"] = 0, ["B"] = 0, ["A"] = 180 }); // Semi-transparent black
+
+// Background overlay
+var bgImage = page.CreateImage("background", parent: rootGrid);
+bgImage.SetSize(1280f, 720f);
+bgImage.SetBackgroundColor(0, 0, 0, 180);
 
 // Menu container
-var menuCanvas = page.CreateElement("Canvas", "menu_container", rootGrid);
-menuCanvas.Set("Width", 600f);
-menuCanvas.Set("Height", 500f);
-menuCanvas.Set("HorizontalAlignment", "Center");
-menuCanvas.Set("VerticalAlignment", "Center");
+var menuCanvas = page.CreateCanvas("menu_container", parent: rootGrid);
+menuCanvas.SetSize(600f, 500f);
+menuCanvas.SetAlignment("Center", "Center");
 
 // Title
-var title = page.CreateElement("TextBlock", "title", menuCanvas);
-title.Set("Text", "GAME PAUSED");
-title.Set("TextSize", 40f);
-title.Set("Margin", new Dictionary<string, object> { ["Top"] = 50f });
-title.Set("HorizontalAlignment", "Center");
-title.Set("TextColor", new Dictionary<string, object> { ["R"] = 255, ["G"] = 255, ["B"] = 255, ["A"] = 255 });
+var title = page.CreateTextBlock("title", "GAME PAUSED", parent: menuCanvas, fontSize: 40f);
+title.SetMargin(top: 50f);
+title.SetHorizontalAlignment("Center");
+title.SetTextColor(255, 255, 255);
 
 // Buttons
-var buttons = new[]
-{
+var buttons = new[] {
     ("resume_btn", "Resume Game", 150f),
     ("settings_btn", "Settings", 230f),
     ("mainmenu_btn", "Main Menu", 310f),
@@ -1377,12 +1372,8 @@ var buttons = new[]
 
 foreach (var (name, text, yPos) in buttons)
 {
-    var btn = page.CreateElement("Button", name, menuCanvas);
-    var btnText = page.CreateElement("TextBlock", $"{name}Text", btn);
-    btnText.Set("Text", text);
-    btn.Set("Width", 400f);
-    btn.Set("Height", 60f);
-    btn.Set("Margin", new Dictionary<string, object> { ["Left"] = 100f, ["Top"] = yPos });
+    var btn = page.CreateButton(name, text, parent: menuCanvas, width: 400f, height: 60f);
+    btn.SetMargin(left: 100f, top: yPos);
 }
 
 page.Save();
@@ -1398,43 +1389,32 @@ var page = project.CreateUIPage("GameHUD", "UI");
 var rootGrid = page.RootElements.First();
 
 // Health bar (bottom-left)
-var healthCanvas = page.CreateElement("Canvas", "health_container", rootGrid);
-healthCanvas.Set("Margin", new Dictionary<string, object> { ["Left"] = 20f, ["Bottom"] = 20f });
-healthCanvas.Set("Width", 300f);
-healthCanvas.Set("Height", 50f);
-healthCanvas.Set("HorizontalAlignment", "Left");
-healthCanvas.Set("VerticalAlignment", "Bottom");
+var healthCanvas = page.CreateCanvas("health_container", parent: rootGrid);
+healthCanvas.SetSize(300f, 50f);
+healthCanvas.SetMargin(left: 20f, bottom: 20f);
+healthCanvas.SetAlignment("Left", "Bottom");
 
-var healthBg = page.CreateElement("ImageElement", "health_bg", healthCanvas);
-healthBg.Set("Width", 300f);
-healthBg.Set("Height", 50f);
-healthBg.Set("BackgroundColor", new Dictionary<string, object> { ["R"] = 60, ["G"] = 60, ["B"] = 60, ["A"] = 255 });
+var healthBg = page.CreateImage("health_bg", parent: healthCanvas);
+healthBg.SetSize(300f, 50f);
+healthBg.SetBackgroundColor(60, 60, 60);
 
-var healthFg = page.CreateElement("ImageElement", "health_bar", healthCanvas);
-healthFg.Set("Width", 300f);
-healthFg.Set("Height", 50f);
-healthFg.Set("BackgroundColor", new Dictionary<string, object> { ["R"] = 200, ["G"] = 0, ["B"] = 0, ["A"] = 255 });
+var healthFg = page.CreateImage("health_bar", parent: healthCanvas);
+healthFg.SetSize(300f, 50f);
+healthFg.SetBackgroundColor(200, 0, 0);
 
-var healthText = page.CreateElement("TextBlock", "health_text", healthCanvas);
-healthText.Set("Text", "100 / 100");
-healthText.Set("HorizontalAlignment", "Center");
-healthText.Set("VerticalAlignment", "Center");
-healthText.Set("TextColor", new Dictionary<string, object> { ["R"] = 255, ["G"] = 255, ["B"] = 255, ["A"] = 255 });
+var healthText = page.CreateTextBlock("health_text", "100 / 100", parent: healthCanvas);
+healthText.SetAlignment("Center", "Center");
+healthText.SetTextColor(255, 255, 255);
 
 // Ammo counter (bottom-right)
-var ammoCanvas = page.CreateElement("Canvas", "ammo_container", rootGrid);
-ammoCanvas.Set("Margin", new Dictionary<string, object> { ["Right"] = 20f, ["Bottom"] = 20f });
-ammoCanvas.Set("Width", 200f);
-ammoCanvas.Set("Height", 100f);
-ammoCanvas.Set("HorizontalAlignment", "Right");
-ammoCanvas.Set("VerticalAlignment", "Bottom");
+var ammoCanvas = page.CreateCanvas("ammo_container", parent: rootGrid);
+ammoCanvas.SetSize(200f, 100f);
+ammoCanvas.SetMargin(right: 20f, bottom: 20f);
+ammoCanvas.SetAlignment("Right", "Bottom");
 
-var ammoText = page.CreateElement("TextBlock", "ammo_text", ammoCanvas);
-ammoText.Set("Text", "30 / 120");
-ammoText.Set("TextSize", 60f);
-ammoText.Set("HorizontalAlignment", "Right");
-ammoText.Set("VerticalAlignment", "Center");
-ammoText.Set("TextColor", new Dictionary<string, object> { ["R"] = 255, ["G"] = 255, ["B"] = 0, ["A"] = 255 });
+var ammoText = page.CreateTextBlock("ammo_text", "30 / 120", parent: ammoCanvas, fontSize: 60f);
+ammoText.SetAlignment("Right", "Center");
+ammoText.SetTextColor(255, 255, 0);
 
 page.Save();
 project.Rescan();
@@ -1444,53 +1424,77 @@ project.Rescan();
 
 ### Key Methods
 
-Here's a summary of key methods for UI manipulation:
-
 **UIPage Creation & Management:**
-
 - `project.CreateUIPage(name, relativePath)`: Creates a new UI page asset.
 - `UIPage.Load(filePath)`: Loads an existing UI page from a file.
 - `page.Save()` / `page.SaveAs(filePath)`: Saves changes to the UI page.
+- `page.GetDesignResolution()`: Gets the design resolution (X, Y, Z).
+- `page.SetDesignResolution(x, y, z)`: Sets the design resolution.
 
-**UIElement Creation:**
+**Element Creation Helpers:**
+- `page.CreateElement(type, name, parent)`: Creates any UI element type.
+- `page.CreateTextBlock(name, text, parent, fontSize, alignment...)`: Creates a text label.
+- `page.CreateButton(name, text, parent, width, height)`: Creates a button with text.
+- `page.CreateImage(name, spriteSheet, frame, parent, width, height)`: Creates an image from sprite sheet.
+- `page.CreateImageFromTexture(name, texture, parent, width, height)`: Creates an image from texture.
+- `page.CreateCanvas(name, parent, width, height)`: Creates a canvas container.
+- `page.CreateGrid(name, parent)`: Creates a grid container.
+- `page.CreateStackPanel(name, parent)`: Creates a stack panel container.
+- `page.CreateScrollViewer(name, contentElement, parent)`: Creates a scroll viewer.
+- `page.CreateEditText(name, placeholder, parent, width, height)`: Creates a text input field.
+- `page.CreateSlider(name, min, max, value, parent, width)`: Creates a slider.
+- `page.CreateToggleButton(name, text, isChecked, parent, width, height)`: Creates a toggle/checkbox.
+- `page.CreateScrollBar(name, isVertical, parent, width, height)`: Creates a scrollbar.
 
-- `page.CreateElement(type, name, parent)`: Creates and adds any type of UI element (e.g., "TextBlock", "Button", "Grid") to the page, optionally parenting it.
+**Layout & Sizing:**
+- `element.SetSize(width, height)`: Sets width and height.
+- `element.SetWidth(width)` / `element.SetHeight(height)`: Sets individual dimensions.
+- `element.SetMargin(left, top, right, bottom)`: Sets margins for positioning.
+- `element.SetPadding(left, top, right, bottom)`: Sets padding.
+- `element.SetAlignment(horizontal, vertical)`: Sets alignment ("Left", "Center", "Right", "Top", "Bottom", "Stretch").
 
-**UIElement Manipulation (via UIElement instance):**
+**Colors & Appearance:**
+- `element.SetBackgroundColor(r, g, b, a)`: Sets background color.
+- `element.SetTextColor(r, g, b, a)`: Sets text color (TextBlock).
+- `element.SetColor(r, g, b, a)`: Sets tint color (ImageElement).
+- `element.SetOpacity(value)`: Sets transparency (0.0-1.0).
+- `element.SetVisibility(visible)`: Shows or hides element.
 
-- `element.Set(propertyName, value)`: Sets any property on a UI element (e.g., "Text", "Width", "Height").
-- `element.Get<T>(propertyName)`: Gets a property value, with type conversion.
-- `element.SetMargin(left, top, right, bottom)`: Sets the element's margin.
-- `element.SetSize(width, height)`: Sets the element's dimensions.
-- `element.SetAlignment(horizontal, vertical)`: Sets the element's alignment.
-- `element.SetBackgroundColor(r, g, b, a)`: Sets the element's background color.
-- `element.SetTextColor(r, g, b, a)`: Sets text color (for TextBlock).
-- `element.AddChild(child)`: Adds a UIElement as a child to a container element.
-- `element.RemoveChild(child)`: Removes a child UIElement.
+**Assets (Using AssetReference):**
+- `element.SetFont(fontAsset)`: Sets font for TextBlock.
+- `element.SetSprite(spriteSheetAsset, frame)`: Sets sprite from sheet.
+- `element.SetTexture(textureAsset)`: Sets texture directly.
+- `element.SetPressedImage/SetNotPressedImage/SetMouseOverImage`: Button images from sprites.
+- `element.SetPressedTexture/SetNotPressedTexture/SetMouseOverTexture`: Button images from textures.
 
-**UIElement Finding:**
-
-- `page.FindElementById(id)`: Finds a UI element by its ID.
-- `page.FindElementByName(name)`: Finds a UI element by exact name.
-- `page.FindElementsByName(pattern)`: Finds elements by wildcard name pattern.
+**Element Finding:**
+- `page.FindElementById(id)`: Finds element by ID.
+- `page.FindElementByName(name)`: Finds element by exact name.
+- `page.FindElementsByName(pattern)`: Finds elements by wildcard pattern.
 - `page.FindElementsByType(type)`: Finds elements by type.
-- `page.FindElements(predicate)`: Finds elements using a custom filter function.
-- `element.FindChildByName(name)`: Finds a direct child element by name.
+- `page.FindElements(predicate)`: Finds elements using custom filter.
+
+**Hierarchy:**
+- `element.AddChild(child)`: Adds a child element.
+- `element.RemoveChild(child)`: Removes a child element.
 - `element.GetChildren()`: Gets all direct children.
-- `element.GetDescendants()`: Gets all children and grandchildren recursively.
+- `element.GetDescendants()`: Gets all descendants recursively.
 
 ### UI Element Types
 
-The `CreateElement` method supports the following common UI types (case-insensitive for `type` parameter):
+The `CreateElement` method supports all Stride UI element types:
 
 - **TextBlock**: Displays text.
 - **Button**: A clickable button.
-- **ImageElement**: Displays sprites or textures (e.g., health bars, icons).
-- **Canvas**: A container for absolute positioning of child elements.
-- **Grid**: A container for grid-based layout.
-- **StackPanel**: A container that stacks child elements horizontally or vertically.
-- **ScrollViewer**: A container that provides scrolling for its content.
-- **EditText**: An input field for text.
+- **ToggleButton**: A checkbox or toggle switch.
+- **ImageElement**: Displays sprites or textures.
+- **Canvas**: Container for absolute positioning.
+- **Grid**: Container for grid-based layout.
+- **StackPanel**: Container that stacks elements horizontally or vertically.
+- **ScrollViewer**: Container that provides scrolling for content.
+- **ScrollBar**: Standalone scrollbar control.
+- **EditText**: Text input field.
+- **Slider**: Value slider control.
 
 ---
 
@@ -3981,72 +3985,11 @@ Gets all properties as a dictionary (for inspection/debugging).
 
 For detailed information on creating and manipulating Prefab assets, please see the [Prefab Creation (Programmatically)](#prefab-creation-programmatically) section, which includes the full `Prefab` class API.
 
-### UIPageAsset
-
-**Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
-
-Represents an editable Stride UI Page asset (.sduipage).
-
-#### Loading
-
-```csharp
-var page = UIPageAsset.Load(@"C:\MyGame\Assets\UI\MainMenu.sdpage");
-```
-
-#### Properties
-
-##### `string Id`
-
-The asset's unique GUID (inherited from `IStrideAsset`).
-
-##### `string FilePath`
-
-The asset's absolute file path on disk (inherited from `IStrideAsset`).
-
-#### Methods
-
-##### `void Save()`
-
-Saves the UI page's current state back to its original file (inherited from `IStrideAsset`).
-
-##### `void SaveAs(string filePath)`
-
-Saves the UI page's current state to a new file (inherited from `IStrideAsset`).
-
-##### `(float X, float Y, float Z)? GetDesignResolution()`
-
-Gets the design resolution (width, height, depth) of the UI page. Returns `null` if not found.
-
-##### `void SetDesignResolution(float x, float y, float z)`
-
-Sets the design resolution of the UI page.
-
-**Example:**
-
-```csharp
-page.SetDesignResolution(1920, 1080, 1000);
-page.Save();
-```
-
-##### `object? Get(string propertyName)`
-
-Gets a property value by name. Supports nested paths with dot notation.
-**NOTE:** Only properties saved in the `.sduipage` file (visible in Stride's Property Grid) can be accessed.
-
-##### `void Set(string propertyName, object value)`
-
-Sets a property value by name. Supports nested paths with dot notation.
-**NOTE:** Only properties that Stride serializes will persist when saved.
-
-##### `Dictionary<string, object> GetAllProperties()`
-
-Gets all properties as a dictionary (for inspection/debugging).
-
 ### Generic Asset Editing: SoundAsset, SkeletonAsset, SpriteSheetAsset, EffectAsset
 
 **Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
 
-These asset types typically involve fewer direct manipulation methods than `MaterialAsset` or `UIPageAsset`. For `SoundAsset`, `SkeletonAsset`, `SpriteSheetAsset`, and `EffectAsset`, interactions primarily involve loading the asset and then using the generic `Get()` and `Set()` methods to modify their properties.
+These asset types typically involve fewer direct manipulation methods than `MaterialAsset`. For `SoundAsset`, `SkeletonAsset`, `SpriteSheetAsset`, and `EffectAsset`, interactions primarily involve loading the asset and then using the generic `Get()` and `Set()` methods to modify their properties.
 
 They all implement the `IStrideAsset` interface, providing:
 

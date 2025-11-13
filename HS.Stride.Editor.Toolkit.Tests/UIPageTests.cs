@@ -406,5 +406,104 @@ namespace HS.Stride.Editor.Toolkit.Tests
                     File.Delete(tempPath);
             }
         }
+
+        [Test]
+        public void GetDesignResolution_ShouldReturnResolution()
+        {
+            // Arrange
+            var page = UIPage.Load(_testUIPagePath);
+
+            // Act
+            var resolution = page.GetDesignResolution();
+
+            // Assert
+            resolution.Should().NotBeNull();
+            resolution.Value.X.Should().BeGreaterThan(0);
+            resolution.Value.Y.Should().BeGreaterThan(0);
+            resolution.Value.Z.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void SetDesignResolution_ShouldSetResolution()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            page.SetDesignResolution(1920f, 1080f, 1500f);
+
+            // Assert
+            var resolution = page.GetDesignResolution();
+            resolution.Should().NotBeNull();
+            resolution.Value.X.Should().Be(1920f);
+            resolution.Value.Y.Should().Be(1080f);
+            resolution.Value.Z.Should().Be(1500f);
+        }
+
+        [Test]
+        public void CreateEditText_ShouldCreateEditTextElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var editText = page.CreateEditText("username_input", placeholder: "Enter name", width: 300f);
+
+            // Assert
+            editText.Should().NotBeNull();
+            editText.Type.Should().Be("EditText");
+            editText.Get<float>("Width").Should().Be(300f);
+        }
+
+        [Test]
+        public void CreateSlider_ShouldCreateSliderElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var slider = page.CreateSlider("volume_slider", min: 0f, max: 100f, value: 75f);
+
+            // Assert
+            slider.Should().NotBeNull();
+            slider.Type.Should().Be("Slider");
+            slider.Get<float>("Minimum").Should().Be(0f);
+            slider.Get<float>("Maximum").Should().Be(100f);
+            slider.Get<float>("Value").Should().Be(75f);
+        }
+
+        [Test]
+        public void CreateToggleButton_ShouldCreateToggleElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var toggle = page.CreateToggleButton("vsync_toggle", text: "VSync", isChecked: true);
+
+            // Assert
+            toggle.Should().NotBeNull();
+            toggle.Type.Should().Be("ToggleButton");
+            toggle.Get<string>("State").Should().Be("Checked");
+        }
+
+        [Test]
+        public void CreateScrollBar_ShouldCreateScrollBarElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var scrollBar = page.CreateScrollBar("custom_scroll", isVertical: true);
+
+            // Assert
+            scrollBar.Should().NotBeNull();
+            scrollBar.Type.Should().Be("ScrollBar");
+        }
     }
 }

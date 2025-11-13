@@ -1,5 +1,7 @@
 // HS Stride Editor Toolkit (c) 2025 Happenstance Games LLC - Apache License 2.0
 
+using HS.Stride.Editor.Toolkit.Core.StrideYamlParser;
+
 namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
 {
     /// <summary>
@@ -15,6 +17,18 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                 FilePath = filePath,
                 RawContent = string.Join("\n", lines)
             };
+
+            // Parse generic properties for Get/Set API compatibility
+            try
+            {
+                var asset = StrideYamlAssetParser.ParseAsset(filePath);
+                content.Properties = asset.Properties;
+            }
+            catch
+            {
+                // If generic parsing fails, continue with structured parsing only
+                content.Properties = new Dictionary<string, object>();
+            }
 
             // Parse header
             for (int i = 0; i < lines.Length; i++)
