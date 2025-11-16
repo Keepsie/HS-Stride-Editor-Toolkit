@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
