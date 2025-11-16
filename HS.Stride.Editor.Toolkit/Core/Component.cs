@@ -120,6 +120,12 @@ namespace HS.Stride.Editor.Toolkit.Core
             {
                 RawContent = ReplaceSinglePropertyInYaml(RawContent, propertyName, propertyValue);
                 Properties[parts[0]] = propertyValue;
+
+                // Mark entity as modified for surgical save
+                if (ParentEntity != null)
+                {
+                    ParentEntity.IsModified = true;
+                }
                 return;
             }
 
@@ -128,6 +134,12 @@ namespace HS.Stride.Editor.Toolkit.Core
             if (parts.Length == 1)
             {
                 Properties[parts[0]] = propertyValue;
+
+                // Mark entity as modified for surgical save
+                if (ParentEntity != null)
+                {
+                    ParentEntity.IsModified = true;
+                }
                 return;
             }
 
@@ -143,6 +155,12 @@ namespace HS.Stride.Editor.Toolkit.Core
             }
 
             current[parts[^1]] = propertyValue;
+
+            // Mark entity as modified for surgical save
+            if (ParentEntity != null)
+            {
+                ParentEntity.IsModified = true;
+            }
         }
 
         /// <summary>
@@ -214,6 +232,12 @@ namespace HS.Stride.Editor.Toolkit.Core
         public void SetMultiValueProperty(string propertyName, Dictionary<string, object> value)
         {
             Properties[propertyName] = value;
+
+            // Mark entity as modified for surgical save
+            if (ParentEntity != null)
+            {
+                ParentEntity.IsModified = true;
+            }
         }
 
         /// <summary>
@@ -261,6 +285,12 @@ namespace HS.Stride.Editor.Toolkit.Core
             // Add item with new GUID key
             var itemGuid = Utilities.GuidHelper.NewGuid();
             listDict[itemGuid] = value;
+
+            // Mark entity as modified for surgical save
+            if (ParentEntity != null)
+            {
+                ParentEntity.IsModified = true;
+            }
         }
 
         /// <summary>
@@ -287,6 +317,12 @@ namespace HS.Stride.Editor.Toolkit.Core
             var itemGuid = Utilities.GuidHelper.NewGuid();
             var guidKey = $"{itemGuid}~{key}";
             dict[guidKey] = value;
+
+            // Mark entity as modified for surgical save
+            if (ParentEntity != null)
+            {
+                ParentEntity.IsModified = true;
+            }
         }
 
         /// <summary>
@@ -306,6 +342,12 @@ namespace HS.Stride.Editor.Toolkit.Core
             }
 
             Properties[propertyName] = listDict;
+
+            // Mark entity as modified for surgical save
+            if (ParentEntity != null)
+            {
+                ParentEntity.IsModified = true;
+            }
         }
 
         /// <summary>

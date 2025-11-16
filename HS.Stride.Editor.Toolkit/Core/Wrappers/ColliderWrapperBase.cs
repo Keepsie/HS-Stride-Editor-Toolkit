@@ -87,5 +87,31 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
             shapes[shapeGuid] = ColliderShapeHelper.CreateStaticPlaneShape(normalX, normalY, normalZ, offset);
             ColliderShapes = shapes;
         }
+
+        /// <summary>
+        /// Adds a reference to a ColliderShapeAsset (.sdphy file).
+        /// Use this for complex shapes like convex hulls that are stored as separate assets.
+        /// </summary>
+        /// <param name="colliderShapeAsset">The collider shape asset reference</param>
+        public void AddColliderShapeAsset(AssetReference colliderShapeAsset)
+        {
+            var shapes = ColliderShapes;
+            var shapeGuid = GuidHelper.NewGuidNoDashes();
+            shapes[shapeGuid] = ColliderShapeHelper.CreateColliderShapeAssetReference(colliderShapeAsset);
+            ColliderShapes = shapes;
+        }
+
+        /// <summary>
+        /// Adds a reference to a ColliderShapeAsset (.sdphy file) by GUID and path.
+        /// </summary>
+        /// <param name="assetGuid">GUID of the collider shape asset</param>
+        /// <param name="assetPath">Path to the collider shape asset</param>
+        public void AddColliderShapeAsset(string assetGuid, string assetPath)
+        {
+            var shapes = ColliderShapes;
+            var shapeGuid = GuidHelper.NewGuidNoDashes();
+            shapes[shapeGuid] = ColliderShapeHelper.CreateColliderShapeAssetReference(assetGuid, assetPath);
+            ColliderShapes = shapes;
+        }
     }
 }

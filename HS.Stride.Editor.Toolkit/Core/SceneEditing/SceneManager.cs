@@ -67,7 +67,9 @@ namespace HS.Stride.Editor.Toolkit.Core.SceneEditing
                 Id = GuidHelper.NewGuid(),
                 Name = name,
                 Folder = folder,
-                ParentProject = _content.ParentProject
+                ParentProject = _content.ParentProject,
+                ParentScene = _content,
+                IsModified = true
             };
 
             // Add transform component by default
@@ -82,7 +84,8 @@ namespace HS.Stride.Editor.Toolkit.Core.SceneEditing
                     ["Rotation"] = QuaternionData.Identity.ToMultiValueProperty(),
                     ["Scale"] = Vector3Data.One.ToMultiValueProperty(),
                     ["Children"] = new Dictionary<string, object>()
-                }
+                },
+                ParentEntity = entity
             };
 
             _content.Entities.Add(entity);

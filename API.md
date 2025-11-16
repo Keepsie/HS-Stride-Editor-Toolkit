@@ -323,6 +323,8 @@ All asset loading methods follow the same pattern: `Load{AssetType}(string nameO
 
 #### `AnimationAsset LoadAnimation(string nameOrPath)`
 
+#### `ColliderShapeAsset LoadColliderShape(string nameOrPath)`
+
 #### `PrefabAsset LoadPrefab(string nameOrPath)`
 
 #### `UIPage LoadUIPage(string nameOrPath)`
@@ -3476,6 +3478,8 @@ Access via `entity.GetStaticCollider()` which returns a `StaticColliderWrapper`.
 - `void AddMeshShape(AssetReference modelAsset)` - Static mesh collider
 - `void AddConvexHullShape(AssetReference modelAsset)` - Convex hull collider
 - `void AddPlaneShape(float normalX = 0.0f, float normalY = 1.0f, float normalZ = 0.0f, float offset = 0.0f)` - Infinite plane
+- `void AddColliderShapeAsset(AssetReference colliderShapeAsset)` - Reference to .sdphy collider asset
+- `void AddColliderShapeAsset(string assetGuid, string assetPath)` - Reference to .sdphy collider asset by guid/path
 
 **Example:**
 
@@ -3996,6 +4000,60 @@ Sets a property value by name. Supports nested paths with dot notation.
 ##### `Dictionary<string, object> GetAllProperties()`
 
 Gets all properties as a dictionary (for inspection/debugging).
+
+### ColliderShapeAsset
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.AssetEditing`
+
+Represents an editable Stride ColliderShape asset (.sdphy). Used for referencing reusable collision shapes created in Stride Editor.
+
+**IMPORTANT:** Use `StrideProject.CreateColliderShape()` to create and `StrideProject.LoadColliderShape()` to load collider shape assets. The convex hull data will be null until Stride processes the asset.
+
+#### Loading an Existing Asset
+
+```csharp
+var project = new StrideProject(projectPath);
+var colliderAsset = project.LoadColliderShape("ColliderHull"); // Load by name or path
+```
+
+#### Properties
+
+##### `string Id`
+
+The asset's unique GUID (inherited from `IStrideAsset`).
+
+##### `string FilePath`
+
+The asset's absolute file path on disk (inherited from `IStrideAsset`).
+
+#### Methods
+
+##### `void Save()`
+
+Saves the collider shape asset to its current file path (inherited from `IStrideAsset`).
+
+##### `void SaveAs(string filePath)`
+
+Saves the collider shape asset to a new path. Must have `.sdphy` extension (inherited from `IStrideAsset`).
+
+##### `AssetReference GetReference()`
+
+Gets an asset reference for use in scenes. Must be called after saving the asset.
+
+#### Example: Using an Existing Collider Asset
+
+```csharp
+var project = new StrideProject(projectPath);
+
+// Load existing collider shape asset by name or path
+var colliderAsset = project.LoadColliderShape("CrateCollider");
+
+// Use in scene
+var scene = project.LoadScene("Level1");
+var entity = scene.FindEntity("Crate");
+entity.AddStaticCollider().AddColliderShapeAsset(colliderAsset.GetReference());
+scene.Save();
+```
 
 ### PrefabAsset
 
