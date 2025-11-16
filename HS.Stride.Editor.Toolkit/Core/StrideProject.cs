@@ -271,6 +271,21 @@ Hierarchy:
         }
 
         /// <summary>
+        /// Loads a collider shape asset by name or relative path.
+        /// </summary>
+        public ColliderShapeAsset LoadColliderShape(string nameOrPath)
+        {
+            if (string.IsNullOrWhiteSpace(nameOrPath))
+                throw new ArgumentNullException(nameof(nameOrPath));
+
+            var asset = FindAssetByNameOrPath(nameOrPath, AssetType.ColliderShape);
+            if (asset == null)
+                throw new FileNotFoundException($"ColliderShape not found: {nameOrPath}");
+
+            return ColliderShapeAsset.Load(asset.FilePath);
+        }
+
+        /// <summary>
         /// Loads a prefab asset by name or relative path.
         /// </summary>
         public Prefab LoadPrefab(string nameOrPath)
@@ -394,6 +409,95 @@ Hierarchy:
             var loadedPage = UIPage.Load(asset.FilePath);
             loadedPage.SetParentProject(this);
             return loadedPage;
+        }
+
+        /// <summary>
+        /// Creates a new convex hull collider shape asset from a model and saves it to the Assets folder.
+        /// The collider shape will be automatically registered in the project scanner after calling Rescan().
+        /// NOTE: The convex hull data (ConvexHulls/ConvexHullsIndices) will be null until Stride processes the asset.
+        /// </summary>
+        /// <param name="modelNameOrPath">Name or path of the model to create convex hull from</param>
+        /// <param name="name">Name of the collider shape asset</param>
+        /// <param name="relativePath">Relative path from Assets folder (e.g., "ColliderShapes/MyCrate" or just "MyCrate")</param>
+        /// <returns>A new ColliderShapeAsset saved to disk</returns>
+        /// <example>
+        /// <code>
+        /// var project = new StrideProject(@"C:\MyGame");
+        /// var collider = project.CreateColliderShape("CrateModel", "CrateCollider", "ColliderShapes");
+        ///
+        /// // Use in scene
+        /// var scene = project.LoadScene("Level1");
+        /// var entity = scene.FindEntity("Crate");
+        /// entity.AddStaticCollider().AddColliderShapeAsset(collider.GetReference());
+        /// scene.Save();
+        ///
+        /// // Rescan to register in project
+        /// project.Rescan();
+        /// </code>
+        /// </example>
+        public ColliderShapeAsset CreateColliderShape(string modelNameOrPath, string name, string? relativePath = null)
+        {
+            if (string.IsNullOrWhiteSpace(modelNameOrPath))
+                throw new ArgumentNullException(nameof(modelNameOrPath));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            // Find the model asset
+            // Check if it's a reference format (guid:path)
+            AssetReference? modelAsset = null;
+            if (modelNameOrPath.Contains(':'))
+            {
+                // Extract GUID from reference format
+                var guidPart = modelNameOrPath.Split(':')[0];
+                modelAsset = FindAssetByGuid(guidPart);
+            }
+
+            // If not found as reference, try name or path
+            if (modelAsset == null)
+            {
+                modelAsset = FindAssetByNameOrPath(modelNameOrPath, AssetType.Model);
+            }
+
+            if (modelAsset == null)
+                throw new FileNotFoundException($"Model not found: {modelNameOrPath}");
+
+            // Build file path
+            string filePath;
+            if (string.IsNullOrWhiteSpace(relativePath))
+            {
+                // Default: save in Assets root
+                filePath = Path.Combine(_assetsPath, $"{name}.sdphy");
+            }
+            else
+            {
+                // Handle relative path
+                var cleanPath = relativePath.Replace("/", Path.DirectorySeparatorChar.ToString());
+
+                // If path doesn't end with .sdphy, treat it as a directory and add filename
+                if (!cleanPath.EndsWith(".sdphy", StringComparison.OrdinalIgnoreCase))
+                {
+                    filePath = Path.Combine(_assetsPath, cleanPath, $"{name}.sdphy");
+                }
+                else
+                {
+                    filePath = Path.Combine(_assetsPath, cleanPath);
+                }
+            }
+
+            // Ensure directory exists
+            var directory = Path.GetDirectoryName(filePath);
+            if (directory != null && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            // Create the collider shape asset
+            var colliderAsset = ColliderShapeAsset.CreateConvexHull(modelAsset, name);
+
+            // Save to disk immediately
+            colliderAsset.Save(filePath);
+
+            return colliderAsset;
         }
 
         /// <summary>

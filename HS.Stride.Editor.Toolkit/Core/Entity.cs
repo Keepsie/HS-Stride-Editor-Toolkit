@@ -513,7 +513,9 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
             var component = StaticColliderWrapper.CreateComponent();
+            component.ParentEntity = this;
             Components[componentKey] = component;
+            IsModified = true;
             return new StaticColliderWrapper(component);
         }
 
@@ -530,7 +532,9 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
             var component = RigidbodyWrapper.CreateComponent(mass, isKinematic);
+            component.ParentEntity = this;
             Components[componentKey] = component;
+            IsModified = true;
             return new RigidbodyWrapper(component);
         }
 
@@ -545,7 +549,9 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
             var component = ModelWrapper.CreateComponent();
+            component.ParentEntity = this;
             Components[componentKey] = component;
+            IsModified = true;
             return new ModelWrapper(component);
         }
 
@@ -560,7 +566,9 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
             var component = LightWrapper.CreateComponent();
+            component.ParentEntity = this;
             Components[componentKey] = component;
+            IsModified = true;
             return new LightWrapper(component);
         }
 
@@ -575,7 +583,9 @@ namespace HS.Stride.Editor.Toolkit.Core
 
             var componentKey = Utilities.GuidHelper.NewGuidNoDashes();
             var component = ParticleSystemWrapper.CreateComponent();
+            component.ParentEntity = this;
             Components[componentKey] = component;
+            IsModified = true;
             return new ParticleSystemWrapper(component);
         }
 

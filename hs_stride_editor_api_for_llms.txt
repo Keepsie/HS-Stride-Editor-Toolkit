@@ -75,6 +75,7 @@ Control validation behavior for component properties:
 *   `MaterialAsset LoadMaterial(string nameOrPath)`
 *   `TextureAsset LoadTexture(string nameOrPath)`
 *   `AnimationAsset LoadAnimation(string nameOrPath)`
+*   `ColliderShapeAsset LoadColliderShape(string nameOrPath)`
 *   `PrefabAsset LoadPrefab(string nameOrPath)`
 *   `UIPage LoadUIPage(string nameOrPath)`
 *   `SoundAsset LoadSound(string nameOrPath)`
@@ -361,6 +362,8 @@ scene.Save();
 *   `void AddSphereShape(float radius, ...)`
 *   `void AddCapsuleShape(float length, radius, orientation, ...)`
 *   `void AddMeshShape(AssetReference modelAsset)`
+*   `void AddColliderShapeAsset(AssetReference colliderShapeAsset)` - Reference .sdphy asset
+*   `void AddColliderShapeAsset(string assetGuid, string assetPath)` - Reference .sdphy asset by guid/path
 *   `float Friction`, `float Restitution`, `bool IsTrigger`
 
 ##### `RigidbodyWrapper` (via `entity.GetRigidbody()`)
@@ -654,6 +657,13 @@ Interfaces for `IStrideAsset` (`Id`, `FilePath`, `Save()`, `SaveAs(filePath)`).
 *   `string? GetSkeletonReference()` / `void SetSkeletonReference(string skeletonReference)`
 *   `string? GetPreviewModel()` / `void SetPreviewModel(string modelReference)`
 *   `object? Get(string propertyName)` / `void Set(string propertyName, object value)`
+
+##### `ColliderShapeAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
+*   Created via `StrideProject.CreateColliderShape(modelNameOrPath, name, relativePath)` - Creates and saves a convex hull collider shape asset
+*   Loaded via `StrideProject.LoadColliderShape(nameOrPath)` - Loads by name or relative path
+*   `void Save()` / `void SaveAs(string filePath)` - Must have .sdphy extension
+*   `AssetReference GetReference()` - Must be called after saving
+*   **Workflow:** Use `project.CreateColliderShape()` or `project.LoadColliderShape()` → Get reference → Add to entity collider via `AddColliderShapeAsset()`
 
 ##### `SoundAsset`, `SkeletonAsset`, `SpriteSheetAsset`, `EffectAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
 *   `static XxxAsset Load(string filePath)`

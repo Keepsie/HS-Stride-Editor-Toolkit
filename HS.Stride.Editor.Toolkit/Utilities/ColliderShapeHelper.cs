@@ -306,6 +306,44 @@ namespace HS.Stride.Editor.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Creates a ColliderShapeAssetDesc that references a saved collider shape asset (.sdphy file).
+        /// Use this for complex shapes like convex hulls that are stored as separate assets.
+        /// </summary>
+        /// <param name="colliderShapeAsset">Asset reference from ProjectAssetScanner or ColliderShapeAsset.GetReference()</param>
+        public static Dictionary<string, object> CreateColliderShapeAssetReference(AssetReference colliderShapeAsset)
+        {
+            if (colliderShapeAsset == null)
+                throw new ArgumentNullException(nameof(colliderShapeAsset));
+
+            return new Dictionary<string, object>
+            {
+                ["!ColliderShapeAssetDesc"] = "",
+                ["Shape"] = $"{colliderShapeAsset.Id}:{colliderShapeAsset.Path}"
+            };
+        }
+
+        /// <summary>
+        /// Creates a ColliderShapeAssetDesc that references a saved collider shape asset (.sdphy file).
+        /// </summary>
+        /// <param name="assetGuid">GUID of the collider shape asset</param>
+        /// <param name="assetPath">Path to the collider shape asset (e.g., "ColliderHull")</param>
+        public static Dictionary<string, object> CreateColliderShapeAssetReference(
+            string assetGuid,
+            string assetPath)
+        {
+            if (string.IsNullOrWhiteSpace(assetGuid))
+                throw new ArgumentNullException(nameof(assetGuid));
+            if (string.IsNullOrWhiteSpace(assetPath))
+                throw new ArgumentNullException(nameof(assetPath));
+
+            return new Dictionary<string, object>
+            {
+                ["!ColliderShapeAssetDesc"] = "",
+                ["Shape"] = $"{assetGuid}:{assetPath}"
+            };
+        }
+
+        /// <summary>
         /// Creates a complete StaticColliderComponent with one or more collider shapes.
         /// </summary>
         /// <param name="shapes">One or more collider shapes (use Create*Shape methods)</param>
