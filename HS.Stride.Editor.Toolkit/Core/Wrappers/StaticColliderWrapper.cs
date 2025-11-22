@@ -121,13 +121,16 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
                                 // Plane has Normal + Offset
                                 shapeDict["!StaticPlaneColliderShapeDesc"] = "";
                             }
-                            else if (shapeDict.ContainsKey("Model"))
+                            else if (shapeDict.ContainsKey("Model") && !shapeDict.ContainsKey("!StaticMeshColliderShapeDesc"))
                             {
-                                // Mesh-like shapes have Model; default to StaticMesh if unknown
-                                if (!shapeDict.ContainsKey("!ConvexHullColliderShapeDesc") && !shapeDict.ContainsKey("!StaticMeshColliderShapeDesc"))
-                                {
-                                    shapeDict["!StaticMeshColliderShapeDesc"] = "";
-                                }
+                                // Mesh shapes have Model property - use StaticMesh
+                                // Note: ConvexHull is never inline, it's always in a .sdphy file referenced via ColliderShapeAssetDesc
+                                shapeDict["!StaticMeshColliderShapeDesc"] = "";
+                            }
+                            else if (shapeDict.ContainsKey("Shape") && !shapeDict.ContainsKey("!ColliderShapeAssetDesc"))
+                            {
+                                // Shape references (like convex hulls) use ColliderShapeAssetDesc
+                                shapeDict["!ColliderShapeAssetDesc"] = "";
                             }
 
                             shapes[shapeKey] = shapeDict;

@@ -240,45 +240,6 @@ namespace HS.Stride.Editor.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Creates a ConvexHullColliderShapeDesc using another model.
-        /// Creates a convex hull around the model's vertices.
-        /// </summary>
-        /// <param name="modelAsset">Asset reference from ProjectAssetScanner</param>
-        public static Dictionary<string, object> CreateConvexHullShape(AssetReference modelAsset)
-        {
-            if (modelAsset == null)
-                throw new ArgumentNullException(nameof(modelAsset));
-
-            return new Dictionary<string, object>
-            {
-                ["!ConvexHullColliderShapeDesc"] = "",
-                ["Model"] = $"{modelAsset.Id}:{modelAsset.Path}"
-            };
-        }
-
-        /// <summary>
-        /// Creates a ConvexHullColliderShapeDesc using another model.
-        /// Creates a convex hull around the model's vertices.
-        /// </summary>
-        /// <param name="modelGuid">GUID of the model to use</param>
-        /// <param name="modelPath">Path to the model asset</param>
-        public static Dictionary<string, object> CreateConvexHullShape(
-            string modelGuid,
-            string modelPath)
-        {
-            if (string.IsNullOrWhiteSpace(modelGuid))
-                throw new ArgumentNullException(nameof(modelGuid));
-            if (string.IsNullOrWhiteSpace(modelPath))
-                throw new ArgumentNullException(nameof(modelPath));
-
-            return new Dictionary<string, object>
-            {
-                ["!ConvexHullColliderShapeDesc"] = "",
-                ["Model"] = $"{modelGuid}:{modelPath}"
-            };
-        }
-
-        /// <summary>
         /// Creates a StaticPlaneColliderShapeDesc.
         /// Represents an infinite plane (useful for ground).
         /// </summary>

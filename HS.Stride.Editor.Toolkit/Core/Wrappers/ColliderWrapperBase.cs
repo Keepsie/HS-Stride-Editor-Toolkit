@@ -72,12 +72,15 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
             ColliderShapes = shapes;
         }
 
-        public void AddConvexHullShape(AssetReference modelAsset)
+        /// <summary>
+        /// Adds a convex hull collider shape by referencing a ColliderShapeAsset (.sdphy file).
+        /// Note: The asset reference should point to a .sdphy file created with StrideProject.CreateColliderShape(),
+        /// not directly to a model.
+        /// </summary>
+        /// <param name="colliderShapeAsset">Asset reference to the .sdphy file containing the convex hull</param>
+        public void AddConvexHullShape(AssetReference colliderShapeAsset)
         {
-            var shapes = ColliderShapes;
-            var shapeGuid = GuidHelper.NewGuidNoDashes();
-            shapes[shapeGuid] = ColliderShapeHelper.CreateConvexHullShape(modelAsset);
-            ColliderShapes = shapes;
+            AddColliderShapeAsset(colliderShapeAsset);
         }
 
         public void AddPlaneShape(float normalX = 0.0f, float normalY = 1.0f, float normalZ = 0.0f, float offset = 0.0f)
