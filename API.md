@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.5.0
+**Version:** 1.5.1
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -3475,8 +3475,8 @@ Access via `entity.GetStaticCollider()` which returns a `StaticColliderWrapper`.
 - `void AddCapsuleShape(float length = 1.0f, float radius = 0.5f, string orientation = "UpY", float offsetX = 0.0f, float offsetY = 0.0f, float offsetZ = 0.0f)`
 - `void AddCylinderShape(float height = 1.0f, float radius = 0.5f, string orientation = "UpY", float offsetX = 0.0f, float offsetY = 0.0f, float offsetZ = 0.0f)`
 - `void AddConeShape(float height = 1.0f, float radius = 0.5f, string orientation = "UpY", float offsetX = 0.0f, float offsetY = 0.0f, float offsetZ = 0.0f)`
-- `void AddMeshShape(AssetReference modelAsset)` - Static mesh collider
-- `void AddConvexHullShape(AssetReference modelAsset)` - Convex hull collider
+- `void AddMeshShape(AssetReference modelAsset)` - Static mesh collider (uses model geometry directly)
+- `void AddConvexHullShape(AssetReference colliderShapeAsset)` - Convex hull collider (requires .sdphy file created via StrideProject.CreateColliderShape())
 - `void AddPlaneShape(float normalX = 0.0f, float normalY = 1.0f, float normalZ = 0.0f, float offset = 0.0f)` - Infinite plane
 - `void AddColliderShapeAsset(AssetReference colliderShapeAsset)` - Reference to .sdphy collider asset
 - `void AddColliderShapeAsset(string assetGuid, string assetPath)` - Reference to .sdphy collider asset by guid/path
@@ -3496,11 +3496,44 @@ collider.AddBoxShape(2.0f, 1.0f, 2.0f);
 collider.AddSphereShape(radius: 0.5f, offsetY: 1.0f);
 collider.AddCapsuleShape(length: 2.0f, radius: 0.5f, orientation: "UpY");
 
-// Mesh collider from asset
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var model = scanner.FindAsset("TerrainModel", AssetType.Model);
+// Mesh collider from asset (uses model geometry directly)
+var model = project.FindAsset("TerrainModel", AssetType.Model);
 collider.AddMeshShape(model);
+
+// Convex hull collider - requires creating .sdphy file first
+var modelRef = project.FindAsset("CrateModel", AssetType.Model);
+var hullAsset = project.CreateColliderShape(modelRef.Reference, "Crate_hull");
+collider.AddConvexHullShape(hullAsset.GetReference());
+```
+
+**Convex Hull Workflow Example:**
+
+Convex hulls MUST be stored in `.sdphy` files and cannot be inlined in scenes. Here's the complete workflow:
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+
+// 1. Find or create the convex hull asset
+var hull = project.FindAsset("Wall_hull", AssetType.ColliderShape);
+
+if (hull == null)
+{
+    // Create new .sdphy file with convex hull
+    var modelRef = project.FindAsset("Wall", AssetType.Model);
+    var createdHull = project.CreateColliderShape(modelRef.Reference, "Wall_hull");
+    hull = createdHull.GetReference();
+
+    // Rescan to register the new asset
+    project.Rescan();
+}
+
+// 2. Add convex hull to entity
+var entity = scene.FindEntity("WallEntity");
+var collider = entity.AddStaticCollider();
+collider.AddConvexHullShape(hull); // References the .sdphy file
+
+scene.Save();
 ```
 
 ### RigidbodyWrapper

@@ -2,8 +2,8 @@ HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
 
 **Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
-**Version:** 1.5.0
-**API Version:** 1.5.0
+**Version:** 1.5.1
+**API Version:** 1.5.1
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 **Package:** HS.Stride.Editor.Toolkit
@@ -361,10 +361,24 @@ scene.Save();
 *   `void AddBoxShape(float sizeX, ...)`
 *   `void AddSphereShape(float radius, ...)`
 *   `void AddCapsuleShape(float length, radius, orientation, ...)`
-*   `void AddMeshShape(AssetReference modelAsset)`
+*   `void AddMeshShape(AssetReference modelAsset)` - Uses model geometry directly
+*   `void AddConvexHullShape(AssetReference colliderShapeAsset)` - REQUIRES .sdphy file (use StrideProject.CreateColliderShape first)
 *   `void AddColliderShapeAsset(AssetReference colliderShapeAsset)` - Reference .sdphy asset
 *   `void AddColliderShapeAsset(string assetGuid, string assetPath)` - Reference .sdphy asset by guid/path
 *   `float Friction`, `float Restitution`, `bool IsTrigger`
+
+**CRITICAL: Convex Hull Workflow**
+```csharp
+// Convex hulls MUST be in .sdphy files, cannot be inlined
+var hull = project.FindAsset("Wall_hull", AssetType.ColliderShape);
+if (hull == null) {
+    var modelRef = project.FindAsset("Wall", AssetType.Model);
+    var created = project.CreateColliderShape(modelRef.Reference, "Wall_hull");
+    hull = created.GetReference();
+    project.Rescan();
+}
+collider.AddConvexHullShape(hull); // References .sdphy file
+```
 
 ##### `RigidbodyWrapper` (via `entity.GetRigidbody()`)
 *   `float Mass`, `bool IsKinematic`, `float LinearDamping`

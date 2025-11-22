@@ -152,29 +152,30 @@ namespace HS.Stride.Editor.Toolkit.Tests
         }
 
         [Test]
-        public void AddConvexHullShape_ValidAssetReference_ShouldAddConvexHullColliderShape()
+        public void AddConvexHullShape_ValidAssetReference_ShouldAddColliderShapeAssetDesc()
         {
             // Arrange
             var manager = new SceneManager(_sceneContent);
             var entity = manager.CreateEntity("ConvexHullColliderTest");
 
-            var modelAsset = new AssetReference
+            // This should reference a .sdphy file, not a model directly
+            var colliderShapeAsset = new AssetReference
             {
-                Id = "8eb7ebe2-c50f-4048-b944-b755cbd38808",
-                Path = "Models/Box1x1x1",
-                Type = AssetType.Model
+                Id = "test-hull-guid",
+                Path = "ColliderShapes/Box1x1x1_hull",
+                Type = AssetType.ColliderShape
             };
 
             // Act
             var collider = entity.AddStaticCollider();
-            collider.AddConvexHullShape(modelAsset);
+            collider.AddConvexHullShape(colliderShapeAsset);
 
             // Assert
             collider.ColliderShapes.Should().ContainSingle();
             var shape = collider.ColliderShapes.First().Value as Dictionary<string, object>;
             shape.Should().NotBeNull();
-            shape.Should().ContainKey("!ConvexHullColliderShapeDesc");
-            shape["Model"].Should().Be("8eb7ebe2-c50f-4048-b944-b755cbd38808:Models/Box1x1x1");
+            shape.Should().ContainKey("!ColliderShapeAssetDesc");
+            shape["Shape"].Should().Be("test-hull-guid:ColliderShapes/Box1x1x1_hull");
         }
 
         [Test]
@@ -236,18 +237,18 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var manager = new SceneManager(_sceneContent);
             var entity = manager.CreateEntity("RigidbodyColliderTest");
 
-            var modelAsset = new AssetReference
+            var colliderShapeAsset = new AssetReference
             {
-                Id = "rigidbody-model",
-                Path = "Models/PhysicsObject",
-                Type = AssetType.Model
+                Id = "rigidbody-hull",
+                Path = "ColliderShapes/PhysicsObject_hull",
+                Type = AssetType.ColliderShape
             };
 
             // Act
             var rigidbody = entity.AddRigidbody(mass: 10.0f);
             rigidbody.AddBoxShape(1.0f, 1.0f, 1.0f);
             rigidbody.AddSphereShape(0.5f);
-            rigidbody.AddConvexHullShape(modelAsset);
+            rigidbody.AddConvexHullShape(colliderShapeAsset);
 
             // Assert
             rigidbody.ColliderShapes.Should().HaveCount(3);
@@ -257,7 +258,7 @@ namespace HS.Stride.Editor.Toolkit.Tests
             var shapes = rigidbody.ColliderShapes.Values.Cast<Dictionary<string, object>>().ToList();
             shapes.Should().Contain(s => s.ContainsKey("!BoxColliderShapeDesc"));
             shapes.Should().Contain(s => s.ContainsKey("!SphereColliderShapeDesc"));
-            shapes.Should().Contain(s => s.ContainsKey("!ConvexHullColliderShapeDesc"));
+            shapes.Should().Contain(s => s.ContainsKey("!ColliderShapeAssetDesc"));
         }
 
         [Test]
