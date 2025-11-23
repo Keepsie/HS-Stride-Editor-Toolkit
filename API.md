@@ -3432,27 +3432,30 @@ Access via `entity.GetModel()` which returns a `ModelWrapper`.
 
 - `void SetModel(string guid, string path)`
 - `void SetModel(AssetReference modelAsset)`
-- `void AddMaterial(string slotKey, string materialGuid, string materialName)`
-- `void AddMaterial(string slotKey, AssetReference materialAsset)`
+- `void SetMaterial(int slotIndex, AssetReference material)` - Sets material for a specific slot (0, 1, 2, etc.)
 
 **Example:**
 
 ```csharp
 var model = entity.GetModel();
 
-// Set model from scanner
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var newModel = scanner.FindAsset("PlayerModel", AssetType.Model);
+// Set model from project
+var newModel = project.FindAsset("PlayerModel", AssetType.Model);
 model.SetModel(newModel);
 
-// Add material
-var material = scanner.FindAsset("PlayerSkin", AssetType.Material);
-model.AddMaterial("slot0", material);
+// Set material for slot 0
+var material = project.FindAsset("PlayerSkin", AssetType.Material);
+model.SetMaterial(0, material);
 
 // Toggle visibility
 model.Enabled = false;
 ```
+
+**Prefab Instance Limitation:**
+
+Modifying components on prefab instances (entities with a `Base` section) may not persist correctly when saved. To modify entities:
+- Break the prefab link in Stride first, OR
+- Edit the prefab asset directly instead of the instance
 
 ### StaticColliderWrapper
 

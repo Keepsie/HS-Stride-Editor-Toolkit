@@ -2,8 +2,8 @@ HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
 
 **Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
-**Version:** 1.5.1
-**API Version:** 1.5.1
+**Version:** 1.5.2
+**API Version:** 1.5.2
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 **Package:** HS.Stride.Editor.Toolkit
@@ -20,6 +20,7 @@ HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 *   **BACKUP YOUR PROJECT FIRST!** Changes are permanent on `.Save()`.
 *   **Close and reopen Stride GameStudio** to see changes after scripts run.
 *   Only properties visible in Stride's Property Grid (serialized) are accessible.
+*   **Prefab Instance Limitation:** Modifying components on prefab instances (entities with a `Base` section in YAML) may not persist correctly. Break the prefab link in Stride first, or edit the prefab asset directly.
 
 ### PROJECT MODES
 
@@ -354,7 +355,7 @@ scene.Save();
 
 ##### `ModelWrapper` (via `entity.GetModel()`)
 *   `void SetModel(AssetReference modelAsset)`
-*   `void AddMaterial(string slotKey, AssetReference materialAsset)`
+*   `void SetMaterial(int slotIndex, AssetReference material)` - Sets material for slot (0, 1, 2, etc.)
 *   `bool Enabled`
 
 ##### `StaticColliderWrapper` (via `entity.GetStaticCollider()`)

@@ -70,36 +70,31 @@ namespace HS.Stride.Editor.Toolkit.Core.Wrappers
         }
 
         /// <summary>
-        /// Adds a material to a specific slot using GUID and name
+        /// Sets the material for a specific slot. If the slot already has a material, replaces it.
+        /// If the slot is empty, creates a new material entry.
         /// </summary>
-        public void AddMaterial(string slotKey, string materialGuid, string materialName)
+        /// <param name="slotIndex">The material slot index (0, 1, 2, etc.)</param>
+        /// <param name="material">The material asset to set</param>
+        public void SetMaterial(int slotIndex, AssetReference material)
         {
             var materials = Materials;
-            materials[slotKey] = new Dictionary<string, object>
-            {
-                ["Name"] = materialName,
-                ["MaterialInstance"] = new Dictionary<string, object>
-                {
-                    ["Material"] = $"{materialGuid}:{materialName}"
-                }
-            };
-            Materials = materials;
-        }
 
-        /// <summary>
-        /// Adds a material to a specific slot using an AssetReference
-        /// </summary>
-        public void AddMaterial(string slotKey, AssetReference materialAsset)
-        {
-            var materials = Materials;
-            materials[slotKey] = new Dictionary<string, object>
+            // Find the existing key that ends with ~{slotIndex}
+            var slotKey = materials.Keys.FirstOrDefault(k => k.EndsWith($"~{slotIndex}"));
+
+            if (slotKey != null)
             {
-                ["Name"] = materialAsset.Name,
-                ["MaterialInstance"] = new Dictionary<string, object>
-                {
-                    ["Material"] = materialAsset.Reference
-                }
-            };
+                // Slot exists - replace the material reference (keep the same key)
+                materials[slotKey] = material.Reference;
+            }
+            else
+            {
+                // Slot doesn't exist - create new entry with hash~index format
+                var slotKeyHash = Utilities.GuidHelper.NewGuidNoDashes();
+                slotKey = $"{slotKeyHash}~{slotIndex}";
+                materials[slotKey] = material.Reference;
+            }
+
             Materials = materials;
         }
     }

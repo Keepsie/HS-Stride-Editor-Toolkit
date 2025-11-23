@@ -125,7 +125,7 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
                     WriteProperty(sb, kvp.Key, kvp.Value, indent + 1);
                 }
             }
-            else if (IsSimpleValueDict(dict))
+            else if (IsSimpleValueDict(dict) && !dict.Values.Any(v => v is string sv && (sv.TrimStart().StartsWith("!") || sv.Contains("ref!!") || sv.Contains(":"))))
             {
                 // Inline format for simple dicts: {X: 0.0, Y: 0.0, Z: 0.0}
                 var items = dict.Select(kvp => $"{kvp.Key}: {FormatValue(kvp.Value)}");
@@ -193,7 +193,7 @@ namespace HS.Stride.Editor.Toolkit.Core.StrideYamlParser
                 if (kvp.Value is Dictionary<string, object> nestedDict)
                 {
                     sb.Append($"{kvp.Key}:");
-                    if (IsSimpleValueDict(nestedDict))
+                    if (IsSimpleValueDict(nestedDict) && !nestedDict.Values.Any(v => v is string sv && (sv.TrimStart().StartsWith("!") || sv.Contains("ref!!") || sv.Contains(":"))))
                     {
                         var items = nestedDict.Select(nkvp => $"{nkvp.Key}: {FormatValue(nkvp.Value)}");
                         sb.AppendLine($" {{{string.Join(", ", items)}}}");
