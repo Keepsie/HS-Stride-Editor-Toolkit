@@ -158,15 +158,16 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
             switch (type.ToLower())
             {
                 case "grid":
+                    element.Properties["Children"] = new Dictionary<string, object>();
+                    element.Properties["RowDefinitions"] = new Dictionary<string, object>();
+                    element.Properties["ColumnDefinitions"] = new Dictionary<string, object>();
+                    element.Properties["LayerDefinitions"] = new Dictionary<string, object>();
+                    break;
+
                 case "canvas":
                 case "stackpanel":
+                case "uniformgrid":
                     element.Properties["Children"] = new Dictionary<string, object>();
-                    if (type.ToLower() == "grid")
-                    {
-                        element.Properties["RowDefinitions"] = new Dictionary<string, object>();
-                        element.Properties["ColumnDefinitions"] = new Dictionary<string, object>();
-                        element.Properties["LayerDefinitions"] = new Dictionary<string, object>();
-                    }
                     break;
 
                 case "textblock":
@@ -192,13 +193,20 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     element.Properties["VerticalAlignment"] = "Center";
                     break;
 
-                case "imageelement":
-                    element.Properties["Source"] = new Dictionary<string, object>
+                case "scrollingtext":
+                    element.Properties["Text"] = "";
+                    element.Properties["Font"] = "c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont";
+                    element.Properties["TextColor"] = new Dictionary<string, object>
                     {
-                        ["!SpriteFromSheet"] = "",
-                        ["Sheet"] = "null",
-                        ["CurrentFrame"] = 0
+                        ["R"] = 240,
+                        ["G"] = 240,
+                        ["B"] = 240,
+                        ["A"] = 255
                     };
+                    element.Properties["DrawLayerNumber"] = 4;
+                    break;
+
+                case "imageelement":
                     element.Properties["Color"] = new Dictionary<string, object>
                     {
                         ["R"] = 255,
@@ -207,28 +215,113 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                         ["A"] = 255
                     };
                     element.Properties["StretchType"] = "FillOnStretch";
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
                     break;
 
                 case "button":
                     element.Properties["DrawLayerNumber"] = 2;
-                    element.Properties["PressedImage"] = new Dictionary<string, object>
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
+                    break;
+
+                case "togglebutton":
+                    element.Properties["DrawLayerNumber"] = 2;
+                    element.Properties["State"] = "Unchecked";
+                    element.Properties["IsThreeState"] = false;
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
+                    break;
+
+                case "edittext":
+                    element.Properties["Text"] = "";
+                    element.Properties["Font"] = "c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont";
+                    element.Properties["TextSize"] = 16.0f;
+                    element.Properties["TextColor"] = new Dictionary<string, object>
                     {
-                        ["!SpriteFromSheet"] = "",
-                        ["Sheet"] = "null",
-                        ["CurrentFrame"] = 0
+                        ["R"] = 240,
+                        ["G"] = 240,
+                        ["B"] = 240,
+                        ["A"] = 255
                     };
-                    element.Properties["NotPressedImage"] = new Dictionary<string, object>
+                    element.Properties["CaretColor"] = new Dictionary<string, object>
                     {
-                        ["!SpriteFromSheet"] = "",
-                        ["Sheet"] = "null",
-                        ["CurrentFrame"] = 0
+                        ["R"] = 240,
+                        ["G"] = 240,
+                        ["B"] = 240,
+                        ["A"] = 255
                     };
-                    element.Properties["MouseOverImage"] = new Dictionary<string, object>
+                    element.Properties["SelectionColor"] = new Dictionary<string, object>
                     {
-                        ["!SpriteFromSheet"] = "",
-                        ["Sheet"] = "null",
-                        ["CurrentFrame"] = 0
+                        ["R"] = 240,
+                        ["G"] = 240,
+                        ["B"] = 240,
+                        ["A"] = 255
                     };
+                    element.Properties["DrawLayerNumber"] = 5;
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
+                    break;
+
+                case "slider":
+                    element.Properties["Minimum"] = 0.0f;
+                    element.Properties["Maximum"] = 100.0f;
+                    element.Properties["Value"] = 50.0f;
+                    element.Properties["DrawLayerNumber"] = 5;
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
+                    break;
+
+                case "scrollbar":
+                    element.Properties["Minimum"] = 0.0f;
+                    element.Properties["Maximum"] = 100.0f;
+                    element.Properties["Value"] = 0.0f;
+                    element.Properties["BarColor"] = new Dictionary<string, object>
+                    {
+                        ["R"] = 0,
+                        ["G"] = 0,
+                        ["B"] = 0,
+                        ["A"] = 0
+                    };
+                    break;
+
+                case "scrollviewer":
+                    element.Properties["ScrollBarColor"] = new Dictionary<string, object>
+                    {
+                        ["R"] = 0,
+                        ["G"] = 0,
+                        ["B"] = 0,
+                        ["A"] = 255
+                    };
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
+                    break;
+
+                case "modalelement":
+                    element.Properties["OverlayColor"] = new Dictionary<string, object>
+                    {
+                        ["R"] = 0,
+                        ["G"] = 0,
+                        ["B"] = 0,
+                        ["A"] = 153
+                    };
+                    element.Properties["HorizontalAlignment"] = "Left";
+                    element.Properties["VerticalAlignment"] = "Top";
+                    break;
+
+                case "border":
+                    element.Properties["BorderColor"] = new Dictionary<string, object>
+                    {
+                        ["R"] = 0,
+                        ["G"] = 0,
+                        ["B"] = 0,
+                        ["A"] = 0
+                    };
+                    element.Properties["BorderThickness"] = new Dictionary<string, object>();
+                    break;
+
+                case "contentdecorator":
+                    // No special defaults
                     break;
             }
 

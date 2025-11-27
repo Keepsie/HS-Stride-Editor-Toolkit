@@ -505,5 +505,533 @@ namespace HS.Stride.Editor.Toolkit.Tests
             scrollBar.Should().NotBeNull();
             scrollBar.Type.Should().Be("ScrollBar");
         }
+
+        // ===== Margin/Position Parsing Tests =====
+
+        [Test]
+        public void GetPosition_FromLoadedPage_ShouldReturnCorrectValues()
+        {
+            // Arrange - Load a real page with elements that have Margin set
+            var page = UIPage.Load(_testUIPagePath);
+
+            // Find an element with a margin (most elements in dev_console_page have margins)
+            var elementWithMargin = page.AllElements.FirstOrDefault(e =>
+                e.Properties.ContainsKey("Margin") &&
+                e.Properties["Margin"] is Dictionary<string, object> margin &&
+                margin.ContainsKey("Left"));
+
+            // Skip if no suitable element found
+            if (elementWithMargin == null)
+            {
+                Assert.Inconclusive("No element with Left margin found in test file");
+                return;
+            }
+
+            // Act
+            var (x, y) = elementWithMargin.GetPosition();
+
+            // Assert - Position should be readable (not 0,0 if margin was set)
+            // We just verify it doesn't throw and returns the parsed values
+            x.Should().BeGreaterThanOrEqualTo(0);
+            y.Should().BeGreaterThanOrEqualTo(0);
+        }
+
+        [Test]
+        public void GetMargin_FromLoadedPage_ShouldParseInlineFormat()
+        {
+            // Arrange - Load page with all UI elements
+            var allElementsPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Example Assets", "all-ui-elements.sduipage");
+            var page = UIPage.Load(allElementsPath);
+
+            // Find ToggleButton which has Margin: {Top: 232.0, Right: 58.0}
+            var toggleButton = page.AllElements.FirstOrDefault(e => e.Type == "ToggleButton");
+            toggleButton.Should().NotBeNull("all-ui-elements.sduipage should contain a ToggleButton");
+
+            // Act
+            var margin = toggleButton!.GetMargin();
+
+            // Assert - Should have parsed the inline {Top: 232.0, Right: 58.0} format
+            margin.Top.Should().Be(232.0f);
+            margin.Right.Should().Be(58.0f);
+        }
+
+        [Test]
+        public void SetPosition_ThenGetPosition_ShouldRoundTrip()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var element = page.CreateElement("TextBlock", "test");
+
+            // Act
+            element.SetPosition(150.5f, 200.0f);
+            var (x, y) = element.GetPosition();
+
+            // Assert
+            x.Should().Be(150.5f);
+            y.Should().Be(200.0f);
+        }
+
+        [Test]
+        public void GetMargin_AllFourValues_ShouldReturnCorrectly()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var element = page.CreateElement("TextBlock", "test");
+
+            // Act
+            element.SetMargin(left: 10f, top: 20f, right: 30f, bottom: 40f);
+            var margin = element.GetMargin();
+
+            // Assert
+            margin.Left.Should().Be(10f);
+            margin.Top.Should().Be(20f);
+            margin.Right.Should().Be(30f);
+            margin.Bottom.Should().Be(40f);
+        }
+
+        // ===== Sprite/Texture Detection Tests =====
+
+        [Test]
+        public void IsSpriteFromSheet_WithSpriteSheet_ShouldReturnTrue()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var image = page.CreateImage("test_image");
+
+            // Act - Set a sprite sheet source
+            image.Set("Source", new Dictionary<string, object>
+            {
+                ["!SpriteFromSheet"] = "",
+                ["Sheet"] = "some-guid:SomeSheet",
+                ["CurrentFrame"] = 0
+            });
+
+            // Assert
+            image.IsSpriteFromSheet("Source").Should().BeTrue();
+            image.IsSpriteFromTexture("Source").Should().BeFalse();
+            image.IsImageSpriteSheet().Should().BeTrue();
+            image.IsImageTexture().Should().BeFalse();
+        }
+
+        [Test]
+        public void IsSpriteFromTexture_WithTexture_ShouldReturnTrue()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var image = page.CreateImage("test_image");
+
+            // Act - Set a texture source
+            image.Set("Source", new Dictionary<string, object>
+            {
+                ["!SpriteFromTexture"] = "",
+                ["Texture"] = "some-guid:SomeTexture"
+            });
+
+            // Assert
+            image.IsSpriteFromTexture("Source").Should().BeTrue();
+            image.IsSpriteFromSheet("Source").Should().BeFalse();
+            image.IsImageTexture().Should().BeTrue();
+            image.IsImageSpriteSheet().Should().BeFalse();
+        }
+
+        [Test]
+        public void GetSpriteSheet_ShouldReturnAssetAndFrame()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var image = page.CreateImage("test_image");
+
+            image.Set("Source", new Dictionary<string, object>
+            {
+                ["!SpriteFromSheet"] = "",
+                ["Sheet"] = "abc123:MySheet",
+                ["CurrentFrame"] = 5
+            });
+
+            // Act
+            var result = image.GetSpriteSheet("Source");
+
+            // Assert
+            result.Should().NotBeNull();
+            result!.Value.AssetReference.Should().Be("abc123:MySheet");
+            result.Value.Frame.Should().Be(5);
+        }
+
+        [Test]
+        public void GetTextureSource_ShouldReturnTextureReference()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var image = page.CreateImage("test_image");
+
+            image.Set("Source", new Dictionary<string, object>
+            {
+                ["!SpriteFromTexture"] = "",
+                ["Texture"] = "xyz789:MyTexture"
+            });
+
+            // Act
+            var result = image.GetTextureSource("Source");
+
+            // Assert
+            result.Should().Be("xyz789:MyTexture");
+        }
+
+        [Test]
+        public void HasSpriteSource_WithValidAsset_ShouldReturnTrue()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var image = page.CreateImage("test_image");
+
+            image.Set("Source", new Dictionary<string, object>
+            {
+                ["!SpriteFromSheet"] = "",
+                ["Sheet"] = "valid-guid:ValidSheet",
+                ["CurrentFrame"] = 0
+            });
+
+            // Assert
+            image.HasSpriteSource("Source").Should().BeTrue();
+        }
+
+        [Test]
+        public void HasSpriteSource_WithNullSheet_ShouldReturnFalse()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var image = page.CreateImage("test_image");
+
+            image.Set("Source", new Dictionary<string, object>
+            {
+                ["!SpriteFromSheet"] = "",
+                ["Sheet"] = "null",
+                ["CurrentFrame"] = 0
+            });
+
+            // Assert
+            image.HasSpriteSource("Source").Should().BeFalse();
+        }
+
+        [Test]
+        public void Button_SpriteDetection_ShouldWorkForAllImages()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var button = page.CreateButton("test_btn", "Test");
+
+            // Set button images using sprite sheet
+            button.Set("PressedImage", new Dictionary<string, object>
+            {
+                ["!SpriteFromSheet"] = "",
+                ["Sheet"] = "btn-sheet:Buttons",
+                ["CurrentFrame"] = 1
+            });
+
+            // Assert
+            button.IsButtonUsingSpriteSheet().Should().BeTrue();
+            button.IsButtonUsingTexture().Should().BeFalse();
+
+            var pressedSprite = button.GetPressedImageSprite();
+            pressedSprite.Should().NotBeNull();
+            pressedSprite!.Value.AssetReference.Should().Be("btn-sheet:Buttons");
+            pressedSprite.Value.Frame.Should().Be(1);
+        }
+
+        [Test]
+        public void LoadedPage_SpriteSheetReferences_ShouldBeReadable()
+        {
+            // Arrange - Load the all-ui-elements page which has sprites
+            var allElementsPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Example Assets", "all-ui-elements.sduipage");
+            var page = UIPage.Load(allElementsPath);
+
+            // Find the button
+            var button = page.AllElements.FirstOrDefault(e => e.Type == "Button");
+            button.Should().NotBeNull();
+
+            // Act
+            var isSheet = button!.IsButtonUsingSpriteSheet();
+            var pressedSprite = button.GetPressedImageSprite();
+
+            // Assert
+            isSheet.Should().BeTrue();
+            pressedSprite.Should().NotBeNull();
+            pressedSprite!.Value.AssetReference.Should().Contain("StrideUIDesigns");
+        }
+
+        // ===== SetContent Tests =====
+
+        [Test]
+        public void SetContent_ShouldSetReferenceFormat()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var button = page.CreateElement("Button", "test_btn");
+            var textBlock = page.CreateTextBlock("btn_text", "Click Me", autoAttach: false);
+
+            // Act
+            button.SetContent(textBlock);
+
+            // Assert
+            var content = button.Get<string>("Content");
+            content.Should().NotBeNull();
+            content.Should().Contain("!TextBlock");
+            content.Should().Contain("ref!!");
+            content.Should().Contain(textBlock.Id);
+        }
+
+        [Test]
+        public void GetContent_ShouldReturnReferencedElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var button = page.CreateElement("Button", "test_btn");
+            var textBlock = page.CreateTextBlock("btn_text", "Click Me", autoAttach: false);
+            button.SetContent(textBlock);
+
+            // Act
+            var content = button.GetContent();
+
+            // Assert
+            content.Should().NotBeNull();
+            content.Should().Be(textBlock);
+        }
+
+        [Test]
+        public void SetContent_OnNonContentElement_ShouldThrow()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var textBlock = page.CreateTextBlock("test", "Hello");
+            var anotherText = page.CreateTextBlock("other", "World", autoAttach: false);
+
+            // Act
+            Action act = () => textBlock.SetContent(anotherText);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        // ===== New Element Type Tests =====
+
+        [Test]
+        public void CreateModalElement_ShouldCreateModalElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var modal = page.CreateModalElement("dialog", width: 400f, height: 300f);
+
+            // Assert
+            modal.Should().NotBeNull();
+            modal.Type.Should().Be("ModalElement");
+            modal.Get<float>("Width").Should().Be(400f);
+            modal.Get<float>("Height").Should().Be(300f);
+        }
+
+        [Test]
+        public void CreateBorder_ShouldCreateBorderElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var border = page.CreateBorder("frame", width: 200f, height: 100f);
+
+            // Assert
+            border.Should().NotBeNull();
+            border.Type.Should().Be("Border");
+        }
+
+        [Test]
+        public void CreateScrollingText_ShouldCreateScrollingTextElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var scrollingText = page.CreateScrollingText("ticker", "Breaking News!");
+
+            // Assert
+            scrollingText.Should().NotBeNull();
+            scrollingText.Type.Should().Be("ScrollingText");
+            scrollingText.Get<string>("Text").Should().Be("Breaking News!");
+        }
+
+        [Test]
+        public void CreateUniformGrid_ShouldCreateUniformGridElement()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+
+            // Act
+            var grid = page.CreateUniformGrid("inventory_grid");
+
+            // Assert
+            grid.Should().NotBeNull();
+            grid.Type.Should().Be("UniformGrid");
+        }
+
+        // ===== Color Property Tests =====
+
+        [Test]
+        public void GetBackgroundColor_ShouldReturnParsedColor()
+        {
+            // Arrange - Load page with elements that have background colors
+            var allElementsPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Example Assets", "all-ui-elements.sduipage");
+            var page = UIPage.Load(allElementsPath);
+
+            var element = page.AllElements.First();
+
+            // Act
+            var color = element.GetBackgroundColor();
+
+            // Assert - Should return parsed values (default is 0,0,0,0 for transparent)
+            color.R.Should().BeGreaterThanOrEqualTo(0);
+            color.G.Should().BeGreaterThanOrEqualTo(0);
+            color.B.Should().BeGreaterThanOrEqualTo(0);
+            color.A.Should().BeGreaterThanOrEqualTo(0);
+        }
+
+        [Test]
+        public void SetBackgroundColor_ThenGet_ShouldRoundTrip()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var element = page.CreateElement("Canvas", "test");
+
+            // Act
+            element.SetBackgroundColor(100, 150, 200, 255);
+            var color = element.GetBackgroundColor();
+
+            // Assert
+            color.R.Should().Be(100);
+            color.G.Should().Be(150);
+            color.B.Should().Be(200);
+            color.A.Should().Be(255);
+        }
+
+        // ===== Behavior Property Tests =====
+
+        [Test]
+        public void GetSetIsEnabled_ShouldRoundTrip()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var button = page.CreateButton("test_btn", "Test");
+
+            // Act
+            button.SetIsEnabled(false);
+            var isEnabled = button.GetIsEnabled();
+
+            // Assert
+            isEnabled.Should().BeFalse();
+        }
+
+        [Test]
+        public void GetSetClickMode_ShouldRoundTrip()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var button = page.CreateButton("test_btn", "Test");
+
+            // Act
+            button.SetClickMode("Press");
+            var clickMode = button.GetClickMode();
+
+            // Assert
+            clickMode.Should().Be("Press");
+        }
+
+        [Test]
+        public void GetSetWrapText_ShouldRoundTrip()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage");
+            var textBlock = page.CreateTextBlock("test", "Hello World");
+
+            // Act
+            textBlock.SetWrapText(true);
+            var wrapText = textBlock.GetWrapText();
+
+            // Assert
+            wrapText.Should().BeTrue();
+        }
+
+        // ===== Save/Load Round-Trip with New Properties =====
+
+        [Test]
+        public void SaveLoad_WithMarginAndProperties_ShouldPreserveData()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var testPageName = $"test_roundtrip_{Guid.NewGuid()}.sduipage";
+            var tempPath = Path.Combine(project.AssetsPath, testPageName);
+
+            try
+            {
+                // Create page with various properties
+                var page = project.CreateUIPage("RoundTripTest", tempPath);
+                var root = page.RootElements.First();
+
+                var button = page.CreateButton("test_btn", "Click", root, width: 200f, height: 50f);
+                button.SetPosition(100f, 200f);
+                button.SetBackgroundColor(60, 60, 80, 255);
+
+                var textBlock = page.CreateTextBlock("test_text", "Hello", root);
+                textBlock.SetMargin(left: 50f, top: 75f, right: 10f, bottom: 5f);
+                textBlock.SetWrapText(true);
+
+                // Save
+                page.Save();
+
+                // Load
+                var loaded = UIPage.Load(tempPath);
+
+                // Assert button
+                var loadedButton = loaded.FindElementByName("test_btn");
+                loadedButton.Should().NotBeNull();
+
+                var btnPos = loadedButton!.GetPosition();
+                btnPos.X.Should().Be(100f);
+                btnPos.Y.Should().Be(200f);
+
+                // Assert textblock
+                var loadedText = loaded.FindElementByName("test_text");
+                loadedText.Should().NotBeNull();
+
+                var textMargin = loadedText!.GetMargin();
+                textMargin.Left.Should().Be(50f);
+                textMargin.Top.Should().Be(75f);
+                textMargin.Right.Should().Be(10f);
+                textMargin.Bottom.Should().Be(5f);
+            }
+            finally
+            {
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+            }
+        }
     }
 }

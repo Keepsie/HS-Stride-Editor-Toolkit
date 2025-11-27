@@ -207,8 +207,34 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     var key = trimmed.Substring(0, colonIdx).Trim();
                     var value = trimmed.Substring(colonIdx + 1).Trim();
 
-                    // Basic property storage (lazy loading for complex nested properties)
-                    if (!string.IsNullOrEmpty(value) && !value.StartsWith("{") && !value.StartsWith("!"))
+                    // Parse inline object format: {Key: Value, Key2: Value2}
+                    if (!string.IsNullOrEmpty(value) && value.StartsWith("{") && value.EndsWith("}"))
+                    {
+                        var parsed = ParseInlineObject(value);
+                        if (parsed != null)
+                        {
+                            element.Properties[key] = parsed;
+                        }
+                    }
+                    // Parse reference format: !Type ref!! guid
+                    else if (!string.IsNullOrEmpty(value) && value.Contains("ref!!"))
+                    {
+                        element.Properties[key] = value;
+                    }
+                    // Handle YAML type tags that start multiline blocks (like !SpriteFromSheet)
+                    else if (!string.IsNullOrEmpty(value) && value.StartsWith("!"))
+                    {
+                        // Parse multiline block property
+                        var blockData = ParseMultilineBlock(lines, ref i, baseIndent.Value);
+                        if (blockData != null)
+                        {
+                            blockData["!TypeTag"] = value; // Store the type tag (e.g., !SpriteFromSheet)
+                            element.Properties[key] = blockData;
+                        }
+                        continue; // ParseMultilineBlock already advanced i
+                    }
+                    // Basic property storage
+                    else if (!string.IsNullOrEmpty(value))
                     {
                         element.Properties[key] = value;
                     }
@@ -287,6 +313,178 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     break;
             }
             return count;
+        }
+
+        /// <summary>
+        /// Parses inline YAML object format: {Key: Value, Key2: Value2}
+        /// Handles Margin, Color, Resolution, etc.
+        /// </summary>
+        private static Dictionary<string, object>? ParseInlineObject(string value)
+        {
+            if (string.IsNullOrEmpty(value) || !value.StartsWith("{") || !value.EndsWith("}"))
+                return null;
+
+            var result = new Dictionary<string, object>();
+
+            // Remove braces
+            var inner = value.Substring(1, value.Length - 2).Trim();
+
+            if (string.IsNullOrEmpty(inner))
+                return result; // Empty object {}
+
+            // Split by comma, but handle nested values
+            var parts = SplitByComma(inner);
+
+            foreach (var part in parts)
+            {
+                var colonIdx = part.IndexOf(':');
+                if (colonIdx > 0)
+                {
+                    var key = part.Substring(0, colonIdx).Trim();
+                    var val = part.Substring(colonIdx + 1).Trim();
+
+                    // Try to parse as number
+                    if (float.TryParse(val, System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out var floatVal))
+                    {
+                        // Check if it's actually an integer (no decimal part)
+                        if (floatVal == Math.Floor(floatVal) && floatVal >= int.MinValue && floatVal <= int.MaxValue)
+                        {
+                            result[key] = (int)floatVal;
+                        }
+                        else
+                        {
+                            result[key] = floatVal;
+                        }
+                    }
+                    else if (bool.TryParse(val, out var boolVal))
+                    {
+                        result[key] = boolVal;
+                    }
+                    else
+                    {
+                        result[key] = val;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Splits a string by comma, respecting nested braces
+        /// </summary>
+        private static List<string> SplitByComma(string input)
+        {
+            var result = new List<string>();
+            var current = new System.Text.StringBuilder();
+            var depth = 0;
+
+            foreach (var c in input)
+            {
+                if (c == '{')
+                {
+                    depth++;
+                    current.Append(c);
+                }
+                else if (c == '}')
+                {
+                    depth--;
+                    current.Append(c);
+                }
+                else if (c == ',' && depth == 0)
+                {
+                    result.Add(current.ToString().Trim());
+                    current.Clear();
+                }
+                else
+                {
+                    current.Append(c);
+                }
+            }
+
+            if (current.Length > 0)
+            {
+                result.Add(current.ToString().Trim());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Parses a multiline block property (like SpriteFromSheet, Content, etc.)
+        /// Expects the current line to be the property header (e.g., "PressedImage: !SpriteFromSheet")
+        /// and parses the indented properties that follow.
+        /// </summary>
+        private static Dictionary<string, object>? ParseMultilineBlock(string[] lines, ref int i, int baseIndent)
+        {
+            var result = new Dictionary<string, object>();
+            var currentLineIndent = GetIndent(lines[i]);
+
+            i++; // Move past the header line
+
+            while (i < lines.Length)
+            {
+                var line = lines[i];
+
+                // Skip empty lines
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    i++;
+                    continue;
+                }
+
+                var indent = GetIndent(line);
+                var trimmed = line.Trim();
+
+                // Stop if we've returned to base indent or less (new property at element level)
+                if (indent <= currentLineIndent)
+                {
+                    i--; // Back up so the caller can re-process this line
+                    break;
+                }
+
+                // Stop if we hit the next UIElement
+                if (trimmed.StartsWith("-   UIElement:"))
+                {
+                    i--; // Back up so the caller can re-process this line
+                    break;
+                }
+
+                // Parse child property
+                if (trimmed.Contains(":"))
+                {
+                    var colonIdx = trimmed.IndexOf(':');
+                    var key = trimmed.Substring(0, colonIdx).Trim();
+                    var value = trimmed.Substring(colonIdx + 1).Trim();
+
+                    // Parse value based on type
+                    if (float.TryParse(value, System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out var floatVal))
+                    {
+                        if (floatVal == Math.Floor(floatVal) && floatVal >= int.MinValue && floatVal <= int.MaxValue)
+                        {
+                            result[key] = (int)floatVal;
+                        }
+                        else
+                        {
+                            result[key] = floatVal;
+                        }
+                    }
+                    else if (bool.TryParse(value, out var boolVal))
+                    {
+                        result[key] = boolVal;
+                    }
+                    else
+                    {
+                        result[key] = value;
+                    }
+                }
+
+                i++;
+            }
+
+            return result.Count > 0 ? result : null;
         }
     }
 }

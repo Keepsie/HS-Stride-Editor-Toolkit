@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.5.1
+**Version:** 1.6.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -1491,7 +1491,7 @@ project.Rescan();
 
 ### UI Element Types
 
-The `CreateElement` method supports all Stride UI element types:
+The `CreateElement` method supports all 16 Stride UI element types:
 
 - **TextBlock**: Displays text.
 - **Button**: A clickable button.
@@ -1500,10 +1500,223 @@ The `CreateElement` method supports all Stride UI element types:
 - **Canvas**: Container for absolute positioning.
 - **Grid**: Container for grid-based layout.
 - **StackPanel**: Container that stacks elements horizontally or vertically.
+- **UniformGrid**: Grid with uniform cell sizes.
 - **ScrollViewer**: Container that provides scrolling for content.
 - **ScrollBar**: Standalone scrollbar control.
+- **ScrollingText**: Scrolling/marquee text display.
 - **EditText**: Text input field.
 - **Slider**: Value slider control.
+- **Border**: Container with border styling.
+- **ContentDecorator**: Decorator for content styling.
+- **ModalElement**: Modal overlay container.
+
+---
+
+### Position and Margin Helpers (v1.6.0+)
+
+Helper methods for working with element positioning:
+
+#### `GetPosition()` / `SetPosition()`
+
+Gets or sets the element position using margin values.
+
+```csharp
+// Set position
+element.SetPosition(100f, 200f);  // Sets Left and Top margin
+
+// Get position (returns X and Y from margin)
+var pos = element.GetPosition();
+Console.WriteLine($"Position: {pos.X}, {pos.Y}");
+```
+
+#### `GetMargin()` / `SetMargin()`
+
+Gets or sets the full margin rectangle.
+
+```csharp
+// Set full margin
+element.SetMargin(left: 10f, top: 20f, right: 5f, bottom: 15f);
+
+// Get margin values
+var margin = element.GetMargin();
+Console.WriteLine($"Left: {margin.Left}, Top: {margin.Top}");
+```
+
+---
+
+### Sprite and Texture Detection (v1.6.0+)
+
+Helper methods for detecting and working with sprite/texture sources:
+
+#### `IsSpriteFromSheet()` / `IsSpriteFromTexture()`
+
+Checks what type of source is set for a sprite property.
+
+```csharp
+// Check if using sprite sheet vs texture
+if (imageElement.IsSpriteFromSheet("Source"))
+{
+    var sprite = imageElement.GetSpriteSheet("Source");
+    Console.WriteLine($"Sprite sheet: {sprite?.AssetReference}, Frame: {sprite?.Frame}");
+}
+else if (imageElement.IsSpriteFromTexture("Source"))
+{
+    var texture = imageElement.GetTextureSource("Source");
+    Console.WriteLine($"Texture: {texture}");
+}
+```
+
+#### Button-Specific Sprite Detection
+
+```csharp
+// Check if button is using sprite sheet for images
+if (button.IsButtonUsingSpriteSheet())
+{
+    var pressed = button.GetPressedImageSprite();
+    var notPressed = button.GetNotPressedImageSprite();
+    var mouseOver = button.GetMouseOverImageSprite();
+}
+else if (button.IsButtonUsingTexture())
+{
+    var pressed = button.GetPressedImageTexture();
+    // etc.
+}
+```
+
+#### ImageElement Sprite Helpers
+
+```csharp
+// Check if ImageElement is using sprite sheet
+if (image.IsImageUsingSpriteSheet())
+{
+    var sprite = image.GetImageSprite();
+    Console.WriteLine($"Using sprite sheet: {sprite?.AssetReference}");
+}
+```
+
+---
+
+### Content Management (v1.6.0+)
+
+Helper methods for managing content properties on Button, ToggleButton, and ScrollViewer:
+
+#### `SetContent()` / `GetContent()`
+
+```csharp
+// Create a button and set its content
+var button = page.CreateButton("my_btn", "Click Me", root);
+var textBlock = page.CreateTextBlock("btn_text", "Custom Text", autoAttach: false);
+button.SetContent(textBlock);
+
+// Get the content element
+var content = button.GetContent();
+```
+
+---
+
+### Positioning System (v1.6.0+)
+
+The toolkit uses Stride's 4-margin positioning system for accurate element placement.
+
+#### How Stride Positioning Works
+
+Stride calculates element position using all 4 margin values. For absolute positioning:
+
+```
+Left   = X position
+Top    = Y position
+Right  = ParentWidth - (X + ElementWidth)
+Bottom = ParentHeight - (Y + ElementHeight)
+```
+
+#### SetPosition (Automatic 4-Margin Calculation)
+
+```csharp
+// SetPosition automatically calculates all 4 margins
+// and sets Left/Top alignment for absolute positioning
+button.SetSize(200f, 50f);
+button.SetPosition(100f, 200f);  // Places button at (100, 200)
+
+// This generates:
+// Margin: {Left: 100, Top: 200, Right: 1620, Bottom: 830}
+// HorizontalAlignment: Left
+// VerticalAlignment: Top
+```
+
+#### GetParentDimensions
+
+```csharp
+// Get the parent container size (or design resolution if root)
+var (parentWidth, parentHeight) = element.GetParentDimensions();
+```
+
+#### Stretch Fill (for Backgrounds)
+
+```csharp
+// For background images that should fill the entire page
+var bg = page.CreateImage("background", parent: root, stretchFill: true);
+bg.SetBackgroundColor(20, 20, 40, 200);
+
+// Or apply stretch fill to any existing element
+element.SetStretchFill();
+
+// For ImageElements specifically (adds StretchType and StretchDirection)
+image.SetImageStretchFill();
+```
+
+#### CreateImage with stretchFill Parameter
+
+```csharp
+// Create a background image that fills the page
+var bg = page.CreateImage("bg_overlay", parent: root, stretchFill: true);
+
+// This sets:
+// HorizontalAlignment: Stretch
+// VerticalAlignment: Stretch
+// StretchType: Fill
+// StretchDirection: Both
+// Margin: {Left: 0, Top: 0, Right: 0, Bottom: 0}
+// (No Width/Height - Stretch fills parent)
+```
+
+---
+
+### Additional UIElement Properties (v1.6.0+)
+
+New getter/setter methods for UI element properties:
+
+#### Behavior Properties
+
+```csharp
+// Enable/disable elements
+element.SetIsEnabled(true);
+var enabled = element.GetIsEnabled();
+
+// Button click mode
+button.SetClickMode("Release");  // "Press" or "Release"
+var mode = button.GetClickMode();
+
+// Text wrapping
+textBlock.SetWrapText(true);
+var wraps = textBlock.GetWrapText();
+
+// Slider properties
+slider.SetMinimum(0f);
+slider.SetMaximum(100f);
+slider.SetValue(50f);
+slider.SetStep(1f);
+slider.SetTickFrequency(10f);
+slider.SetSnapToTicks(true);
+slider.SetOrientation("Horizontal");  // or "Vertical"
+
+// EditText properties
+editText.SetMaxLength(100);
+editText.SetIsReadOnly(false);
+
+// ToggleButton properties
+toggle.SetIsChecked(true);
+toggle.SetIsThreeState(false);
+```
 
 ---
 
