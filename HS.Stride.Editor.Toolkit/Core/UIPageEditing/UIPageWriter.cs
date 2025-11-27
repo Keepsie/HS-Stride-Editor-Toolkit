@@ -171,58 +171,168 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     WriteColor(sb, "OutlineColor", element);
                     WritePropertyIfExists(sb, "OutlineThickness", element);
                     WritePropertyIfExists(sb, "TextAlignment", element);
+                    WritePropertyIfExists(sb, "WrapText", element);
+                    WritePropertyIfExists(sb, "DoNotSnapText", element);
+                    WritePropertyIfExists(sb, "SynchronousCharacterGeneration", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "scrollingtext":
+                    WritePropertyIfExists(sb, "Text", element);
+                    WritePropertyIfExists(sb, "Font", element);
+                    WritePropertyIfExists(sb, "TextSize", element);
+                    WriteColor(sb, "TextColor", element);
+                    WriteColor(sb, "OutlineColor", element);
+                    WritePropertyIfExists(sb, "OutlineThickness", element);
+                    WritePropertyIfExists(sb, "ScrollingSpeed", element);
+                    WritePropertyIfExists(sb, "DesiredCharacterNumber", element);
+                    WritePropertyIfExists(sb, "RepeatText", element);
+                    WritePropertyIfExists(sb, "WrapText", element);
+                    WritePropertyIfExists(sb, "DoNotSnapText", element);
+                    WritePropertyIfExists(sb, "SynchronousCharacterGeneration", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
 
                 case "imageelement":
-                    WriteSprite(sb, "Source", element);
+                    WriteSpriteIfSet(sb, "Source", element);
                     WriteColor(sb, "Color", element);
                     WritePropertyIfExists(sb, "StretchType", element);
+                    WritePropertyIfExists(sb, "StretchDirection", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
 
                 case "button":
-                    WritePropertyIfExists(sb, "Content", element);
-                    WriteSprite(sb, "PressedImage", element);
-                    WriteSprite(sb, "NotPressedImage", element);
-                    WriteSprite(sb, "MouseOverImage", element);
+                    WriteContentReference(sb, element);
+                    WriteSpriteIfSet(sb, "PressedImage", element);
+                    WriteSpriteIfSet(sb, "NotPressedImage", element);
+                    WriteSpriteIfSet(sb, "MouseOverImage", element);
+                    WritePropertyIfExists(sb, "ClickMode", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "togglebutton":
+                    WriteContentReference(sb, element);
+                    WriteSpriteIfSet(sb, "CheckedImage", element);
+                    WriteSpriteIfSet(sb, "UncheckedImage", element);
+                    WriteSpriteIfSet(sb, "IndeterminateImage", element);
+                    WritePropertyIfExists(sb, "State", element);
+                    WritePropertyIfExists(sb, "IsThreeState", element);
+                    WritePropertyIfExists(sb, "ClickMode", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
 
                 case "edittext":
+                    WritePropertyIfExists(sb, "Text", element);
                     WritePropertyIfExists(sb, "Padding", element);
                     WritePropertyIfExists(sb, "Font", element);
                     WritePropertyIfExists(sb, "TextSize", element);
                     WriteColor(sb, "TextColor", element);
-                    WriteSprite(sb, "ActiveImage", element);
-                    WriteSprite(sb, "InactiveImage", element);
-                    WriteSprite(sb, "MouseOverImage", element);
+                    WritePropertyIfExists(sb, "TextAlignment", element);
+                    WriteSpriteIfSet(sb, "ActiveImage", element);
+                    WriteSpriteIfSet(sb, "InactiveImage", element);
+                    WriteSpriteIfSet(sb, "MouseOverImage", element);
                     WriteColor(sb, "CaretColor", element);
                     WritePropertyIfExists(sb, "CaretWidth", element);
                     WriteColor(sb, "SelectionColor", element);
                     WriteColor(sb, "IMESelectionColor", element);
                     WritePropertyIfExists(sb, "CaretFrequency", element);
+                    WritePropertyIfExists(sb, "MaxLength", element);
+                    WritePropertyIfExists(sb, "MinLines", element);
+                    WritePropertyIfExists(sb, "MaxLines", element);
+                    WritePropertyIfExists(sb, "IsReadOnly", element);
+                    WritePropertyIfExists(sb, "InputType", element);
+                    WritePropertyIfExists(sb, "DoNotSnapText", element);
+                    WritePropertyIfExists(sb, "SynchronousCharacterGeneration", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "slider":
+                    WriteSpriteIfSet(sb, "TrackBackgroundImage", element);
+                    WriteSpriteIfSet(sb, "TrackForegroundImage", element);
+                    WriteInlineObject(sb, "TrackStartingOffsets", element);
+                    WriteSpriteIfSet(sb, "ThumbImage", element);
+                    WriteSpriteIfSet(sb, "MouseOverThumbImage", element);
+                    WriteSpriteIfSet(sb, "TickImage", element);
+                    WritePropertyIfExists(sb, "TickOffset", element);
+                    WritePropertyIfExists(sb, "AreTicksDisplayed", element);
+                    WritePropertyIfExists(sb, "Minimum", element);
+                    WritePropertyIfExists(sb, "Maximum", element);
+                    WritePropertyIfExists(sb, "Value", element);
+                    WritePropertyIfExists(sb, "TickFrequency", element);
+                    WritePropertyIfExists(sb, "ShouldSnapToTicks", element);
+                    WritePropertyIfExists(sb, "IsDirectionReversed", element);
+                    WritePropertyIfExists(sb, "Orientation", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "scrollbar":
+                    WriteColor(sb, "BarColor", element);
+                    WritePropertyIfExists(sb, "Minimum", element);
+                    WritePropertyIfExists(sb, "Maximum", element);
+                    WritePropertyIfExists(sb, "Value", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
 
                 case "scrollviewer":
                     WritePropertyIfExists(sb, "Padding", element);
                     WriteColor(sb, "ScrollBarColor", element);
-                    WritePropertyIfExists(sb, "Content", element);
+                    WritePropertyIfExists(sb, "ScrollBarThickness", element);
+                    WritePropertyIfExists(sb, "ScrollMode", element);
+                    WritePropertyIfExists(sb, "ScrollStartThreshold", element);
+                    WritePropertyIfExists(sb, "Deceleration", element);
+                    WritePropertyIfExists(sb, "TouchScrollingEnabled", element);
+                    WritePropertyIfExists(sb, "SnapToAnchors", element);
+                    WriteContentReference(sb, element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "modalelement":
+                    WritePropertyIfExists(sb, "Padding", element);
+                    WriteColor(sb, "OverlayColor", element);
+                    WritePropertyIfExists(sb, "IsModal", element);
+                    WritePropertyIfExists(sb, "ClickMode", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "border":
+                    WritePropertyIfExists(sb, "Padding", element);
+                    WriteColor(sb, "BorderColor", element);
+                    WriteInlineObject(sb, "BorderThickness", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "contentdecorator":
+                    WritePropertyIfExists(sb, "Padding", element);
+                    WriteSpriteIfSet(sb, "BackgroundImage", element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "uniformgrid":
+                    WritePropertyIfExists(sb, "Padding", element);
+                    WriteChildren(sb, element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
 
                 case "stackpanel":
-                case "canvas":
-                case "grid":
-                    // Write Padding if exists
                     WritePropertyIfExists(sb, "Padding", element);
-
-                    // Write Children
+                    WritePropertyIfExists(sb, "Orientation", element);
                     WriteChildren(sb, element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
 
-                    // Grid-specific
-                    if (element.Type.ToLower() == "grid")
-                    {
-                        sb.AppendLine("                RowDefinitions: {}");
-                        sb.AppendLine("                ColumnDefinitions: {}");
-                        sb.AppendLine("                LayerDefinitions: {}");
-                    }
+                case "canvas":
+                    WritePropertyIfExists(sb, "Padding", element);
+                    WriteChildren(sb, element);
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
+                    break;
+
+                case "grid":
+                    WritePropertyIfExists(sb, "Padding", element);
+                    WriteChildren(sb, element);
+                    sb.AppendLine("                RowDefinitions: {}");
+                    sb.AppendLine("                ColumnDefinitions: {}");
+                    sb.AppendLine("                LayerDefinitions: {}");
+                    WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
             }
         }
@@ -284,16 +394,126 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
 
                 if (isSpriteFromSheet)
                 {
+                    var sheet = sprite.GetValueOrDefault("Sheet", null);
                     sb.AppendLine($"                {propertyName}: !SpriteFromSheet");
-                    sb.AppendLine($"                    Sheet: {sprite.GetValueOrDefault("Sheet", "null")}");
+                    sb.AppendLine($"                    Sheet: {sheet ?? "null"}");
                     sb.AppendLine($"                    CurrentFrame: {sprite.GetValueOrDefault("CurrentFrame", 0)}");
                 }
                 else if (isSpriteFromTexture)
                 {
+                    var texture = sprite.GetValueOrDefault("Texture", null);
                     sb.AppendLine($"                {propertyName}: !SpriteFromTexture");
-                    sb.AppendLine($"                    Texture: {sprite.GetValueOrDefault("Texture", "null")}");
+                    sb.AppendLine($"                    Texture: {texture ?? "null"}");
                     sb.AppendLine($"                    Center: {{X: {sprite.GetValueOrDefault("CenterX", 0.0f)}, Y: {sprite.GetValueOrDefault("CenterY", 0.0f)}}}");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Writes a sprite property only if it has a valid asset reference set (not null/empty).
+        /// Skips writing the property entirely if no sprite is assigned.
+        /// </summary>
+        private static void WriteSpriteIfSet(StringBuilder sb, string propertyName, UIElement element)
+        {
+            if (!element.Properties.TryGetValue(propertyName, out var spriteObj))
+                return;
+
+            if (spriteObj is not Dictionary<string, object> sprite)
+                return;
+
+            // Check for SpriteFromSheet or SpriteFromTexture
+            var isSpriteFromSheet = sprite.ContainsKey("!SpriteFromSheet") || sprite.ContainsKey("Sheet");
+            var isSpriteFromTexture = sprite.ContainsKey("!SpriteFromTexture") || sprite.ContainsKey("Texture");
+
+            if (isSpriteFromSheet)
+            {
+                var sheet = sprite.GetValueOrDefault("Sheet", null);
+                // Skip if sheet is null, "null", or empty
+                if (sheet == null || sheet.ToString() == "null" || string.IsNullOrWhiteSpace(sheet.ToString()))
+                    return;
+
+                sb.AppendLine($"                {propertyName}: !SpriteFromSheet");
+                sb.AppendLine($"                    Sheet: {sheet}");
+                sb.AppendLine($"                    CurrentFrame: {sprite.GetValueOrDefault("CurrentFrame", 0)}");
+            }
+            else if (isSpriteFromTexture)
+            {
+                var texture = sprite.GetValueOrDefault("Texture", null);
+                // Skip if texture is null, "null", or empty
+                if (texture == null || texture.ToString() == "null" || string.IsNullOrWhiteSpace(texture.ToString()))
+                    return;
+
+                sb.AppendLine($"                {propertyName}: !SpriteFromTexture");
+                sb.AppendLine($"                    Texture: {texture}");
+                sb.AppendLine($"                    Center: {{X: {sprite.GetValueOrDefault("CenterX", 0.0f)}, Y: {sprite.GetValueOrDefault("CenterY", 0.0f)}}}");
+            }
+        }
+
+        /// <summary>
+        /// Writes an inline object like {X: 0, Y: 0} for TrackStartingOffsets, BorderThickness, etc.
+        /// </summary>
+        private static void WriteInlineObject(StringBuilder sb, string propertyName, UIElement element)
+        {
+            if (!element.Properties.TryGetValue(propertyName, out var objValue))
+                return;
+
+            if (objValue is not Dictionary<string, object> dict || dict.Count == 0)
+                return;
+
+            var parts = new List<string>();
+            foreach (var kvp in dict)
+            {
+                var val = kvp.Value;
+                if (val is float f)
+                    parts.Add($"{kvp.Key}: {f.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+                else if (val is double d)
+                    parts.Add($"{kvp.Key}: {d.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+                else if (val is int i)
+                    parts.Add($"{kvp.Key}: {i}");
+                else
+                    parts.Add($"{kvp.Key}: {val}");
+            }
+
+            sb.AppendLine($"                {propertyName}: {{{string.Join(", ", parts)}}}");
+        }
+
+        /// <summary>
+        /// Writes Content reference property (for Button, ToggleButton, ScrollViewer).
+        /// Handles both string reference format and UIElement objects.
+        /// </summary>
+        private static void WriteContentReference(StringBuilder sb, UIElement element)
+        {
+            if (!element.Properties.TryGetValue("Content", out var contentObj))
+                return;
+
+            if (contentObj is string strValue)
+            {
+                // Already in reference format: "!TextBlock ref!! guid"
+                if (strValue.Contains("ref!!"))
+                {
+                    var parts = strValue.Split(new[] { "ref!!" }, StringSplitOptions.None);
+                    if (parts.Length == 2)
+                    {
+                        var typePrefix = parts[0].Trim();
+                        var refId = parts[1].Trim();
+                        sb.AppendLine($"                Content: {typePrefix} ref!! {refId}");
+                    }
+                }
+                // Just a GUID - need to find the element type
+                else if (Guid.TryParse(strValue.Replace("-", ""), out _) || strValue.Contains("-"))
+                {
+                    // Try to find element by ID to get type
+                    var contentElement = element.ParentPage?.FindElementById(strValue);
+                    if (contentElement != null)
+                    {
+                        sb.AppendLine($"                Content: !{contentElement.Type} ref!! {contentElement.Id}");
+                    }
+                }
+            }
+            else if (contentObj is UIElement contentElement)
+            {
+                // Direct UIElement reference - convert to reference format
+                sb.AppendLine($"                Content: !{contentElement.Type} ref!! {contentElement.Id}");
             }
         }
 

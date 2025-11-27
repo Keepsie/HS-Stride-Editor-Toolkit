@@ -1,0 +1,254 @@
+!UIPageAsset
+Id: 710f5e51-e1d4-42f4-a381-293b503e7de8
+SerializedVersion: {Stride: 2.1.0.1}
+Tags: []
+Design:
+    Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+Hierarchy:
+    RootParts:
+        - !Grid ref!! ffa197fd-a14b-4bb1-acc0-f8ffd524e244
+    Parts:
+        -   UIElement: !ToggleButton
+                Id: 080e6b3f-364d-4965-b73b-ece10b92d28e
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 2
+                Width: 243.0
+                Height: 68.0
+                HorizontalAlignment: Right
+                VerticalAlignment: Top
+                Margin: {Top: 232.0, Right: 58.0}
+                Content: !TextBlock ref!! e06c6cdb-3cbb-4592-9a66-7978c4dec898
+                CheckedImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 11
+                UncheckedImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 13
+                IndeterminateImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 12
+        -   UIElement: !ImageElement
+                Id: 11f74277-4161-4790-9545-d44bb153c4cd
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Width: 55.201126
+                Height: 138.544
+                VerticalAlignment: Top
+                Margin: {Left: 588.66016, Top: 94.0, Right: 636.13873}
+                Source: !SpriteFromSheet
+                    Sheet: 4615fe06-4209-4a56-988a-2ed058e9076d:Bullets
+                Color: {R: 255, G: 255, B: 255, A: 255}
+        -   UIElement: !Slider
+                Id: 1ce34d66-ffae-4933-b7b2-54fcefafaa3b
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 5
+                Width: 243.0
+                Height: 24.0
+                HorizontalAlignment: Left
+                VerticalAlignment: Stretch
+                Margin: {Top: 344.0, Bottom: 352.0}
+                TrackBackgroundImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 9
+                TrackForegroundImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 12
+                TrackStartingOffsets: {X: 3.0, Y: 3.0}
+                ThumbImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 7
+                MouseOverThumbImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 6
+                TickImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 8
+                TickOffset: 13.0
+        -   UIElement: !ScrollingText
+                Id: 31060a3d-29c6-4f46-bd4d-7ad35b4e50e1
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 4
+                Margin: {}
+                Text: 'Scrolling text! '
+                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                OutlineColor: {R: 0, G: 0, B: 0, A: 255}
+                OutlineThickness: 0.0
+        -   UIElement: !TextBlock
+                Id: 5b047d59-e1ff-4dd3-967d-26178bc1f9ee
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                HorizontalAlignment: Center
+                VerticalAlignment: Center
+                Margin: {}
+                Text: Click me!
+                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
+                TextSize: 20.0
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                OutlineColor: {R: 0, G: 0, B: 0, A: 255}
+                OutlineThickness: 0.0
+        -   UIElement: !StackPanel
+                Id: 5df25c3c-7e44-4fc2-b127-714543791b49
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Children: {}
+        -   UIElement: !ContentDecorator
+                Id: 725ff61f-e43f-410d-9cf6-8b3c9b952206
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 2
+                Margin: {}
+                Padding: {}
+        -   UIElement: !Canvas
+                Id: 78fd21d5-4fd4-450c-9072-f44aaa944568
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Children: {}
+        -   UIElement: !TextBlock
+                Id: 7c5a3717-3451-4ee0-b26d-dfac6d5a6401
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Width: 314.0
+                Height: 131.0
+                Margin: {Left: 481.0, Top: 344.0, Right: 485.0, Bottom: 245.0}
+                Text: dasfaf
+                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
+                TextSize: 20.0
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                OutlineColor: {R: 0, G: 0, B: 0, A: 255}
+                OutlineThickness: 0.0
+        -   UIElement: !Border
+                Id: 87fab94f-b0fe-4e0c-8f08-499d358d0996
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Padding: {}
+                BorderColor: {R: 0, G: 0, B: 0, A: 255}
+                BorderThickness: {}
+        -   UIElement: !EditText
+                Id: 8bb757cb-732e-414b-87ec-5216db5c00ef
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 5
+                CanBeHitByUser: true
+                Width: 238.0
+                Height: 94.0
+                HorizontalAlignment: Right
+                VerticalAlignment: Bottom
+                Margin: {Right: 29.0, Bottom: 165.0}
+                Padding: {Left: 8.0, Top: 4.0, Right: 8.0, Bottom: 8.0}
+                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
+                TextSize: 20.0
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                ActiveImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 3
+                InactiveImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 4
+                MouseOverImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 5
+                CaretColor: {R: 240, G: 240, B: 240, A: 255}
+                CaretWidth: 1.0
+                SelectionColor: {R: 240, G: 240, B: 240, A: 255}
+                IMESelectionColor: {R: 240, G: 255, B: 240, A: 255}
+                CaretFrequency: 1.0
+        -   UIElement: !ModalElement
+                Id: 9866eefa-8655-4a49-b427-53f82a617370
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 2
+                Margin: {}
+                Padding: {}
+                OverlayColor: {R: 0, G: 0, B: 0, A: 153}
+        -   UIElement: !UniformGrid
+                Id: bdc4c6b5-b5e0-4826-ad8a-d44660deff6e
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Children: {}
+        -   UIElement: !Grid
+                Id: c20d7ecd-0d19-4074-a2c1-291094b5346d
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Children: {}
+                RowDefinitions: {}
+                ColumnDefinitions: {}
+                LayerDefinitions: {}
+        -   UIElement: !ScrollViewer
+                Id: cf50c6be-13de-4bc7-b9c4-442c6fa182fb
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Padding: {}
+                ScrollBarColor: {R: 25, G: 25, B: 25, A: 255}
+        -   UIElement: !Button
+                Id: e0082391-5789-43d4-82be-83c67985953c
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                DrawLayerNumber: 2
+                Width: 299.0
+                Height: 94.0
+                HorizontalAlignment: Left
+                VerticalAlignment: Top
+                Margin: {}
+                Content: !TextBlock ref!! 5b047d59-e1ff-4dd3-967d-26178bc1f9ee
+                PressedImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 2
+                NotPressedImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+                    CurrentFrame: 1
+                MouseOverImage: !SpriteFromSheet
+                    Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
+        -   UIElement: !TextBlock
+                Id: e06c6cdb-3cbb-4592-9a66-7978c4dec898
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                HorizontalAlignment: Center
+                VerticalAlignment: Center
+                Margin: {}
+                Text: Click me!
+                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
+                TextSize: 20.0
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                OutlineColor: {R: 0, G: 0, B: 0, A: 255}
+                OutlineThickness: 0.0
+        -   UIElement: !ScrollBar
+                Id: ef21419c-0647-4741-85eb-0a8e04009974
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                BarColor: {R: 0, G: 0, B: 0, A: 0}
+        -   UIElement: !Grid
+                Id: ffa197fd-a14b-4bb1-acc0-f8ffd524e244
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                Children:
+                    1e2bd23a90aa5d95626af6868fe90333: !Button ref!! e0082391-5789-43d4-82be-83c67985953c
+                    f429a0b2c61ee41333fd8334578aad1d: !EditText ref!! 8bb757cb-732e-414b-87ec-5216db5c00ef
+                    151750bdb5dc8796cbdf22e6bead17bb: !Slider ref!! 1ce34d66-ffae-4933-b7b2-54fcefafaa3b
+                    94ce12f37becf30637c11a457b516516: !ToggleButton ref!! 080e6b3f-364d-4965-b73b-ece10b92d28e
+                    054d4bcbeec0b52e3243df8d1768d092: !Border ref!! 87fab94f-b0fe-4e0c-8f08-499d358d0996
+                    7c949ca04c7ff5480c7f4dbad82eb250: !ContentDecorator ref!! 725ff61f-e43f-410d-9cf6-8b3c9b952206
+                    04c3c4fcc1aec9d3187aa37b3d735df0: !ImageElement ref!! 11f74277-4161-4790-9545-d44bb153c4cd
+                    ec589141f35482c3b4bf32c5e248aa87: !ModalElement ref!! 9866eefa-8655-4a49-b427-53f82a617370
+                    df7f4b96759f41739de6b3fced924a77: !ScrollBar ref!! ef21419c-0647-4741-85eb-0a8e04009974
+                    a6a09eadf54e8b8111cfc71ff90f0cec: !ScrollingText ref!! 31060a3d-29c6-4f46-bd4d-7ad35b4e50e1
+                    a2b55bbfca2bdf3c84f25e0fbca0558d: !ScrollViewer ref!! cf50c6be-13de-4bc7-b9c4-442c6fa182fb
+                    95d888d11c115156cb75027fc2d956b9: !TextBlock ref!! 7c5a3717-3451-4ee0-b26d-dfac6d5a6401
+                    8599b1e004b4cdd56656c6f856b620e8: !Canvas ref!! 78fd21d5-4fd4-450c-9072-f44aaa944568
+                    9641b5c1dde390a86133c2dadc0d2900: !Grid ref!! c20d7ecd-0d19-4074-a2c1-291094b5346d
+                    dad2e653e9e279c531aa777df13ebf35: !StackPanel ref!! 5df25c3c-7e44-4fc2-b127-714543791b49
+                    5ac985947e1f3087ee24a95501366246: !UniformGrid ref!! bdc4c6b5-b5e0-4826-ad8a-d44660deff6e
+                RowDefinitions: {}
+                ColumnDefinitions: {}
+                LayerDefinitions: {}

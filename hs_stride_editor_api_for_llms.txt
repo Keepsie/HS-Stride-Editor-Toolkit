@@ -2,8 +2,8 @@ HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
 
 **Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
-**Version:** 1.5.2
-**API Version:** 1.5.2
+**Version:** 1.6.0
+**API Version:** 1.6.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 **Package:** HS.Stride.Editor.Toolkit
@@ -462,6 +462,11 @@ project.Rescan();
 *   `(float X, float Y, float Z)? GetDesignResolution()`, `void SetDesignResolution(x, y, z)`
 *   `List<UIElement> AllElements`, `List<UIElement> RootElements`
 
+**Supported UI Element Types (all 16 Stride types):**
+
+*   TextBlock, Button, ToggleButton, ImageElement, Canvas, Grid, StackPanel, UniformGrid
+*   ScrollViewer, ScrollBar, ScrollingText, EditText, Slider, Border, ContentDecorator, ModalElement
+
 **Element Creation Helpers:**
 
 *   `CreateElement(type, name, parent)`: Generic creator for any UI element type.
@@ -479,40 +484,103 @@ project.Rescan();
 **Element Helper Methods (extension methods on UIElement):**
 
 *   **Layout:** `SetSize(w, h)`, `SetMargin(left, top, right, bottom)`, `SetPadding(...)`, `SetAlignment(h, v)`
+*   **Position (v1.6.0):** `GetPosition()` returns `(X, Y)`, `SetPosition(x, y)` sets margin-based position
+*   **Margin (v1.6.0):** `GetMargin()` returns `(Left, Top, Right, Bottom)` tuple
 *   **Colors:** `SetBackgroundColor(r, g, b, a)`, `SetTextColor(r, g, b, a)`, `SetColor(r, g, b, a)`, `SetOpacity(value)`
 *   **Assets:** `SetFont(fontAsset)`, `SetSprite(spriteSheetAsset, frame)`, `SetTexture(textureAsset)`
 *   **Button Images:** `SetPressedImage/SetNotPressedImage/SetMouseOverImage(spriteSheetAsset, frame)`
 *   **Button Textures:** `SetPressedTexture/SetNotPressedTexture/SetMouseOverTexture(textureAsset)`
+*   **Content (v1.6.0):** `SetContent(element)`, `GetContent()` - for Button, ToggleButton, ScrollViewer
+
+**Sprite/Texture Detection (v1.6.0):**
+
+*   `IsSpriteFromSheet(propertyName)`, `IsSpriteFromTexture(propertyName)`: Check sprite source type
+*   `GetSpriteSheet(propertyName)`: Returns `(AssetReference, Frame)` tuple
+*   `GetTextureSource(propertyName)`: Returns texture asset reference
+*   `IsButtonUsingSpriteSheet()`, `IsButtonUsingTexture()`: Button-specific checks
+*   `IsImageUsingSpriteSheet()`: ImageElement sprite check
+*   `GetPressedImageSprite()`, `GetNotPressedImageSprite()`, `GetMouseOverImageSprite()`: Button sprite getters
+*   `GetImageSprite()`, `GetImageTexture()`: ImageElement source getters
+
+**Behavior Properties (v1.6.0):**
+
+*   `SetIsEnabled(bool)`, `GetIsEnabled()`: Enable/disable elements
+*   `SetClickMode("Press"|"Release")`, `GetClickMode()`: Button click mode
+*   `SetWrapText(bool)`, `GetWrapText()`: TextBlock text wrapping
+*   `SetMinimum/SetMaximum/SetValue/SetStep(float)`: Slider value properties
+*   `SetTickFrequency(float)`, `SetSnapToTicks(bool)`, `SetOrientation("Horizontal"|"Vertical")`: Slider behavior
+*   `SetMaxLength(int)`, `SetIsReadOnly(bool)`: EditText properties
+*   `SetIsChecked(bool)`, `SetIsThreeState(bool)`: ToggleButton properties
 
 **Persistence:** `void Save()`, `void SaveAs(string filePath)`
 
 **Finding Elements:** Same as `Scene` - `FindElementById(id)`, `FindElementByName(name)`, `FindElementsByType(type)`, etc.
+
+---
+
+#### Positioning System (v1.6.0)
+
+**Purpose:** Accurate element positioning using Stride's 4-margin system.
+
+**How Stride Positioning Works:**
+
+Stride calculates position using all 4 margins: `Left = X`, `Top = Y`, `Right = ParentWidth - (X + Width)`, `Bottom = ParentHeight - (Y + Height)`
+
+**Key Methods:**
+
+*   `SetPosition(x, y)`: Automatically calculates all 4 margins and sets Left/Top alignment
+*   `GetPosition()`: Returns (X, Y) from margins
+*   `GetParentDimensions()`: Returns parent size or design resolution
+*   `SetStretchFill()`: Makes element fill parent (for backgrounds)
+*   `SetImageStretchFill()`: Fill parent with proper image stretch settings
+
+**Example: Positioning Elements**
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+var page = project.CreateUIPage("Menu", "UI");
+page.SetDesignResolution(1920, 1080, 1000);
+var root = page.RootElements.First();
+
+// Background that fills entire page
+var bg = page.CreateImage("background", parent: root, stretchFill: true);
+bg.SetBackgroundColor(20, 20, 40, 200);
+
+// Button at absolute position (100, 200)
+var button = page.CreateButton("my_btn", "Click Me", root, width: 200f, height: 50f);
+button.SetPosition(100f, 200f);  // Calculates all 4 margins automatically
+
+page.Save();
+```
 
 **Example: Pause Menu**
 
 ```csharp
 var project = new StrideProject(@"C:\MyGame");
 var page = project.CreateUIPage("PauseMenu", "UI/Menus");
+page.SetDesignResolution(1920, 1080, 1000);
 
 var rootGrid = page.RootElements.First();
 
-var bgImage = page.CreateImage("background", parent: rootGrid);
-bgImage.SetSize(1280f, 720f);
+// Full-screen dark overlay
+var bgImage = page.CreateImage("background", parent: rootGrid, stretchFill: true);
 bgImage.SetBackgroundColor(0, 0, 0, 180);
 
+// Centered menu container
 var menuCanvas = page.CreateCanvas("menu_container", parent: rootGrid);
 menuCanvas.SetSize(600f, 500f);
-menuCanvas.SetAlignment("Center", "Center");
+menuCanvas.SetPosition(660f, 290f);  // Centered in 1920x1080
 
 var title = page.CreateTextBlock("title", "GAME PAUSED", parent: menuCanvas, fontSize: 40f);
-title.SetMargin(top: 50f);
+title.SetPosition(100f, 50f);
 title.SetTextColor(255, 255, 255);
 
 var buttons = new[] { ("resume_btn", "Resume", 150f), ("settings_btn", "Settings", 230f) };
 foreach (var (name, text, yPos) in buttons)
 {
     var btn = page.CreateButton(name, text, parent: menuCanvas, width: 400f, height: 60f);
-    btn.SetMargin(left: 100f, top: yPos);
+    btn.SetPosition(100f, yPos);
+    btn.SetBackgroundColor(60, 60, 80, 255);
 }
 
 page.Save();
