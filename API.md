@@ -621,6 +621,11 @@ Loads a scene from disk.
 **Example:**
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+
+// Alternative: Load directly by full path
 var scene = Scene.Load(@"C:\MyGame\Assets\Scenes\Level1.sdscene");
 ```
 
@@ -825,9 +830,9 @@ Instantiates a prefab in the scene.
 **Example:**
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var enemyPrefab = scanner.FindAsset("Enemy", AssetType.Prefab);
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+var enemyPrefab = project.FindAsset("Enemy", AssetType.Prefab);
 
 var enemy = scene.InstantiatePrefab(enemyPrefab,
     new Vector3Data(10, 0, 5),
@@ -1019,6 +1024,11 @@ Represents an editable Stride Prefab asset (`.sdprefab`). This class allows for 
 Loads a prefab asset from the specified `.sdprefab` file path.
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var prefab = project.LoadPrefab("Enemy");
+
+// Alternative: Load directly by full path
 var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\Enemy.sdprefab");
 ```
 
@@ -1047,7 +1057,9 @@ Gets the root entity of this prefab. This is the top-level entity in the prefab'
 **Example:**
 
 ```csharp
-var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\Enemy.sdprefab");
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var prefab = project.LoadPrefab("Enemy");
 var root = prefab.GetRootEntity();
 
 if (root != null)
@@ -1072,7 +1084,9 @@ Creates a new entity within this prefab with a `TransformComponent`.
 **Example:**
 
 ```csharp
-var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\House.sdprefab");
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var prefab = project.LoadPrefab("House");
 
 // Add a new entity to the prefab
 var window = prefab.CreateEntity("Window", "Exterior");
@@ -1095,7 +1109,9 @@ Creates a new entity within this prefab with specified parent organization (eith
 **Example:**
 
 ```csharp
-var prefab = Prefab.Load(@"C:\MyGame\Assets\Prefabs\House.sdprefab");
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var prefab = project.LoadPrefab("House");
 
 // Create a door handle as a child of an existing "Door" entity within the prefab
 var doorHandle = prefab.CreateEntity("Handle", "Door", ParentType.Entity);
@@ -1164,6 +1180,11 @@ Represents a Stride UI page (`.sduipage` file) that can be loaded, modified, and
 Loads a UI page from a `.sduipage` file on disk.
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var page = project.LoadUIPage("MainMenu");
+
+// Alternative: Load directly by full path
 var page = UIPage.Load(@"C:\MyGame\Assets\UI\MainMenu.sduipage");
 ```
 
@@ -3404,13 +3425,14 @@ public class SpawnerComponent : SyncScript
 **Modifying asset references:**
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
+var entity = scene.FindEntityByName("Spawner");
 
 var spawner = entity.GetComponent("SpawnerComponent");
 
 // Find a new prefab to spawn
-var newEnemyPrefab = scanner.FindAsset("HarderEnemy", AssetType.Prefab);
+var newEnemyPrefab = project.FindAsset("HarderEnemy", AssetType.Prefab);
 
 // Set the prefab reference (guid:path format)
 spawner.Set("PrefabToSpawn", newEnemyPrefab.Reference);
@@ -3425,8 +3447,10 @@ scene.Save();
 **Critical:** Changes to custom components persist through save/reload:
 
 ```csharp
+var project = new StrideProject(@"C:\MyGame");
+
 // Modify
-var scene = Scene.Load("Level1.sdscene");
+var scene = project.LoadScene("Level1");
 var boss = scene.FindEntityByName("Boss");
 var bossAI = boss.GetComponent("BossAIComponent");
 
@@ -3436,7 +3460,7 @@ bossAI.Set("AggressionLevel", 0.9f);
 scene.Save();
 
 // Reload and verify
-var reloadedScene = Scene.Load("Level1.sdscene");
+var reloadedScene = project.LoadScene("Level1");
 var reloadedBoss = reloadedScene.FindEntityByName("Boss");
 var reloadedAI = reloadedBoss.GetComponent("BossAIComponent");
 
@@ -3951,6 +3975,11 @@ Represents an editable Stride Material asset (.sdmat).
 #### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var material = project.LoadMaterial("PlayerMat");
+
+// Alternative: Load directly by full path
 var material = MaterialAsset.Load(@"C:\MyGame\Assets\Materials\PlayerMat.sdmat");
 ```
 
@@ -4051,6 +4080,11 @@ Represents an editable Stride Texture asset (.sdtex).
 #### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var texture = project.LoadTexture("Player");
+
+// Alternative: Load directly by full path
 var texture = TextureAsset.Load(@"C:\MyGame\Assets\Textures\Player.sdtex");
 ```
 
@@ -4138,6 +4172,11 @@ Represents an editable Stride Animation asset (.sdanim).
 #### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var anim = project.LoadAnimation("Walk");
+
+// Alternative: Load directly by full path
 var anim = AnimationAsset.Load(@"C:\MyGame\Assets\Animations\Walk.sdanim");
 ```
 
@@ -4209,9 +4248,9 @@ Sets the reference to the skeleton asset used by this animation.
 **Example:**
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var skeleton = scanner.FindAsset("PlayerSkeleton", AssetType.Skeleton);
+var project = new StrideProject(@"C:\MyGame");
+var anim = project.LoadAnimation("Walk");
+var skeleton = project.FindAsset("PlayerSkeleton", AssetType.Skeleton);
 
 anim.SetSkeletonReference(skeleton.Reference);
 anim.Save();
@@ -4228,9 +4267,9 @@ Sets the reference to the preview model asset for this animation.
 **Example:**
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var model = scanner.FindAsset("PlayerModel", AssetType.Model);
+var project = new StrideProject(@"C:\MyGame");
+var anim = project.LoadAnimation("Walk");
+var model = project.FindAsset("PlayerModel", AssetType.Model);
 
 anim.SetPreviewModel(model.Reference);
 anim.Save();
@@ -4330,6 +4369,11 @@ Represents an editable Stride Sound asset (`.sdsnd`).
 ##### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var sound = project.LoadSound("Explosion");
+
+// Alternative: Load directly by full path
 var sound = SoundAsset.Load(@"C:\MyGame\Assets\Sounds\Explosion.sdsnd");
 ```
 
@@ -4341,7 +4385,8 @@ Sound assets often have properties like `Stream`, `Spatialized`, `Volume`, or `L
 
 ```csharp
 // Load a sound asset
-var sound = SoundAsset.Load(@"C:\MyGame\Assets\Sounds\Explosion.sdsnd");
+var project = new StrideProject(@"C:\MyGame");
+var sound = project.LoadSound("Explosion");
 
 // Get and set properties
 var isStreamed = sound.Get<bool>("Stream");
@@ -4364,6 +4409,11 @@ Represents an editable Stride Skeleton asset (`.sdskel`).
 ##### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var skeleton = project.LoadSkeleton("PlayerSkeleton");
+
+// Alternative: Load directly by full path
 var skeleton = SkeletonAsset.Load(@"C:\MyGame\Assets\Characters\PlayerSkeleton.sdskel");
 ```
 
@@ -4375,7 +4425,8 @@ Skeleton assets may have properties related to their bone structure or retargeti
 
 ```csharp
 // Load a skeleton asset
-var skeleton = SkeletonAsset.Load(@"C:\MyGame\Assets\Characters\PlayerSkeleton.sdskel");
+var project = new StrideProject(@"C:\MyGame");
+var skeleton = project.LoadSkeleton("PlayerSkeleton");
 
 // Access generic properties
 var rootBoneName = skeleton.Get<string>("RootBone");
@@ -4390,6 +4441,11 @@ Represents an editable Stride Sprite Sheet asset (`.sdsheet`).
 ##### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var spriteSheet = project.LoadSpriteSheet("Icons");
+
+// Alternative: Load directly by full path
 var spriteSheet = SpriteSheetAsset.Load(@"C:\MyGame\Assets\UI\Icons.sdsheet");
 ```
 
@@ -4401,7 +4457,8 @@ Sprite sheets contain definitions for individual sprites. Properties might inclu
 
 ```csharp
 // Load a sprite sheet asset
-var spriteSheet = SpriteSheetAsset.Load(@"C:\MyGame\Assets\UI\Icons.sdsheet");
+var project = new StrideProject(@"C:\MyGame");
+var spriteSheet = project.LoadSpriteSheet("Icons");
 
 // Access generic properties (e.g., source texture)
 var sourceTextureRef = spriteSheet.Get<string>("Texture");
@@ -4420,6 +4477,11 @@ Represents an editable Stride Effect asset (`.sdfx`).
 ##### Loading
 
 ```csharp
+// Recommended: Use StrideProject to load by name
+var project = new StrideProject(@"C:\MyGame");
+var effect = project.LoadEffect("MyCustomEffect");
+
+// Alternative: Load directly by full path
 var effect = EffectAsset.Load(@"C:\MyGame\Assets\Materials\MyCustomEffect.sdfx");
 ```
 
@@ -4431,7 +4493,8 @@ Effect assets often define shader parameters.
 
 ```csharp
 // Load an effect asset
-var effect = EffectAsset.Load(@"C:\MyGame\Assets\Materials\MyCustomEffect.sdfx");
+var project = new StrideProject(@"C:\MyGame");
+var effect = project.LoadEffect("MyCustomEffect");
 
 // Access generic properties (e.g., tweaking shader uniforms)
 var blendMode = effect.Get<string>("BlendState");
@@ -4553,7 +4616,7 @@ Thrown when required string parameters are null or whitespace.
 - All `Scene` methods (Load, Find, Create, Add, Remove, Save)
 - All `Entity.GetComponent` calls
 - All Asset `Load` and `SaveAs` methods
-- `ProjectScanner` constructor
+- `StrideProject` constructor
 - Component `Get<T>` and `Set` methods (when propertyPath is null)
 
 **Example:**
@@ -4597,14 +4660,14 @@ Thrown for invalid arguments beyond null checks.
 
 **Methods that throw:**
 
-- `ProjectScanner(string projectPath)` when path is not a Stride project
+- `StrideProject(string projectPath)` when path is not a Stride project
 
 **Example:**
 
 ```csharp
 try
 {
-    var scanner = new ProjectScanner(@"C:\NotAStrideProject");
+    var project = new StrideProject(@"C:\NotAStrideProject");
 }
 catch (ArgumentException ex)
 {
@@ -4621,7 +4684,7 @@ Some methods return null or default values instead of throwing:
 - `Entity.GetComponent(string componentType)` - Returns null if component not found
 - `Component.Get<T>(string propertyPath)` - Returns default(T) if property not found
 - `Scene.FindEntityById/ByName` - Returns null if entity not found
-- `ProjectScanner.FindAsset` - Returns null if asset not found
+- `StrideProject.FindAsset` - Returns null if asset not found
 - All asset `Get` methods - Return null if property not found
 
 **Example:**
@@ -4686,16 +4749,15 @@ Leverage the toolkit's file-based nature for mass modifications and automated ta
 This example demonstrates how to find placeholder entities in a scene and replace them with actual prefab instances based on their names.
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var scene = Scene.Load("Level1.sdscene");
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
 
 var placeholders = scene.FindEntitiesByName("Placeholder_*");
 foreach (var placeholder in placeholders)
 {
     // Extract prefab name from placeholder's name
     var prefabName = placeholder.Name.Replace("Placeholder_", "");
-    var prefab = scanner.FindAsset(prefabName, AssetType.Prefab);
+    var prefab = project.FindAsset(prefabName, AssetType.Prefab);
 
     if (prefab != null)
     {
@@ -4721,14 +4783,13 @@ scene.Save();
 This example shows how to iterate through multiple scenes and modify material properties based on certain criteria.
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
+var project = new StrideProject(@"C:\MyGame");
 
-var newTexture = scanner.FindAsset("NewGroundTexture", AssetType.Texture); // An asset to apply
+var newTexture = project.FindAsset("NewGroundTexture", AssetType.Texture); // An asset to apply
 
-foreach (var sceneRef in scanner.GetScenes())
+foreach (var sceneRef in project.GetScenes())
 {
-    var scene = Scene.Load(sceneRef.FilePath);
+    var scene = project.LoadScene(sceneRef.Name);
 
     // Find all entities with models that use a "Ground" material
     var groundObjects = scene.FindEntities(e =>
@@ -4775,12 +4836,11 @@ foreach (var sceneRef in scanner.GetScenes())
 Automate the creation of complex scenes using prefab instantiation and entity manipulation.
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
-var scene = Scene.Load("ProcGenLevel.sdscene"); // Load an empty or template scene
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("ProcGenLevel"); // Load an empty or template scene
 
-var tilePrefab = scanner.FindAsset("FloorTile", AssetType.Prefab);
-var wallPrefab = scanner.FindAsset("Wall", AssetType.Prefab);
+var tilePrefab = project.FindAsset("FloorTile", AssetType.Prefab);
+var wallPrefab = project.FindAsset("Wall", AssetType.Prefab);
 
 // Generate a 10x10 grid level
 for (int x = 0; x < 10; x++)
@@ -4813,7 +4873,8 @@ Efficiently manage and validate custom C# components within your Stride project.
 Adjust properties of custom components across multiple entities based on game design requirements.
 
 ```csharp
-var scene = Scene.Load("Level1.sdscene");
+var project = new StrideProject(@"C:\MyGame");
+var scene = project.LoadScene("Level1");
 
 // Find all entities with health components
 var healthEntities = scene.FindEntitiesWithComponent("HealthComponent");
@@ -4917,17 +4978,16 @@ Automate routine tasks such as setting properties across numerous assets.
 Ensure that specific animations (e.g., "Idle", "Walk", "Run") are set to loop indefinitely.
 
 ```csharp
-var scanner = new ProjectScanner(projectPath);
-scanner.Scan();
+var project = new StrideProject(@"C:\MyGame");
 
-var animations = scanner.GetAnimations();
+var animations = project.GetAnimations();
 
 foreach (var animRef in animations.Where(a =>
     a.Name.Contains("Idle") ||
     a.Name.Contains("Walk") ||
     a.Name.Contains("Run")))
 {
-    var anim = AnimationAsset.Load(animRef.FilePath);
+    var anim = project.LoadAnimation(animRef.Name);
 
     if (anim.RepeatMode != "LoopInfinite")
     {

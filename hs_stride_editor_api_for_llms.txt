@@ -808,10 +808,8 @@ Automate the creation of complex scenes using prefab instantiation and entity ma
 
 ```csharp
 var project = new StrideProject(@"C:\MyGame");
-var scanner = new ProjectScanner(@"C:\MyGame"); // ProjectScanner is internal, but this implies asset scanning
-scanner.Scan(); // Also internal
 
-var scene = project.LoadScene("ProcGenLevel.sdscene"); // Load an empty or template scene
+var scene = project.LoadScene("ProcGenLevel"); // Load an empty or template scene
 
 var tilePrefab = project.FindAsset("FloorTile", AssetType.Prefab);
 var wallPrefab = project.FindAsset("Wall", AssetType.Prefab);
