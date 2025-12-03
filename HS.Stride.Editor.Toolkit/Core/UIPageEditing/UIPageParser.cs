@@ -236,7 +236,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     // Basic property storage
                     else if (!string.IsNullOrEmpty(value))
                     {
-                        element.Properties[key] = value;
+                        element.Properties[key] = UnquoteYamlString(value);
                     }
                 }
 
@@ -363,7 +363,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     }
                     else
                     {
-                        result[key] = val;
+                        result[key] = UnquoteYamlString(val);
                     }
                 }
             }
@@ -409,6 +409,40 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Removes enclosing quotes from a YAML string value.
+        /// YAML uses quotes to wrap strings containing special characters like colons.
+        /// When parsing, we need to strip these quotes to get the actual value.
+        /// Also handles escaped quotes within the string.
+        /// </summary>
+        private static string UnquoteYamlString(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // Check for double-quoted string
+            if (value.StartsWith("\"") && value.EndsWith("\"") && value.Length >= 2)
+            {
+                var inner = value.Substring(1, value.Length - 2);
+                // Unescape common escape sequences
+                return inner.Replace("\\\"", "\"")
+                            .Replace("\\\\", "\\")
+                            .Replace("\\n", "\n")
+                            .Replace("\\r", "\r")
+                            .Replace("\\t", "\t");
+            }
+
+            // Check for single-quoted string
+            if (value.StartsWith("'") && value.EndsWith("'") && value.Length >= 2)
+            {
+                var inner = value.Substring(1, value.Length - 2);
+                // Single quotes escape by doubling
+                return inner.Replace("''", "'");
+            }
+
+            return value;
         }
 
         /// <summary>
@@ -477,7 +511,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     }
                     else
                     {
-                        result[key] = value;
+                        result[key] = UnquoteYamlString(value);
                     }
                 }
 
