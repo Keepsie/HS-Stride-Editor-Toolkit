@@ -551,7 +551,15 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                 }
                 else if (value is string str && !string.IsNullOrEmpty(str))
                 {
-                    sb.AppendLine($"                {propertyName}: {EscapeYamlString(str)}");
+                    // Asset references (guid:path format) should NOT be quoted - Stride expects them unquoted
+                    if (IsAssetReference(str))
+                    {
+                        sb.AppendLine($"                {propertyName}: {str}");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"                {propertyName}: {EscapeYamlString(str)}");
+                    }
                 }
                 else if (value is float floatValue)
                 {
@@ -612,6 +620,24 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                          .Replace("\r", "\\r")
                          .Replace("\t", "\\t");
             return $"\"{value}\"";
+        }
+
+        /// <summary>
+        /// Checks if a string is an asset reference in the format "guid:path"
+        /// Asset references should not be quoted in YAML output.
+        /// </summary>
+        private static bool IsAssetReference(string value)
+        {
+            if (string.IsNullOrEmpty(value) || !value.Contains(':'))
+                return false;
+
+            var colonIndex = value.IndexOf(':');
+            // GUIDs are 32 hex chars without hyphens, or 36 with hyphens
+            if (colonIndex < 32)
+                return false;
+
+            var guidPart = value.Substring(0, colonIndex);
+            return Guid.TryParse(guidPart, out _);
         }
     }
 }
