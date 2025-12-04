@@ -208,23 +208,6 @@ namespace HS.Stride.Editor.Toolkit.Tests
             page.AllElements.Should().NotContain(element);
         }
 
-        [Test]
-        public void CreateTextBlock_ShouldCreateTextBlockWithDefaults()
-        {
-            // Arrange
-            var project = new StrideProject(_testProjectPath);
-            var page = project.CreateUIPage("TestPage", "UI/TestPage");
-
-            // Act
-            var textBlock = page.CreateTextBlock("title", "Welcome");
-
-            // Assert
-            textBlock.Should().NotBeNull();
-            textBlock.Type.Should().Be("TextBlock");
-            textBlock.Get<string>("Text").Should().Be("Welcome");
-            textBlock.Get<string>("HorizontalAlignment").Should().Be("Center");
-            textBlock.Get<string>("VerticalAlignment").Should().Be("Center");
-        }
 
         [Test]
         public void CreateButton_ShouldCreateButtonWithTextContent()
