@@ -719,44 +719,95 @@ Hierarchy:
             if (rawAssetReference.Type != AssetType.RawAsset)
                 throw new ArgumentException("Asset must be of type RawAsset", nameof(rawAssetReference));
 
-            // Read the .sdraw file to get the Source property
-            if (!File.Exists(rawAssetReference.FilePath))
+            return GetAssetSource(rawAssetReference);
+        }
+
+        /// <summary>
+        /// Gets the source file path for any asset that has a Source property.
+        /// Works with Textures (.sdtex), SpriteSheets (.sdsheet), SpriteFonts (.sdfnt),
+        /// Animations (.sdanim), RawAssets (.sdraw), and other assets with Source properties.
+        /// For SpriteFonts, extracts the font file path from FontSource.
+        /// </summary>
+        /// <param name="assetReference">The asset reference</param>
+        /// <returns>Full absolute path to the source file, or null if not found</returns>
+        /// <exception cref="ArgumentNullException">If assetReference is null</exception>
+        public string? GetAssetSource(AssetReference assetReference)
+        {
+            if (assetReference == null)
+                throw new ArgumentNullException(nameof(assetReference));
+
+            if (!File.Exists(assetReference.FilePath))
                 return null;
 
-            var sdrawContent = File.ReadAllText(rawAssetReference.FilePath);
+            var content = File.ReadAllText(assetReference.FilePath);
+            var lines = content.Split('\n');
 
-            // Parse YAML to find Source line
-            // Format: "Source: !file ../../../Resources/Databases/DialogSystem_db/merchant_dialog.json"
-            var lines = sdrawContent.Split('\n');
-            foreach (var line in lines)
+            string? sourcePath = null;
+
+            // For SpriteFonts, look for Source under FontSource section
+            if (assetReference.Type == AssetType.SpriteFont)
             {
-                var trimmedLine = line.TrimStart();
-                if (trimmedLine.StartsWith("Source:", StringComparison.OrdinalIgnoreCase))
+                bool inFontSource = false;
+                foreach (var line in lines)
                 {
-                    var sourcePath = trimmedLine.Substring("Source:".Length).Trim();
+                    var trimmedLine = line.TrimStart();
 
-                    // Remove !file tag if present
-                    if (sourcePath.StartsWith("!file ", StringComparison.OrdinalIgnoreCase))
+                    // Check if we're entering FontSource section
+                    if (trimmedLine.StartsWith("FontSource:"))
                     {
-                        sourcePath = sourcePath.Substring("!file ".Length).Trim();
+                        inFontSource = true;
+                        continue;
                     }
 
-                    // Resolve relative path from .sdraw location
-                    var sdrawDir = Path.GetDirectoryName(rawAssetReference.FilePath);
-                    if (sdrawDir == null)
-                        return null;
+                    // If in FontSource section and found Source line
+                    if (inFontSource && trimmedLine.StartsWith("Source:"))
+                    {
+                        sourcePath = trimmedLine.Substring("Source:".Length).Trim();
+                        break;
+                    }
 
-                    var fullPath = Path.GetFullPath(Path.Combine(sdrawDir, sourcePath));
-
-                    if (File.Exists(fullPath))
-                        return fullPath;
-
-                    // Fallback: try to find file in Resources folder by name
-                    return FindResourceFileByName(Path.GetFileName(sourcePath));
+                    // Exit FontSource section if we hit a non-indented line (new top-level property)
+                    if (inFontSource && !string.IsNullOrWhiteSpace(line) && !char.IsWhiteSpace(line[0]))
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // For other assets, look for top-level Source property
+                foreach (var line in lines)
+                {
+                    var trimmedLine = line.TrimStart();
+                    if (trimmedLine.StartsWith("Source:"))
+                    {
+                        sourcePath = trimmedLine.Substring("Source:".Length).Trim();
+                        break;
+                    }
                 }
             }
 
-            return null;
+            if (string.IsNullOrEmpty(sourcePath))
+                return null;
+
+            // Remove !file tag if present
+            if (sourcePath.StartsWith("!file ", StringComparison.OrdinalIgnoreCase))
+            {
+                sourcePath = sourcePath.Substring("!file ".Length).Trim();
+            }
+
+            // Resolve relative path from asset file location
+            var assetDir = Path.GetDirectoryName(assetReference.FilePath);
+            if (assetDir == null)
+                return null;
+
+            var fullPath = Path.GetFullPath(Path.Combine(assetDir, sourcePath));
+
+            if (File.Exists(fullPath))
+                return fullPath;
+
+            // Fallback: try to find file in Resources folder by name
+            return FindResourceFileByName(Path.GetFileName(sourcePath));
         }
 
         private string? FindResourceFileByName(string fileName)
