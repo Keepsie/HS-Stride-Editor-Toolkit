@@ -442,5 +442,103 @@ namespace HS.Stride.Editor.Toolkit.Tests
             // Count should be same (no assets added/removed)
             newCount.Should().Be(originalCount);
         }
+
+        [Test]
+        public void GetAssetSource_Texture_ShouldReturnSourcePath()
+        {
+            // Arrange
+            var textures = _project.GetTextures();
+            var textureWithSource = textures.FirstOrDefault(t => t.Name == "dota");
+
+            if (textureWithSource == null)
+            {
+                Assert.Inconclusive("dota texture not found in test project");
+                return;
+            }
+
+            // Act
+            var sourcePath = _project.GetAssetSource(textureWithSource);
+
+            // Assert
+            sourcePath.Should().NotBeNullOrEmpty();
+            sourcePath.Should().EndWith("dota.png");
+            File.Exists(sourcePath).Should().BeTrue();
+        }
+
+        [Test]
+        public void GetAssetSource_TextureWithRelativePath_ShouldResolveCorrectly()
+        {
+            // Arrange
+            var textures = _project.GetTextures();
+            if (!textures.Any())
+            {
+                Assert.Inconclusive("No textures in test project");
+                return;
+            }
+
+            // Find any texture that has a source
+            foreach (var texture in textures)
+            {
+                var sourcePath = _project.GetAssetSource(texture);
+                if (sourcePath != null)
+                {
+                    // Assert - should be an absolute path that exists
+                    Path.IsPathRooted(sourcePath).Should().BeTrue();
+                    File.Exists(sourcePath).Should().BeTrue();
+                    return;
+                }
+            }
+
+            Assert.Inconclusive("No textures with source files found");
+        }
+
+        [Test]
+        public void GetAssetSource_NullAsset_ShouldThrow()
+        {
+            // Act
+            Action act = () => _project.GetAssetSource(null!);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Test]
+        public void GetAssetSource_AssetWithNoSource_ShouldReturnNull()
+        {
+            // Arrange - Scenes don't have Source properties
+            var scenes = _project.GetScenes();
+            if (!scenes.Any())
+            {
+                Assert.Inconclusive("No scenes in test project");
+                return;
+            }
+
+            // Act
+            var sourcePath = _project.GetAssetSource(scenes.First());
+
+            // Assert
+            sourcePath.Should().BeNull();
+        }
+
+        [Test]
+        public void GetRawAssetSource_ShouldDelegateToGetAssetSource()
+        {
+            // Arrange
+            var rawAssets = _project.GetAssets(AssetType.RawAsset);
+            if (!rawAssets.Any())
+            {
+                Assert.Inconclusive("No raw assets in test project");
+                return;
+            }
+
+            var rawAsset = rawAssets.First();
+
+            // Act
+            var sourcePath = _project.GetRawAssetSource(rawAsset);
+            var genericSourcePath = _project.GetAssetSource(rawAsset);
+
+            // Assert - both methods should return the same result
+            sourcePath.Should().Be(genericSourcePath);
+        }
     }
 }

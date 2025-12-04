@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.6.0
+**Version:** 1.7.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -548,6 +548,57 @@ foreach (var dialogAsset in allDialogs)
         Console.WriteLine($"Loaded: {dialog.CharacterName} - {dialog.LineCount} lines");
     }
 }
+```
+
+#### `string? GetAssetSource(AssetReference assetReference)`
+
+Gets the source file path for any asset that has a Source property. Works with Textures (.sdtex), SpriteSheets (.sdsheet), SpriteFonts (.sdfnt), Animations (.sdanim), RawAssets (.sdraw), and other assets with Source properties.
+
+**Parameters:**
+
+- `assetReference` (AssetReference) - The asset reference
+
+**Returns:**
+
+Full absolute path to the source file, or `null` if:
+
+- The asset file doesn't exist
+- The asset has no `Source:` property
+- The source path cannot be resolved
+- The resolved source file doesn't exist
+
+**Throws:**
+
+- `ArgumentNullException` - If assetReference is null
+
+**Fallback Behavior:**
+
+If the relative path from the asset file fails, the method automatically searches common Resources folders by filename.
+
+**Special Handling:**
+
+- For SpriteFonts (.sdfnt), extracts the font file path from the nested `FontSource` section
+- For other assets, looks for a top-level `Source:` property
+
+**Example:**
+
+```csharp
+var project = new StrideProject(@"C:\MyGame");
+
+// Get source for a texture
+var texture = project.FindAsset("PlayerSkin", AssetType.Texture);
+var texturePath = project.GetAssetSource(texture);
+// Returns: "C:\MyGame\Assets\Textures\player_skin.png"
+
+// Get source for a sprite font (extracts .ttf/.otf path)
+var font = project.FindAsset("GameFont", AssetType.SpriteFont);
+var fontPath = project.GetAssetSource(font);
+// Returns: "C:\MyGame\Resources\Fonts\Saira-Bold.ttf"
+
+// Get source for an animation
+var anim = project.FindAsset("WalkCycle", AssetType.Animation);
+var animPath = project.GetAssetSource(anim);
+// Returns: "C:\MyGame\Assets\Animations\character_walk.fbx"
 ```
 
 ### Complete Workflow Example
