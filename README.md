@@ -102,7 +102,7 @@ for (int x = 0; x < 10; x++) {
 scene.Save();
 ```
 
-### 3. Create Prefabs Programmatically
+### 2. Create Prefabs Programmatically
 
 Mass-generate enemy types or props:
 
@@ -133,7 +133,7 @@ project.Rescan();
 Console.WriteLine($"Generated {enemyTypes.Count} enemy prefabs!");
 ```
 
-### 4. Create UI with Code
+### 3. Create UI with Code
 
 Generate entire UI menus instead of clicking through Stride's UI editor:
 
@@ -141,28 +141,30 @@ Generate entire UI menus instead of clicking through Stride's UI editor:
 var project = new StrideProject(@"C:\MyGame");
 var page = project.CreateUIPage("MainMenu", "UI/Menus");
 
-var canvas = page.CreateCanvas("menu_canvas", width: 800f, height: 600f);
+// Get root Grid (auto-created) and add a Canvas for absolute positioning
+var rootGrid = page.RootElements.First();
+var canvas = page.CreateCanvas("menu_canvas", rootGrid, width: 800f, height: 600f);
 
-// Title
+// Title with helper methods
 var title = page.CreateTextBlock("title", "MY AWESOME GAME", canvas, fontSize: 50f);
-title.SetMargin(top: 100f);
+title.SetPosition(250f, 100f);
 title.SetAlignment(horizontal: "Center");
 
-// Buttons
+// Buttons using CreateButton helper (auto-creates text content)
 var startButton = page.CreateButton("start_btn", "Start Game", canvas, width: 300f, height: 60f);
-startButton.SetMargin(left: 250f, top: 250f);
+startButton.SetPosition(250f, 250f);
 
 var settingsButton = page.CreateButton("settings_btn", "Settings", canvas, width: 300f, height: 60f);
-settingsButton.SetMargin(left: 250f, top: 330f);
+settingsButton.SetPosition(250f, 330f);
 
 var quitButton = page.CreateButton("quit_btn", "Quit", canvas, width: 300f, height: 60f);
-quitButton.SetMargin(left: 250f, top: 410f);
+quitButton.SetPosition(250f, 410f);
 
 page.Save();
 project.Rescan();
 ```
 
-### 5. Create Particle Effects with Code
+### 4. Create Particle Effects with Code
 
 Generate smoke, fire, explosions, and other VFX programmatically:
 
