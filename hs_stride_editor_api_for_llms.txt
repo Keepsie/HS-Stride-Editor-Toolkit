@@ -2,8 +2,8 @@ HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
 
 **Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
-**Version:** 1.7.0
-**API Version:** 1.7.0
+**Version:** 1.8.0
+**API Version:** 1.8.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 **Package:** HS.Stride.Editor.Toolkit
@@ -561,6 +561,11 @@ project.Rescan();
 *   `SetTickFrequency(float)`, `SetSnapToTicks(bool)`, `SetOrientation("Horizontal"|"Vertical")`: Slider behavior
 *   `SetMaxLength(int)`, `SetIsReadOnly(bool)`: EditText properties
 *   `SetIsChecked(bool)`, `SetIsThreeState(bool)`: ToggleButton properties
+
+**ZIndex / Draw Order (v1.8.0):**
+
+*   `int GetZIndex()`: Gets Panel.ZIndex value from DependencyProperties (controls sibling draw order, higher = on top). Returns 0 if not set.
+*   `void SetZIndex(int zIndex)`: Sets Panel.ZIndex value. Setting 0 removes the entry (0 is default).
 
 **Persistence:** `void Save()`, `void SaveAs(string filePath)`
 

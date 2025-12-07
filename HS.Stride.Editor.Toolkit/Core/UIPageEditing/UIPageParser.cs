@@ -233,6 +233,16 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                         }
                         continue; // ParseMultilineBlock already advanced i
                     }
+                    // Handle DependencyProperties multiline block (empty value means multiline follows)
+                    else if (key == "DependencyProperties" && string.IsNullOrEmpty(value))
+                    {
+                        var depProps = ParseDependencyProperties(lines, ref i, baseIndent.Value);
+                        if (depProps != null && depProps.Count > 0)
+                        {
+                            element.Properties[key] = depProps;
+                        }
+                        continue; // ParseDependencyProperties already advanced i
+                    }
                     // Basic property storage
                     else if (!string.IsNullOrEmpty(value))
                     {
@@ -496,6 +506,85 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     if (float.TryParse(value, System.Globalization.NumberStyles.Float,
                         System.Globalization.CultureInfo.InvariantCulture, out var floatVal))
                     {
+                        if (floatVal == Math.Floor(floatVal) && floatVal >= int.MinValue && floatVal <= int.MaxValue)
+                        {
+                            result[key] = (int)floatVal;
+                        }
+                        else
+                        {
+                            result[key] = floatVal;
+                        }
+                    }
+                    else if (bool.TryParse(value, out var boolVal))
+                    {
+                        result[key] = boolVal;
+                    }
+                    else
+                    {
+                        result[key] = UnquoteYamlString(value);
+                    }
+                }
+
+                i++;
+            }
+
+            return result.Count > 0 ? result : null;
+        }
+
+        /// <summary>
+        /// Parses DependencyProperties multiline block.
+        /// Format:
+        /// DependencyProperties:
+        ///     guid~Panel.ZIndexPropertyKey: 10
+        ///     guid~OtherProperty: value
+        /// </summary>
+        private static Dictionary<string, object>? ParseDependencyProperties(string[] lines, ref int i, int baseIndent)
+        {
+            var result = new Dictionary<string, object>();
+            var currentLineIndent = GetIndent(lines[i]);
+
+            i++; // Move past the "DependencyProperties:" line
+
+            while (i < lines.Length)
+            {
+                var line = lines[i];
+
+                // Skip empty lines
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    i++;
+                    continue;
+                }
+
+                var indent = GetIndent(line);
+                var trimmed = line.Trim();
+
+                // Stop if we've returned to base indent or less (new property at element level)
+                if (indent <= currentLineIndent)
+                {
+                    i--; // Back up so the caller can re-process this line
+                    break;
+                }
+
+                // Stop if we hit the next UIElement
+                if (trimmed.StartsWith("-   UIElement:"))
+                {
+                    i--; // Back up so the caller can re-process this line
+                    break;
+                }
+
+                // Parse dependency property entry (format: "guid~PropertyKey: value")
+                if (trimmed.Contains(":"))
+                {
+                    var colonIdx = trimmed.IndexOf(':');
+                    var key = trimmed.Substring(0, colonIdx).Trim();
+                    var value = trimmed.Substring(colonIdx + 1).Trim();
+
+                    // Parse value based on type
+                    if (float.TryParse(value, System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out var floatVal))
+                    {
+                        // Check if it's actually an integer
                         if (floatVal == Math.Floor(floatVal) && floatVal >= int.MinValue && floatVal <= int.MaxValue)
                         {
                             result[key] = (int)floatVal;

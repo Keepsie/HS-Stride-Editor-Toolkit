@@ -2,7 +2,7 @@
 
 A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.
 
-**Version:** 1.7.0
+**Version:** 1.8.0
 **Target Framework:** .NET 8.0
 **License:** Apache 2.0
 
@@ -1410,6 +1410,29 @@ Finds a direct child UI element by exact name.
 
 Gets a list of all descendant UI elements (children, grandchildren, etc.) recursively.
 
+##### `int GetZIndex()`
+
+Gets the ZIndex (Panel.ZIndex) value from DependencyProperties. ZIndex controls sibling draw order within a panel - higher values are drawn on top. Returns 0 if not set.
+
+```csharp
+int zIndex = element.GetZIndex();
+Console.WriteLine($"Element draw order: {zIndex}");
+```
+
+##### `void SetZIndex(int zIndex)`
+
+Sets the ZIndex (Panel.ZIndex) value in DependencyProperties. ZIndex controls sibling draw order within a panel - higher values are drawn on top. Setting to 0 removes the ZIndex entry (0 is the default).
+
+```csharp
+// Set element to render on top of siblings
+element.SetZIndex(10);
+
+// Reset to default (removes ZIndex entry)
+element.SetZIndex(0);
+```
+
+**Note:** ZIndex is stored in Stride's DependencyProperties with the format `<guid>~Panel.ZIndexPropertyKey`. The toolkit handles this format automatically.
+
 ---
 
 ### Complete Pause Menu Example
@@ -1560,6 +1583,11 @@ project.Rescan();
 - `element.RemoveChild(child)`: Removes a child element.
 - `element.GetChildren()`: Gets all direct children.
 - `element.GetDescendants()`: Gets all descendants recursively.
+
+**ZIndex (Draw Order):**
+
+- `element.GetZIndex()`: Gets the Panel.ZIndex value (controls sibling draw order).
+- `element.SetZIndex(int)`: Sets the Panel.ZIndex value (higher = drawn on top).
 
 ### UI Element Types
 

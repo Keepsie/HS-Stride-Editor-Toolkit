@@ -142,5 +142,68 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
 
             return descendants;
         }
+
+        #region ZIndex (Panel.ZIndexPropertyKey) Helpers
+
+        /// <summary>
+        /// Gets the ZIndex (Panel.ZIndex) value from DependencyProperties.
+        /// ZIndex controls sibling draw order within a panel - higher values are drawn on top.
+        /// </summary>
+        /// <returns>The ZIndex value, or 0 if not set</returns>
+        public int GetZIndex()
+        {
+            var depProps = Get<Dictionary<string, object>>("DependencyProperties");
+            if (depProps == null) return 0;
+
+            foreach (var kvp in depProps)
+            {
+                if (kvp.Key.EndsWith("~Panel.ZIndexPropertyKey"))
+                {
+                    if (kvp.Value is int intVal)
+                        return intVal;
+                    if (int.TryParse(kvp.Value?.ToString(), out int parsedVal))
+                        return parsedVal;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Sets the ZIndex (Panel.ZIndex) value in DependencyProperties.
+        /// ZIndex controls sibling draw order within a panel - higher values are drawn on top.
+        /// </summary>
+        /// <param name="zIndex">The ZIndex value to set</param>
+        public void SetZIndex(int zIndex)
+        {
+            var depProps = Get<Dictionary<string, object>>("DependencyProperties")
+                ?? new Dictionary<string, object>();
+
+            // Remove any existing ZIndex entry
+            var existingKey = depProps.Keys.FirstOrDefault(k => k.EndsWith("~Panel.ZIndexPropertyKey"));
+            if (existingKey != null)
+            {
+                depProps.Remove(existingKey);
+            }
+
+            // Add new ZIndex entry (format: "<guid>~Panel.ZIndexPropertyKey": value)
+            // Only add if non-zero (0 is the default)
+            if (zIndex != 0)
+            {
+                var zIndexKey = $"{Guid.NewGuid():N}~Panel.ZIndexPropertyKey";
+                depProps[zIndexKey] = zIndex;
+            }
+
+            // Update or remove DependencyProperties based on whether it has entries
+            if (depProps.Count > 0)
+            {
+                Set("DependencyProperties", depProps);
+            }
+            else
+            {
+                Properties.Remove("DependencyProperties");
+            }
+        }
+
+        #endregion
     }
 }
