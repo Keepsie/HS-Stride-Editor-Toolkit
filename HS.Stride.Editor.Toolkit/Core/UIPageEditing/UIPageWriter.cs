@@ -131,9 +131,11 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
             WriteColor(sb, "BackgroundColor", element);
 
             // Write layout properties
+            WritePropertyIfExists(sb, "Opacity", element);
             WritePropertyIfExists(sb, "ClipToBounds", element);
             WritePropertyIfExists(sb, "DrawLayerNumber", element);
             WritePropertyIfExists(sb, "CanBeHitByUser", element);
+            WritePropertyIfExists(sb, "IsEnabled", element);
             WritePropertyIfExists(sb, "Visibility", element);
             WritePropertyIfExists(sb, "Width", element);
             WritePropertyIfExists(sb, "Height", element);
@@ -279,6 +281,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                     WritePropertyIfExists(sb, "ScrollBarThickness", element);
                     WritePropertyIfExists(sb, "ScrollMode", element);
                     WritePropertyIfExists(sb, "ScrollStartThreshold", element);
+                    WritePropertyIfExists(sb, "ScrollingSpeed", element);
                     WritePropertyIfExists(sb, "Deceleration", element);
                     WritePropertyIfExists(sb, "TouchScrollingEnabled", element);
                     WritePropertyIfExists(sb, "SnapToAnchors", element);
@@ -309,6 +312,8 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
 
                 case "uniformgrid":
                     WritePropertyIfExists(sb, "Padding", element);
+                    WritePropertyIfExists(sb, "Rows", element);
+                    WritePropertyIfExists(sb, "Columns", element);
                     WriteChildren(sb, element);
                     WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
@@ -316,6 +321,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
                 case "stackpanel":
                     WritePropertyIfExists(sb, "Padding", element);
                     WritePropertyIfExists(sb, "Orientation", element);
+                    WritePropertyIfExists(sb, "ItemVirtualizationEnabled", element);
                     WriteChildren(sb, element);
                     WritePropertyIfExists(sb, "Canvas.ZIndex", element);
                     break;
