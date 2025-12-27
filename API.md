@@ -1332,6 +1332,20 @@ Saves the UI page back to its original file path. Throws `InvalidOperationExcept
 
 Saves the UI page to a new file path.
 
+#### Generic Property Access
+
+##### `object? Get(string propertyName)`
+
+Gets a page-level property value by name. Supports nested paths with dot notation.
+
+##### `void Set(string propertyName, object value)`
+
+Sets a page-level property value by name. Supports nested paths with dot notation.
+
+##### `Dictionary<string, object> GetAllProperties()`
+
+Gets all page-level properties as a dictionary.
+
 ---
 
 ### UIElement Class
@@ -1816,6 +1830,194 @@ editText.SetIsReadOnly(false);
 // ToggleButton properties
 toggle.SetIsChecked(true);
 toggle.SetIsThreeState(false);
+```
+
+---
+
+### Type-Specific UIElement Extension Methods (Complete Reference)
+
+The following extension methods are available for specific UI element types. All methods are in the `HS.Stride.Editor.Toolkit.Core.UIPageEditing` namespace.
+
+#### Border Methods
+
+```csharp
+border.SetBorderColor(0.5f, 0.5f, 0.5f, 1.0f);           // Set border color (RGBA)
+border.SetBorderThickness(2f, 2f, 2f, 2f);              // Set thickness per side
+border.SetBorderThicknessUniform(2f);                   // Set uniform thickness
+```
+
+#### Slider Methods
+
+```csharp
+// Value and range
+slider.SetMinimum(0f);                    // Set minimum value
+slider.SetMaximum(100f);                  // Set maximum value
+slider.SetValue(50f);                     // Set current value
+slider.SetStep(1f);                       // Set step increment
+slider.SetRange(0f, 100f);                // Set min and max together
+
+// Getters
+float val = slider.GetSliderValue();
+float min = slider.GetSliderMinimum();
+float max = slider.GetSliderMaximum();
+var range = slider.GetSliderRange();      // Returns (Min, Max) tuple
+float step = slider.GetSliderStep();
+
+// Tick marks
+slider.SetTickFrequency(10f);             // Interval between ticks
+slider.SetSnapToTicks(true);              // Snap to tick positions
+slider.SetAreTicksDisplayed(true);        // Show tick marks
+float freq = slider.GetTickFrequency();
+bool snaps = slider.GetSnapToTicks();
+bool showTicks = slider.GetAreTicksDisplayed();
+
+// Slider images (sprite sheet)
+slider.SetTrackBackgroundImage(spriteSheet, frameIndex);
+slider.SetTrackForegroundImage(spriteSheet, frameIndex);
+slider.SetThumbImage(spriteSheet, frameIndex);
+slider.SetMouseOverThumbImage(spriteSheet, frameIndex);
+
+// Slider images (texture)
+slider.SetTrackBackgroundTexture(textureAsset);
+slider.SetTrackForegroundTexture(textureAsset);
+slider.SetThumbTexture(textureAsset);
+slider.SetMouseOverThumbTexture(textureAsset);
+```
+
+#### EditText Methods
+
+```csharp
+// Text properties
+editText.SetMaxLength(100);               // Maximum characters
+editText.SetIsReadOnly(false);            // Read-only mode
+editText.SetMinLines(1);                  // Minimum visible lines
+editText.SetMaxLines(5);                  // Maximum visible lines
+int maxLen = editText.GetMaxLength();
+bool readOnly = editText.GetIsReadOnly();
+int minLines = editText.GetMinLines();
+int maxLines = editText.GetMaxLines();
+
+// Appearance
+editText.SetCaretColor(1f, 1f, 1f, 1f);           // Cursor color
+editText.SetSelectionColor(0.3f, 0.5f, 0.8f, 1f); // Selection highlight color
+editText.SetCaretFrequency(1.0f);                 // Blink rate
+
+// Images (sprite sheet)
+editText.SetActiveImage(spriteSheet, frameIndex);     // Focused state
+editText.SetInactiveImage(spriteSheet, frameIndex);   // Unfocused state
+
+// Images (texture)
+editText.SetActiveTexture(textureAsset);
+editText.SetInactiveTexture(textureAsset);
+```
+
+#### ToggleButton Methods
+
+```csharp
+// State
+toggle.SetIsChecked(true);
+toggle.SetIsThreeState(false);            // Allow indeterminate state
+bool isChecked = toggle.IsChecked();
+bool threeState = toggle.GetIsThreeState();
+
+// Images (sprite sheet)
+toggle.SetCheckedImage(spriteSheet, frameIndex);
+toggle.SetUncheckedImage(spriteSheet, frameIndex);
+toggle.SetIndeterminateImage(spriteSheet, frameIndex);
+toggle.SetToggleButtonImages(spriteSheet, checkedFrame, uncheckedFrame, indeterminateFrame);
+
+// Images (texture)
+toggle.SetCheckedTexture(textureAsset);
+toggle.SetUncheckedTexture(textureAsset);
+toggle.SetIndeterminateTexture(textureAsset);
+toggle.SetToggleButtonTextures(checkedTex, uncheckedTex, indeterminateTex);
+```
+
+#### ScrollViewer Methods
+
+```csharp
+scrollViewer.SetScrollContent(contentElement);        // Set scrollable content
+scrollViewer.SetScrollMode("Vertical");               // "None", "Horizontal", "Vertical", "Both"
+scrollViewer.SetScrollBarColor(0.5f, 0.5f, 0.5f, 1f); // Scrollbar color
+scrollViewer.SetScrollBarThickness(10f);              // Scrollbar width
+scrollViewer.SetDeceleration(0.9f);                   // Scroll deceleration
+scrollViewer.SetTouchScrollingEnabled(true);          // Enable touch scrolling
+scrollViewer.SetSnapToAnchors(false);                 // Snap to anchor points
+```
+
+#### ScrollingText Methods
+
+```csharp
+scrollingText.SetScrollingSpeed(50f);              // Pixels per second
+scrollingText.SetDesiredCharacterNumber(20);       // Visible character count
+scrollingText.SetRepeatText(true);                 // Loop the text
+```
+
+#### ContentDecorator Methods
+
+```csharp
+// Background image (sprite sheet)
+decorator.SetBackgroundImage(spriteSheet, frameIndex);
+
+// Background image (texture)
+decorator.SetBackgroundTexture(textureAsset);
+```
+
+#### ModalElement Methods
+
+```csharp
+modal.SetOverlayColor(0f, 0f, 0f, 0.7f);  // Semi-transparent overlay
+modal.SetIsModal(true);                    // Enable modal behavior
+```
+
+#### ImageElement Methods
+
+```csharp
+image.SetStretchType("Uniform");           // "None", "Fill", "Uniform", "UniformToFill"
+image.SetStretchDirection("Both");         // "UpOnly", "DownOnly", "Both"
+```
+
+#### TextBlock Methods
+
+```csharp
+textBlock.SetWrapText(true);              // Enable text wrapping
+textBlock.SetTextAlignment("Center");      // "Left", "Center", "Right"
+textBlock.SetOutlineColor(0f, 0f, 0f, 1f); // Text outline color
+textBlock.SetOutlineThickness(2);          // Outline thickness in pixels
+bool wraps = textBlock.GetWrapText();
+```
+
+#### Common Layout Methods (All Elements)
+
+```csharp
+// Visibility and interaction
+element.SetVisibility(true);
+element.SetCanBeHitByUser(true);          // Receive input events
+element.SetClipToBounds(true);            // Clip children to bounds
+bool visible = element.IsVisible();
+bool hittable = element.GetCanBeHitByUser();
+bool clips = element.GetClipToBounds();
+
+// Draw order
+element.SetDrawLayerNumber(1);            // Layer number for rendering
+int layer = element.GetDrawLayerNumber();
+
+// Size getters
+float w = element.GetWidth();
+float h = element.GetHeight();
+var size = element.GetSize();             // Returns (Width, Height) tuple
+var padding = element.GetPadding();       // Returns (Left, Top, Right, Bottom) tuple
+
+// Alignment getters
+string hAlign = element.GetHorizontalAlignment();
+string vAlign = element.GetVerticalAlignment();
+var align = element.GetAlignment();       // Returns (Horizontal, Vertical) tuple
+
+// Color getters
+var bgColor = element.GetBackgroundColor();   // Returns (R, G, B, A)? tuple
+var textColor = element.GetTextColor();       // Returns (R, G, B, A)? tuple
+var color = element.GetColor();               // Returns (R, G, B, A)? tuple
+float opacity = element.GetOpacity();
 ```
 
 ---
@@ -2490,6 +2692,8 @@ These are shortcuts for common built-in components that return typed wrappers:
 - `StaticColliderWrapper? GetStaticCollider()` - Returns StaticColliderWrapper with shape methods
 - `RigidbodyWrapper? GetRigidbody()` - Returns RigidbodyWrapper with physics properties
 - `LightWrapper? GetLight()` - Returns LightWrapper with light properties
+- `ParticleSystemWrapper? GetParticleSystem()` - Returns ParticleSystemWrapper for VFX
+- `void RemoveParticleSystem()` - Removes the particle system component from the entity
 
 **Example:**
 
@@ -2510,6 +2714,7 @@ Add components directly on the entity with typed wrappers:
 - `RigidbodyWrapper AddRigidbody(float mass = 1.0f, bool isKinematic = false)` - Adds rigidbody (returns wrapper)
 - `ModelWrapper AddModel()` - Adds a model component (returns wrapper)
 - `LightWrapper AddLight()` - Adds a light component (returns wrapper)
+- `ParticleSystemWrapper AddParticleSystem()` - Adds a particle system component (returns wrapper)
 
 **Example:**
 
@@ -2847,9 +3052,19 @@ Sets a property that contains multiple fields (e.g., Vector3 with X,Y,Z or Color
 - `propertyName` (string) - Property name
 - `value` (Dictionary<string, object>) - Multi-value property data
 
-##### `Entity? GetEntityRef(string propertyName)`
+##### Getting Entity References
 
-Gets an entity reference property by name and resolves it to an `Entity` object.
+To read entity reference properties, use `Get<EntityRefData>()`:
+
+```csharp
+// Get an entity reference from a component
+var targetRef = aiComponent.Get<EntityRefData>("Target");
+if (targetRef != null)
+{
+    // The EntityRefData contains the reference string
+    Console.WriteLine($"Target reference: {targetRef}");
+}
+```
 
 ##### `void SetEntityRef(string propertyName, Entity entity)`
 
@@ -2860,10 +3075,21 @@ var player = scene.FindEntityByName("Player");
 aiComponent.SetEntityRef("Target", player);
 ```
 
-##### `AssetReference? GetAssetRef(string propertyName)`
+##### Getting Asset References
 
-Gets an asset reference property by name and resolves it to an `AssetReference` object.
-**Note on Stride "URL-like" Asset References:** In Stride, assets are often referenced internally by a `GUID:Path` string (e.g., `"a1b2c3d4-e5f6-7890-abcd-ef1234567890:Textures/MyTexture"`). This method helps retrieve such references.
+To read asset reference properties, use `Get<AssetRefData>()`:
+
+```csharp
+// Get an asset reference from a component
+var prefabRef = spawner.Get<AssetRefData>("EnemyPrefab");
+if (prefabRef != null)
+{
+    // The AssetRefData contains the GUID:Path reference string
+    Console.WriteLine($"Prefab reference: {prefabRef}");
+}
+```
+
+**Note on Stride "URL-like" Asset References:** In Stride, assets are often referenced internally by a `GUID:Path` string (e.g., `"a1b2c3d4-e5f6-7890-abcd-ef1234567890:Textures/MyTexture"`).
 
 ##### `void SetAssetRef(string propertyName, AssetReference asset)`
 
@@ -3313,18 +3539,18 @@ var scene = project.LoadScene("Level1");
 var enemy = scene.FindEntityByName("Enemy");
 var aiComponent = enemy.GetComponent("AIController");
 
-// Read entity reference
-var targetEntity = aiComponent.GetEntityRef("Target")?.Resolve(scene);
-if (targetEntity != null)
+// Read entity reference using Get<EntityRefData>()
+var targetRef = aiComponent.Get<EntityRefData>("Target");
+if (targetRef != null)
 {
-    Console.WriteLine($"AI is targeting: {targetEntity.Name}");
+    Console.WriteLine($"AI target reference: {targetRef}");
 }
 
-// Read asset reference
-var prefabAsset = aiComponent.GetAssetRef("SpawnPrefab")?.Resolve(project);
-if (prefabAsset != null)
+// Read asset reference using Get<AssetRefData>()
+var prefabRef = aiComponent.Get<AssetRefData>("SpawnPrefab");
+if (prefabRef != null)
 {
-    Console.WriteLine($"Will spawn: {prefabAsset.Name}");
+    Console.WriteLine($"Will spawn prefab: {prefabRef}");
 }
 ```
 
@@ -4678,6 +4904,78 @@ var light = entity.GetLight();
 light.SetColor(1.0f, 0.5f, 0.0f, 1.0f);
 ```
 
+### PrefabData
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.DataTypes`
+
+Represents prefab instance data for entities that are instances of prefabs.
+
+#### Properties
+
+- `string PrefabSourcePath` - The asset path to the source prefab
+- `string PrefabEntityId` - The root entity ID within the prefab
+- `string InstanceId` - Unique identifier for this prefab instance
+
+**Example:**
+
+```csharp
+var entity = scene.FindEntityByName("EnemyInstance");
+if (entity.ParentPrefab != null)
+{
+    Console.WriteLine($"Prefab source: {entity.ParentPrefab.PrefabSourcePath}");
+    Console.WriteLine($"Instance ID: {entity.ParentPrefab.InstanceId}");
+}
+```
+
+### EntityRefData
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.DataTypes`
+
+Represents an entity reference stored in a component property. Used to read entity references from components.
+
+#### Methods
+
+- `static EntityRefData? Parse(string refString)` - Parses an entity reference string
+
+**Example:**
+
+```csharp
+// Read an entity reference from a component
+var targetRef = component.Get<EntityRefData>("TargetEntity");
+if (targetRef != null)
+{
+    Console.WriteLine($"Entity reference: {targetRef}");
+}
+
+// To set an entity reference, use SetEntityRef
+component.SetEntityRef("TargetEntity", someEntity);
+```
+
+### AssetRefData
+
+**Namespace:** `HS.Stride.Editor.Toolkit.Core.DataTypes`
+
+Represents an asset reference stored in a component property. Used to read asset references (prefabs, textures, materials, etc.) from components.
+
+#### Methods
+
+- `static AssetRefData? Parse(string refString)` - Parses an asset reference string (GUID:Path format)
+
+**Example:**
+
+```csharp
+// Read an asset reference from a component
+var prefabRef = component.Get<AssetRefData>("SpawnPrefab");
+if (prefabRef != null)
+{
+    Console.WriteLine($"Asset reference: {prefabRef}");
+}
+
+// To set an asset reference, use SetAssetRef
+var prefab = project.FindAsset("EnemyPrefab", AssetType.Prefab);
+component.SetAssetRef("SpawnPrefab", prefab);
+```
+
 ---
 
 ## Error Handling
@@ -5031,7 +5329,7 @@ foreach (var spawner in spawners)
     }
 
     // Validate if a prefab is assigned to "PrefabToSpawn"
-    if (comp.GetAssetRef("PrefabToSpawn") == null)
+    if (comp.Get<AssetRefData>("PrefabToSpawn") == null)
     {
         errors.Add($"{spawner.Name}: No prefab assigned to 'PrefabToSpawn' property.");
     }

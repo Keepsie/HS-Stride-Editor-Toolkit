@@ -1,984 +1,636 @@
 HS STRIDE EDITOR TOOLKIT - LLM API REFERENCE
 ==============================================
-
-**Library Purpose:** Batch task automation for Stride Game Engine projects. Programmatic editing of scenes, entities, components, prefabs, UI, particle systems, and assets.
-**Version:** 1.8.0
-**API Version:** 1.8.0
-**Target Framework:** .NET 8.0
-**License:** Apache 2.0
-**Package:** HS.Stride.Editor.Toolkit
-
-**GitHub Repository:** https://github.com/Keepsie/HS-Stride-Editor-Toolkit
-**Full Documentation (for humans):** https://github.com/Keepsie/HS-Stride-Editor-Toolkit/blob/main/API.md
-
----
-
-### CRITICAL WORKFLOW NOTES
-
-*   **File-based automation, NOT live editor scripting.**
-*   **Close Stride Editor** before running scripts to avoid file conflicts.
-*   **BACKUP YOUR PROJECT FIRST!** Changes are permanent on `.Save()`.
-*   **Close and reopen Stride GameStudio** to see changes after scripts run.
-*   Only properties visible in Stride's Property Grid (serialized) are accessible.
-*   **Prefab Instance Limitation:** Modifying components on prefab instances (entities with a `Base` section in YAML) may not persist correctly. Break the prefab link in Stride first, or edit the prefab asset directly.
-
-### PROJECT MODES
-
-Control validation behavior for component properties:
-
-*   `ProjectMode.Strict` (Default): Throws exception if setting non-existent properties. Helps catch typos.
-*   `ProjectMode.Loose`: Allows setting any property. Offers flexibility but is less safe.
-
-    ```csharp
-    var project = new StrideProject(@"C:\MyGame"); // Strict mode (default)
-    var project = new StrideProject(@"C:\MyGame", ProjectMode.Loose); // Loose mode
-    ```
-
----
-
-### API REFERENCE
-
-#### `StrideProject` (Core - Namespace: `HS.Stride.Editor.Toolkit.Core`)
-
-**Purpose:** Unified, simplified API for working with Stride projects. Auto-scans all assets on construction.
-
-**Constructor:**
-
-*   `StrideProject(string projectPath, ProjectMode projectMode = ProjectMode.Strict)`: Creates a project instance and scans assets.
-    *   `projectPath` (string): Path to Stride project root.
-    *   `projectMode` (ProjectMode, optional): Validation mode.
-
-**Properties:**
-
-*   `string ProjectPath`: Root directory path.
-*   `string AssetsPath`: Full path to Assets folder.
-*   `ProjectMode Mode`: Current validation mode. Can be changed after construction to switch between Strict and Loose modes.
-    **Example:**
-    ```csharp
-    var project = new StrideProject(@"C:\MyGame");
-    Console.WriteLine($"Current mode: {project.Mode}"); // ProjectMode.Strict
-
-    // Switch to loose mode for dynamic scenarios
-    project.Mode = ProjectMode.Loose;
-
-    // Now setting invalid properties won't throw
-    // Requires your 'component' variable to be available
-    // component.Set("NonExistentProperty", 123); // Works in Loose mode
-    ```
-
-**Scene Loading Methods:**
-
-*   `Scene LoadScene(string sceneNameOrPath)`: Loads a scene by name (e.g., "Level1") or relative path (e.g., "Scenes/Level1").
-*   `Scene CreateScene(string name, string? relativePath = null)`: Creates a new blank scene, saves it to the Assets folder, and returns it ready for editing. Example: `var scene = project.CreateScene("Level1", "Scenes/Chapter1");`
-
-**Asset Loading Methods (return editable asset objects):**
-
-*   `MaterialAsset LoadMaterial(string nameOrPath)`
-*   `TextureAsset LoadTexture(string nameOrPath)`
-*   `AnimationAsset LoadAnimation(string nameOrPath)`
-*   `ColliderShapeAsset LoadColliderShape(string nameOrPath)`
-*   `PrefabAsset LoadPrefab(string nameOrPath)`
-*   `UIPage LoadUIPage(string nameOrPath)`
-*   `SoundAsset LoadSound(string nameOrPath)`
-*   `SkeletonAsset LoadSkeleton(string nameOrPath)`
-*   `SpriteSheetAsset LoadSpriteSheet(string nameOrPath)`
-*   `EffectAsset LoadEffect(string nameOrPath)`
-
-##### Generic Asset Loading (via AssetReference)
-
-Sometimes you may want to load an asset's editable representation after obtaining a generic `AssetReference`. You can use the static `Load()` method available on each specific asset type.
-
-```csharp
-// 1. Find an AssetReference first
-var anyAssetRef = project.FindAsset("MyDynamicAsset");
-
-if (anyAssetRef != null)
-{
-    // 2. Load the specific asset type using its static Load method and the FilePath from the AssetReference
-    switch (anyAssetRef.Type)
-    {
-        case AssetType.Material:
-            var loadedMaterial = MaterialAsset.Load(anyAssetRef.FilePath);
-            // Now you can work with 'loadedMaterial'
-            break;
-        case AssetType.Texture:
-            var loadedTexture = TextureAsset.Load(anyAssetRef.FilePath);
-            // Now you can work with 'loadedTexture'
-            break;
-        case AssetType.Prefab:
-            var loadedPrefab = Prefab.Load(anyAssetRef.FilePath);
-            // Now you can work with 'loadedPrefab'
-            break;
-        // ... handle other AssetType cases
-        default:
-            Console.WriteLine($"Asset {anyAssetRef.Name} is of type {anyAssetRef.Type} and cannot be directly loaded this way.");
-            break;
-    }
-}
-```
-
-**Asset Finding Methods (return `AssetReference`):**
-
-*   `AssetReference? FindAsset(string name, AssetType? type = null)`: Finds asset by exact name.
-*   `List<AssetReference> FindAssets(string pattern, AssetType? type = null)`: Finds assets by wildcard pattern.
-*   `AssetReference? FindAssetByPath(string path)`: Finds asset by relative path.
-*   `AssetReference? FindAssetByGuid(string guid)`: Finds asset by unique ID.
-
-**Get All Assets Methods:**
-
-*   `List<AssetReference> GetScenes()`
-*   `List<AssetReference> GetPrefabs()`
-*   `List<AssetReference> GetModels()`
-*   ... (and similar for all `AssetType`s)
-*   `List<AssetReference> GetAllAssets()`
-
-**Utility Methods:**
-
-*   `void Rescan()`: Rescans the project for assets.
-
-*   `string? GetRawAssetSource(AssetReference rawAssetReference)`: Gets the source file path for a RawAsset (.sdraw file points to actual content file in Resources/, representing external data).
-
-    **Note on RawAssets ("URL-like" references):**
-    `RawAsset`s are designed to give you a way to reference arbitrary external data files (like JSON, XML, TXT, CSV) that are managed by your Stride project. The toolkit does not directly load assets from arbitrary web URLs over HTTP. Instead, `RawAsset` is used for files that reside within your project's file system or local resources, offering a mechanism to retrieve their actual content path.
-
-    **Parameters:**
-
-    - `rawAssetReference` (AssetReference) - The RawAsset reference
-
-    **Returns:**
-
-    Full path to the source file (JSON/TXT/XML/CSV), or `null` in the following cases:
-
-    - The .sdraw file doesn't exist
-    - The .sdraw file has no `Source:` property
-    - The source path cannot be resolved
-    - The resolved source file doesn't exist
-
-    **Throws:**
-
-    - `ArgumentNullException` - If rawAssetReference is null
-    - `ArgumentException` - If asset is not of type RawAsset
-
-    **Fallback Behavior:**
-
-    If the relative path from the .sdraw file fails, the method automatically searches common Resources folders by filename.
-
-    **Example:**
-
-    ```csharp
-    var project = new StrideProject(@"C:\MyGame");
-
-    // Find a RawAsset (e.g., from a database system)
-    var dialogDB = project.FindAsset("merchant_dialog", AssetType.RawAsset);
-
-    // Get the actual JSON file path
-    var jsonPath = project.GetRawAssetSource(dialogDB);
-
-    if (jsonPath != null)
-    {
-        // Read and parse the actual content
-        var jsonContent = File.ReadAllText(jsonPath);
-
-        // Using Newtonsoft.Json or System.Text.Json
-        var dialogData = JsonConvert.DeserializeObject<DialogTree>(jsonContent);
-
-        Console.WriteLine($"Dialog: {dialogData.Name}");
-        Console.WriteLine($"Lines: {dialogData.Lines.Count}");
-    }
-    ```
-
-    **Use Case - Mass Import Systems:**
-
-    Perfect for working with external data management tools that create RawAsset databases:
-
-    ```csharp
-    // After using a data manager tool to import hundreds of files
-    var project = new StrideProject(@"C:\MyGame");
-    var allDialogs = project.FindAssets("*", AssetType.RawAsset)
-        .Where(a => a.Path.Contains("DialogSystem_db"));
-
-    foreach (var dialogAsset in allDialogs)
-    {
-        // Get the actual content file
-        var sourcePath = project.GetRawAssetSource(dialogAsset);
-        if (sourcePath != null)
-        {
-            var json = File.ReadAllText(sourcePath);
-            var dialog = JsonConvert.DeserializeObject<DialogData>(json);
-
-            // Process or validate content
-            Console.WriteLine($"Loaded: {dialog.CharacterName} - {dialog.LineCount} lines");
-        }
-    }
-    ```
-
-*   `string? GetAssetSource(AssetReference assetReference)`: Gets the source file path for any asset that has a Source property. Works with Textures (.sdtex), SpriteSheets (.sdsheet), SpriteFonts (.sdfnt), Animations (.sdanim), RawAssets (.sdraw), and other assets with Source properties.
-
-    **Parameters:**
-
-    - `assetReference` (AssetReference) - The asset reference
-
-    **Returns:**
-
-    Full absolute path to the source file, or `null` if:
-
-    - The asset file doesn't exist
-    - The asset has no `Source:` property
-    - The source path cannot be resolved
-    - The resolved source file doesn't exist
-
-    **Throws:**
-
-    - `ArgumentNullException` - If assetReference is null
-
-    **Fallback Behavior:**
-
-    If the relative path from the asset file fails, the method automatically searches common Resources folders by filename.
-
-    **Special Handling:**
-
-    - For SpriteFonts (.sdfnt), extracts the font file path from the nested `FontSource` section
-    - For other assets, looks for a top-level `Source:` property
-
-    **Example:**
-
-    ```csharp
-    var project = new StrideProject(@"C:\MyGame");
-
-    // Get source for a texture
-    var texture = project.FindAsset("PlayerSkin", AssetType.Texture);
-    var texturePath = project.GetAssetSource(texture);
-    // Returns: "C:\MyGame\Assets\Textures\player_skin.png"
-
-    // Get source for a sprite font (extracts .ttf/.otf path)
-    var font = project.FindAsset("GameFont", AssetType.SpriteFont);
-    var fontPath = project.GetAssetSource(font);
-    // Returns: "C:\MyGame\Resources\Fonts\Saira-Bold.ttf"
-
-    // Get source for an animation
-    var anim = project.FindAsset("WalkCycle", AssetType.Animation);
-    var animPath = project.GetAssetSource(anim);
-    // Returns: "C:\MyGame\Assets\Animations\character_walk.fbx"
-    ```
-
----
-
-#### `Scene` (Namespace: `HS.Stride.Editor.Toolkit.Core.SceneEditing`)
-
-**Purpose:** Load, query, and modify Stride scene (`.sdscene`) files.
-
-**Static Methods:**
-
-*   `static Scene Load(string filePath)`: Loads a scene from disk.
-
-**Properties:**
-
-*   `string Id`: Unique GUID.
-*   `string FilePath`: Absolute file path.
-*   `List<Entity> AllEntities`: All entities in the scene (including nested children).
-
-**Find Methods:**
-
-*   `Entity? FindEntityById(string id)`
-*   `Entity? FindEntityByName(string name)`
-*   `List<Entity> FindEntitiesByName(string pattern)` (wildcard)
-*   `List<Entity> FindEntitiesWithComponent(string componentType)`
-*   `List<Entity> FindEntities(Func<Entity, bool> predicate)`
-
-**Entity Manipulation:**
-
-*   `Entity CreateEntity(string name, string? folder = null)`: Creates top-level entity, optionally in editor folder.
-*   `Entity CreateEntity(string name, string parent, ParentType parentType)`: Creates entity with specified parent (folder or entity hierarchy).
-*   `Entity InstantiatePrefab(AssetReference prefab, Vector3Data? position = null, string? folder = null)`: Instantiates a prefab.
-*   `void RemoveEntity(Entity entity)`
-*   `void RemoveEntity(string entityId)`
-
-**Save Methods:**
-
-*   `void Save()`: Saves to original file.
-*   `void SaveAs(string filePath)`: Saves to new file.
-*   `void Reload()`: Reloads from disk, discarding unsaved changes.
-
----
-
-#### `Entity` (Namespace: `HS.Stride.Editor.Toolkit.Core`)
-
-**Purpose:** Represents a game object in a scene or prefab.
-
-**Properties:**
-
-*   `string Id`: Entity's unique GUID.
-*   `string Name`: Entity's display name.
-*   `string? Folder`: Folder path (e.g., "Enemies/Bosses").
-*   `Dictionary<string, Component> Components`: All loaded components.
-
-**Methods:**
-
-*   `bool HasComponent(string componentType)`: Checks if component exists.
-*   `Component? GetComponent(string componentType)`: Gets component by type (lazy load).
-
-**Typed Wrapper Methods (built-in components):**
-
-*   `TransformWrapper? GetTransform()`
-*   `ModelWrapper? GetModel()`
-*   `StaticColliderWrapper? GetStaticCollider()`
-*   `RigidbodyWrapper? GetRigidbody()`
-*   `LightWrapper? GetLight()`
-
-**Component Adding Methods:**
-
-*   `Component AddComponent(string componentType)`: Adds any component (generic).
-*   `StaticColliderWrapper AddStaticCollider()`
-*   `RigidbodyWrapper AddRigidbody(float mass = 1.0f, bool isKinematic = false)`
-*   `ModelWrapper AddModel()`
-*   `LightWrapper AddLight()`
-
-*   `void RemoveComponent(string componentType)`: Removes component.
-*   `Component CloneComponent(Component sourceComponent)`: Clones a component from another entity, copying all properties with new GUIDs.
-
-**Hierarchy Navigation:**
-
-*   `List<Entity> GetChildren()`: Direct children via Transform.Children property.
-*   `Entity? FindChildByName(string childName)`
-*   `List<Entity> FindChildrenByName(string pattern)`
-*   `Entity? GetParent()`
-*   `List<Entity> GetDescendants()` (recursive)
-*   `bool HasChildren()`
-
----
-
-#### `Component` (Namespace: `HS.Stride.Editor.Toolkit.Core`)
-
-**Purpose:** Represents a component with its type, ID, and property data.
-
-**Properties:**
-
-*   `string Type`: Component type name.
-*   `string Id`: Unique GUID.
-*   `Dictionary<string, object> Properties`: Property data.
-
-**Methods:**
-
-*   `T? Get<T>(string propertyName)`: Gets property value with type conversion (dot notation for nested).
-*   `void Set(string propertyName, object value)`: Sets property value (dot notation, creates nested as needed).
-    *   **NOTE:** Only properties serialized by Stride will persist. `ProjectMode.Strict` validates existence.
-*   `Dictionary<string, object>? GetMultiValueProperty(string propertyName)`: Gets properties like Vector3, Color (X,Y,Z / R,G,B,A).
-*   `void SetMultiValueProperty(string propertyName, Dictionary<string, object> value)`
-*   `EntityRefData? GetEntityRef(string propertyName)`: Gets entity reference.
-*   `void SetEntityRef(string propertyName, Entity entity)`: Sets entity reference (`ref!! guid` format).
-*   `AssetRefData? GetAssetRef(string propertyName)`: Gets asset reference.
-*   `void SetAssetRef(string propertyName, AssetReference asset)`: Sets asset reference (`guid:path` format).
-*   `void AddToList(string propertyName, object value)`: Adds item to List/array property (auto-handled GUID keys).
-*   `void SetDictionary(string propertyName, object key, object value)`: Sets key-value in Dictionary property.
-*   `void SetList(string propertyName, IEnumerable<object> values)`: Replaces entire content of List/array property.
-
-**Example: Custom Component Property Access**
-
-```csharp
+Version: 1.8.1 | .NET 8.0 | Package: HS.Stride.Editor.Toolkit
+
+CRITICAL: File-based batch automation, NOT live editor scripting.
+- Close Stride Editor before running scripts
+- BACKUP your project - changes permanent on .Save()
+- Reopen GameStudio to see changes
+- Only serialized properties (visible in Property Grid) are accessible
+- Prefab instances: Break link or edit prefab asset directly
+
+================================================================================
+STRIDEPROJECT (Entry Point)
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core
+
+Constructor:
+  StrideProject(string projectPath, ProjectMode mode = ProjectMode.Strict)
+  - Strict: Validates properties exist in C# scripts (catches typos)
+  - Loose: Allows any property (no validation)
+
+Properties:
+  string ProjectPath, string AssetsPath, ProjectMode Mode
+
+Scene Methods:
+  Scene LoadScene(string nameOrPath)
+  Scene CreateScene(string name, string? relativePath = null)
+
+Asset Loading (return editable asset objects):
+  MaterialAsset LoadMaterial(string nameOrPath)
+  TextureAsset LoadTexture(string nameOrPath)
+  AnimationAsset LoadAnimation(string nameOrPath)
+  ColliderShapeAsset LoadColliderShape(string nameOrPath)
+  PrefabAsset LoadPrefab(string nameOrPath)
+  UIPage LoadUIPage(string nameOrPath)
+  SoundAsset LoadSound(string nameOrPath)
+  SkeletonAsset LoadSkeleton(string nameOrPath)
+  SpriteSheetAsset LoadSpriteSheet(string nameOrPath)
+  EffectAsset LoadEffect(string nameOrPath)
+
+Asset Finding (return AssetReference):
+  AssetReference? FindAsset(string name, AssetType? type = null)
+  List<AssetReference> FindAssets(string pattern, AssetType? type = null)
+  AssetReference? FindAssetByPath(string relativePath)
+  AssetReference? FindAssetByGuid(string guid)
+
+Get All Assets:
+  List<AssetReference> GetScenes/GetPrefabs/GetModels/GetMaterials/GetTextures()
+  List<AssetReference> GetAnimations/GetSkeletons/GetSounds/GetUIPages()
+  List<AssetReference> GetSpriteSheets/GetEffects/GetScripts/GetAllAssets()
+
+Utility:
+  void Rescan()
+  string? GetRawAssetSource(AssetReference rawAsset)
+  string? GetAssetSource(AssetReference asset)
+  ColliderShapeAsset CreateColliderShape(string modelRef, string name, string? relativePath = null)
+  Prefab CreatePrefab(string name, string? relativePath = null)
+  UIPage CreateUIPage(string name, string? relativePath = null)
+
+================================================================================
+SCENE
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core.SceneEditing
+
+Static: Scene Load(string filePath)
+Properties: string Id, string FilePath, List<Entity> AllEntities
+
+Find Methods:
+  Entity? FindEntityById(string id)
+  Entity? FindEntityByName(string name)
+  List<Entity> FindEntitiesByName(string pattern)  // wildcards: * ?
+  List<Entity> FindEntitiesWithComponent(string componentType)
+  List<Entity> FindEntities(Func<Entity, bool> predicate)
+
+Entity Manipulation:
+  Entity CreateEntity(string name, string? folder = null)
+  Entity CreateEntity(string name, string parent, ParentType parentType)
+  Entity InstantiatePrefab(AssetReference prefab, Vector3Data? pos = null, string? folder = null)
+  void RemoveEntity(Entity entity)
+  void RemoveEntity(string entityId)
+
+Persistence:
+  void Save()
+  void SaveAs(string filePath)
+  void Reload()
+
+================================================================================
+ENTITY
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core
+
+Properties:
+  string Id, string Name, string? Folder
+  Dictionary<string,Component> Components
+  PrefabData? ParentPrefab  // null if not a prefab instance
+
+Component Access:
+  bool HasComponent(string componentType)
+  Component? GetComponent(string componentType)
+  void RemoveComponent(string componentType)
+  Component CloneComponent(Component source)
+
+Adding Components:
+  Component AddComponent(string componentType)
+  StaticColliderWrapper AddStaticCollider()
+  RigidbodyWrapper AddRigidbody(float mass = 1.0f, bool isKinematic = false)
+  ModelWrapper AddModel()
+  LightWrapper AddLight()
+  ParticleSystemWrapper AddParticleSystem()
+
+Typed Wrappers:
+  TransformWrapper? GetTransform()
+  ModelWrapper? GetModel()
+  StaticColliderWrapper? GetStaticCollider()
+  RigidbodyWrapper? GetRigidbody()
+  LightWrapper? GetLight()
+  ParticleSystemWrapper? GetParticleSystem()
+  void RemoveParticleSystem()
+
+Hierarchy:
+  List<Entity> GetChildren()
+  Entity? FindChildByName(string name)
+  List<Entity> FindChildrenByName(string pattern)
+  Entity? GetParent()
+  List<Entity> GetDescendants()
+  bool HasChildren()
+
+================================================================================
+COMPONENT
+================================================================================
+Properties:
+  string Key  // internal dictionary key
+  string Type, string Id
+  Dictionary<string,object> Properties
+
+Get/Set:
+  T? Get<T>(string propertyName)  // dot notation for nested: "Stats.Health"
+  void Set(string propertyName, object value)
+  Dictionary<string,object>? GetMultiValueProperty(string name)  // Vector3, Color
+  void SetMultiValueProperty(string name, Dictionary<string,object> value)
+
+References (use Get<T> with data types):
+  var entityRef = component.Get<EntityRefData>("TargetEntity");  // returns EntityRefData?
+  var assetRef = component.Get<AssetRefData>("MaterialRef");     // returns AssetRefData?
+  void SetEntityRef(string propertyName, Entity entity)
+  void SetAssetRef(string propertyName, AssetReference asset)
+
+Collections:
+  void AddToList(string propertyName, object value)
+  void SetList(string propertyName, IEnumerable<object> values)
+  void SetDictionary(string propertyName, object key, object value)
+
+================================================================================
+TYPED WRAPPERS (Namespace: HS.Stride.Editor.Toolkit.Core.Wrappers)
+================================================================================
+
+TransformWrapper:
+  Component Component  // underlying component
+  Vector3Data GetPosition() | void SetPosition(float x, y, z)
+  QuaternionData GetRotation() | void SetRotation(float x, y, z, w)
+  Vector3Data GetScale() | void SetScale(float x, y, z) | void SetUniformScale(float s)
+  Dictionary<string,object> GetChildren()  // raw children dictionary
+  void AddChild(string entityId) | void RemoveChild(string entityId) | bool HasChild(string id)
+
+ModelWrapper:
+  Component Component
+  bool Enabled
+  string Model  // raw model reference string
+  Dictionary<string,object> Materials  // raw materials dictionary
+  void SetModel(AssetReference modelAsset)
+  void SetModel(string guid, string path)
+  void SetMaterial(int slotIndex, AssetReference material)
+
+StaticColliderWrapper / RigidbodyWrapper (inherit ColliderWrapperBase):
+  Component Component
+  Dictionary<string,object> ColliderShapes  // raw shapes dictionary
+  float Friction, float Restitution, float RollingFriction
+  bool IsTrigger, bool CanSleep
+  void AddBoxShape(float sizeX=1, sizeY=1, sizeZ=1, bool is2D=false, float offsetX=0, offsetY=0, offsetZ=0)
+  void AddSphereShape(float radius=0.5, bool is2D=false, float offsetX=0, offsetY=0, offsetZ=0)
+  void AddCapsuleShape(float length=1, float radius=0.5, string orientation="UpY", float offsetX=0, offsetY=0, offsetZ=0)
+  void AddCylinderShape(float height=1, float radius=0.5, string orientation="UpY", float offsetX=0, offsetY=0, offsetZ=0)
+  void AddConeShape(float height=1, float radius=0.5, string orientation="UpY", float offsetX=0, offsetY=0, offsetZ=0)
+  void AddMeshShape(AssetReference modelAsset)
+  void AddConvexHullShape(AssetReference colliderShapeAsset)  // requires .sdphy file
+  void AddPlaneShape(float normalX=0, normalY=1, normalZ=0, float offset=0)
+  void AddColliderShapeAsset(AssetReference colliderShapeAsset)
+  void AddColliderShapeAsset(string assetGuid, string assetPath)
+
+RigidbodyWrapper additional:
+  float Mass, bool IsKinematic, float LinearDamping, float AngularDamping, bool OverrideGravity
+  Vector3Data GetGravity()
+  void SetGravity(float x, y, z)
+
+LightWrapper:
+  Component Component
+  float Intensity
+  Dictionary<string,object> Type  // light type configuration
+  ColorData GetColor()
+  void SetColor(float r, g, b, a=1.0)
+
+================================================================================
+PREFAB
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core.PrefabEditing
+
+Static: Prefab Load(string filePath) | Prefab Create(string name, string? filePath = null)
+Properties: string Id, string FilePath, List<Entity> AllEntities
+
+Methods:
+  Entity? GetRootEntity()
+  Entity CreateEntity(string name, string? folder = null)
+  Entity CreateEntity(string name, string parent, ParentType parentType)
+  void RemoveEntity(Entity entity)
+  void Save() | void SaveAs(string filePath)
+  // Same Find methods as Scene
+
+================================================================================
+UIPAGE
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core.UIPageEditing
+
+Static: UIPage Load(string filePath) | UIPage Create(string name, string? filePath = null)
+Properties:
+  string Id, string FilePath
+  List<UIElement> AllElements, List<UIElement> RootElements
+  Dictionary<string,float> Resolution  // raw resolution dictionary
+
+Resolution:
+  (float X, Y, Z)? GetDesignResolution()
+  void SetDesignResolution(float x, y, z)
+
+Generic Property Access:
+  object? Get(string propertyName)
+  void Set(string propertyName, object value)
+  Dictionary<string,object> GetAllProperties()
+
+Element Creation:
+  UIElement CreateElement(string type, string name, UIElement? parent = null, bool autoAttach = true)
+  UIElement CreateTextBlock(string name, string text, UIElement? parent, float? fontSize = null)
+  UIElement CreateButton(string name, string text, UIElement? parent, float? width = null, float? height = null)
+  UIElement CreateImage(string name, AssetReference? spriteSheet, int? frame, UIElement? parent, float? w = null, float? h = null, bool stretchFill = false)
+  UIElement CreateImageFromTexture(string name, AssetReference texture, UIElement? parent, float? w = null, float? h = null)
+  UIElement CreateCanvas(string name, UIElement? parent, float? w = null, float? h = null)
+  UIElement CreateGrid(string name, UIElement? parent)
+  UIElement CreateStackPanel(string name, UIElement? parent)
+  UIElement CreateScrollViewer(string name, UIElement? content, UIElement? parent)
+  UIElement CreateEditText(string name, string placeholder, UIElement? parent, float? w = null, float? h = null)
+  UIElement CreateSlider(string name, float min, float max, float value, UIElement? parent, float? w = null)
+  UIElement CreateToggleButton(string name, string text, bool isChecked, UIElement? parent, float? w = null, float? h = null)
+  UIElement CreateScrollBar(string name, bool isVertical, UIElement? parent, float? w = null, float? h = null)
+  UIElement CreateBorder(string name, UIElement? parent, float? w = null, float? h = null)
+  UIElement CreateUniformGrid(string name, UIElement? parent)
+  UIElement CreateScrollingText(string name, string text, UIElement? parent, float? fontSize = null)
+  UIElement CreateModalElement(string name, UIElement? parent)
+  void RemoveElement(UIElement element)
+
+Element Types: TextBlock, Button, ToggleButton, ImageElement, Canvas, Grid, StackPanel,
+  UniformGrid, ScrollViewer, ScrollBar, ScrollingText, EditText, Slider, Border,
+  ContentDecorator, ModalElement
+
+Finding:
+  UIElement? FindElementById(string id)
+  UIElement? FindElementByName(string name)
+  IEnumerable<UIElement> FindElementsByName(string pattern)
+  IEnumerable<UIElement> FindElementsByType(string type)
+  IEnumerable<UIElement> FindElements(Func<UIElement,bool> predicate)
+
+Persistence: void Save() | void SaveAs(string filePath)
+
+================================================================================
+UIELEMENT
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core.UIPageEditing
+
+Properties:
+  string Id, string Name, string Type
+  UIElement? Parent
+  Dictionary<string,object> Properties
+  List<UIElement> Children
+
+Methods:
+  object? Get(string key)
+  void Set(string key, object value)
+  bool HasProperty(string key)
+  void AddChild(UIElement child)
+  void RemoveChild(UIElement child)
+  UIElement? FindChildByName(string name)
+  List<UIElement> GetDescendants()
+
+================================================================================
+UIELEMENT EXTENSIONS (All Methods)
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core.UIPageEditing
+
+--- LAYOUT ---
+SetSize(float w, h) | SetWidth(float) | SetHeight(float)
+GetSize() -> (float Width, Height) | GetWidth() -> float | GetHeight() -> float
+SetMargin(float l, t, r, b) | GetMargin() -> (float Left, Top, Right, Bottom)
+SetPadding(float l, t, r, b) | GetPadding() -> (float Left, Top, Right, Bottom)
+SetPosition(float x, y) | GetPosition() -> (float X, Y)
+SetAlignment(string horizontal, string vertical)  // "Left","Center","Right","Stretch"
+GetHorizontalAlignment() -> string | GetVerticalAlignment() -> string
+GetAlignment() -> (string Horizontal, string Vertical)
+SetStretchFill() | SetImageStretchFill()
+GetParentDimensions() -> (float Width, Height)
+SetVisibility(bool visible) | IsVisible() -> bool
+SetCanBeHitByUser(bool) | GetCanBeHitByUser() -> bool
+SetClipToBounds(bool) | GetClipToBounds() -> bool
+SetDrawLayerNumber(int) | GetDrawLayerNumber() -> int
+
+--- APPEARANCE ---
+SetBackgroundColor(float r, g, b, a) | GetBackgroundColor() -> (float R, G, B, A)?
+SetTextColor(float r, g, b, a) | GetTextColor() -> (float R, G, B, A)?
+SetColor(float r, g, b, a) | GetColor() -> (float R, G, B, A)?
+SetOpacity(float) | GetOpacity() -> float
+
+--- TEXT ---
+SetText(string text) | GetText() -> string?
+SetFont(AssetReference font) | GetFont() -> AssetReference?
+SetFontSize(float size) | GetFontSize() -> float?
+SetWrapText(bool) | GetWrapText() -> bool
+SetTextAlignment(string alignment)  // "Left","Center","Right"
+SetOutlineColor(float r, g, b, a)
+SetOutlineThickness(int)
+
+--- SPRITES/TEXTURES ---
+SetSprite(AssetReference sheet, int frame)
+SetTexture(AssetReference texture)
+SetPressedImage(AssetReference sheet, int frame)
+SetNotPressedImage(AssetReference sheet, int frame)
+SetMouseOverImage(AssetReference sheet, int frame)
+SetPressedTexture(AssetReference texture)
+SetNotPressedTexture(AssetReference texture)
+SetMouseOverTexture(AssetReference texture)
+SetButtonImages(AssetReference sheet, int pressedFrame, int notPressedFrame, int? mouseOverFrame = null)
+SetButtonTextures(AssetReference pressedTex, AssetReference notPressedTex, AssetReference? mouseOverTex = null)
+
+--- SPRITE DETECTION ---
+bool IsSpriteFromSheet(string propertyName)
+bool IsSpriteFromTexture(string propertyName)
+(AssetReference? Sheet, int Frame) GetSpriteSheet(string propertyName)
+AssetReference? GetTextureSource(string propertyName)
+bool IsButtonUsingSpriteSheet()
+bool IsButtonUsingTexture()
+bool IsImageUsingSpriteSheet()
+bool IsImageUsingTexture()
+
+--- BEHAVIOR ---
+SetIsEnabled(bool) | GetIsEnabled() -> bool
+SetClickMode(string mode) | GetClickMode() -> string  // "Press" or "Release"
+SetOrientation(string) | GetOrientation() -> string   // "Horizontal" or "Vertical"
+
+--- ZINDEX ---
+SetZIndex(int) | GetZIndex() -> int  // higher = on top
+
+--- CONTENT (Button, ToggleButton, ScrollViewer, ContentDecorator) ---
+SetContent(UIElement content) | GetContent() -> UIElement?
+
+--- BORDER ---
+SetBorderColor(float r, g, b, a)
+SetBorderThickness(float l, t, r, b)
+SetBorderThicknessUniform(float thickness)
+
+--- SLIDER ---
+SetMinimum(float) | GetSliderMinimum() -> float
+SetMaximum(float) | GetSliderMaximum() -> float
+SetValue(float) | GetSliderValue() -> float
+SetStep(float) | GetSliderStep() -> float
+SetRange(float min, float max)
+GetSliderRange() -> (float Min, float Max)
+SetTickFrequency(float) | GetTickFrequency() -> float
+SetSnapToTicks(bool) | GetSnapToTicks() -> bool
+SetAreTicksDisplayed(bool) | GetAreTicksDisplayed() -> bool
+SetTrackBackgroundImage(AssetReference sheet, int frame)
+SetTrackForegroundImage(AssetReference sheet, int frame)
+SetThumbImage(AssetReference sheet, int frame)
+SetMouseOverThumbImage(AssetReference sheet, int frame)
+SetTrackBackgroundTexture(AssetReference texture)
+SetTrackForegroundTexture(AssetReference texture)
+SetThumbTexture(AssetReference texture)
+SetMouseOverThumbTexture(AssetReference texture)
+
+--- EDITTEXT ---
+SetActiveImage(AssetReference sheet, int frame)
+SetInactiveImage(AssetReference sheet, int frame)
+SetActiveTexture(AssetReference texture)
+SetInactiveTexture(AssetReference texture)
+SetMaxLength(int) | GetMaxLength() -> int
+SetIsReadOnly(bool) | GetIsReadOnly() -> bool
+SetMinLines(int) | GetMinLines() -> int
+SetMaxLines(int) | GetMaxLines() -> int
+SetCaretColor(float r, g, b, a)
+SetSelectionColor(float r, g, b, a)
+SetCaretFrequency(float)
+
+--- TOGGLEBUTTON ---
+SetIsChecked(bool) | IsChecked() -> bool
+SetIsThreeState(bool) | GetIsThreeState() -> bool
+SetCheckedImage(AssetReference sheet, int frame)
+SetUncheckedImage(AssetReference sheet, int frame)
+SetIndeterminateImage(AssetReference sheet, int frame)
+SetCheckedTexture(AssetReference texture)
+SetUncheckedTexture(AssetReference texture)
+SetIndeterminateTexture(AssetReference texture)
+SetToggleButtonImages(AssetReference sheet, int checkedFrame, int uncheckedFrame, int? indeterminateFrame = null)
+SetToggleButtonTextures(AssetReference checkedTex, AssetReference uncheckedTex, AssetReference? indeterminateTex = null)
+
+--- SCROLLVIEWER ---
+SetScrollContent(UIElement content)
+SetScrollMode(string mode)  // "None", "Horizontal", "Vertical", "Both"
+SetScrollBarColor(float r, g, b, a)
+SetScrollBarThickness(float)
+SetDeceleration(float)
+SetTouchScrollingEnabled(bool)
+SetSnapToAnchors(bool)
+
+--- SCROLLINGTEXT ---
+SetScrollingSpeed(float)
+SetDesiredCharacterNumber(int)
+SetRepeatText(bool)
+
+--- CONTENTDECORATOR ---
+SetBackgroundImage(AssetReference sheet, int frame)
+SetBackgroundTexture(AssetReference texture)
+
+--- MODALELEMENT ---
+SetOverlayColor(float r, g, b, a)
+SetIsModal(bool)
+
+--- IMAGEELEMENT ---
+SetStretchType(string type)       // "None", "Fill", "Uniform", "UniformToFill"
+SetStretchDirection(string dir)   // "UpOnly", "DownOnly", "Both"
+
+================================================================================
+PARTICLE SYSTEM
+================================================================================
+entity.AddParticleSystem() -> ParticleSystemWrapper
+
+ParticleSystemWrapper:
+  Component Component
+  string Control  // "Play", "Pause", "Stop"
+  float ResetSeconds, float Speed
+  Dictionary<string,object> Color  // raw color dictionary
+  void SetColor(float r, g, b, a=1.0)
+  void AddEmitter(VFXEmitter emitter)
+  List<VFXEmitter> GetEmitters()
+  bool RemoveEmitter(string emitterKey)
+
+  // Emitter Creation (extension methods)
+  VFXEmitter CreateBillboardEmitter(string? name, (float min, max)? lifetime)
+  VFXEmitter CreateOrientedQuadEmitter(string? name, (float min, max)? lifetime, bool scaleLength=true, float lengthFactor=1.0)
+  VFXEmitter CreateRibbonEmitter(string? name, (float min, max)? lifetime, int segments=15, VFXSmoothingPolicy policy=Best, int maxParticles=50)
+
+VFXEmitter:
+  string? EmitterName, (float min, max) ParticleLifetime
+  int? MaxParticlesOverride, int? DrawPriority
+  string? SimulationSpace  // "World" or "Local"
+  string? SortingPolicy  // "ByOrder", "ByDepth"
+  T? Get<T>(string key)  // supports dot notation
+  void Set(string key, object? value)
+
+  // Shape
+  void SetShapeBuilder(VFXShapeType shapeType, Dictionary<string,object>? shapeData = null)
+
+  // Material
+  void SetMaterial(Dictionary<string,object> materialData)  // raw material
+  SetTextureMaterial(AssetReference tex, float hdrMultiplier=1.0, float alphaAdditive=0.0)
+  SetTextureMaterial(AssetReference tex, float hdrR, hdrG, hdrB, float alphaAdditive=0.0)
+  SetFlipbookAnimation(int xDivisions, yDivisions, startFrame, animationSpeed)
+
+  // Spawning
+  void AddSpawner(string spawnerType, Dictionary<string,object> spawnerData)  // raw
+  SetBurstSpawner(int count, bool oneShot=true, (float min, max)? delay=null)
+  SetPerSecondSpawner(float perSec, bool looping=true, (float min, max)? delay=null, (float min, max)? duration=null)
+  SetPerFrameSpawner(float perFrame, float framerate=60.0, bool looping=true)
+
+  // Initializers
+  void AddInitializer(string initializerType, Dictionary<string,object> initializerData)  // raw
+  AddInitialSize((float min, max) sizeRange, float scaleUniform=1.0, int seedOffset=0)
+  AddInitialPosition((float x,y,z) min, (float x,y,z) max, int seedOffset=0)
+  AddInitialVelocity((float x,y,z) min, (float x,y,z) max, int seedOffset=0)
+  AddInitialRotation((float min, max) angleRange, int seedOffset=0)
+  AddInitialColor((float r,g,b,a) colorMin, (float r,g,b,a) colorMax, int seedOffset=0)
+  AddSpawnOrder()  // required for ribbons
+
+  // Updaters
+  void AddUpdater(string updaterType, Dictionary<string,object> updaterData)  // raw
+  AddColorFade(params (float time, float r, g, b, a)[] keyframes)  // time 0.0-1.0
+  AddSizeOverTime(params (float time, float size)[] keyframes)
+  AddForceField(VFXFieldShape shape=Sphere, (float x,y,z)? scale=null, float forceDirected=0, forceVortex=0, forceRepulsive=0, energyConservation=0.2)
+
+Enums:
+  VFXShapeType: Billboard, OrientedQuad, Ribbon
+  VFXFieldShape: Sphere, Cylinder, Cube, Torus, Box, HollowSphere
+  VFXSmoothingPolicy: None, Fast, Best
+
+================================================================================
+DIRECT ASSET EDITING
+================================================================================
+All implement IStrideAsset: string Id, string FilePath, void Save(), void SaveAs(string path)
+All have: object? Get(string prop), void Set(string prop, object val), Dictionary<string,object> GetAllProperties()
+
+MaterialAsset:
+  string? GetDiffuseTexture() | void SetDiffuseTexture(string textureReference)
+  (float X, Y)? GetUVScale() | void SetUVScale(float x, y)
+
+TextureAsset:
+  bool IsStreamable, bool? PremultiplyAlpha
+  string? GetSource() | void SetSource(string sourcePath)
+
+AnimationAsset:
+  string? RepeatMode  // "LoopInfinite", "PlayOnce"
+  bool RootMotion
+  string? GetSource() | void SetSource(string sourcePath)
+  string? GetSkeletonReference() | void SetSkeletonReference(string skelRef)
+  string? GetPreviewModel() | void SetPreviewModel(string modelRef)
+
+ColliderShapeAsset:
+  AssetReference GetReference()  // after saving
+
+SoundAsset, SkeletonAsset, SpriteSheetAsset, EffectAsset: Use generic Get/Set
+
+================================================================================
+DATA TYPES
+================================================================================
+Namespace: HS.Stride.Editor.Toolkit.Core.DataTypes
+
+Vector3Data(float X, Y, Z)
+  Static: Zero, One
+  ToMultiValueProperty() -> Dictionary<string,object>
+  static FromMultiValueProperty(Dictionary<string,object>?) -> Vector3Data
+
+QuaternionData(float X, Y, Z, W)
+  Static: Identity
+  ToMultiValueProperty(), static FromMultiValueProperty()
+
+ColorData(float R, G, B, A)
+  Static: White, Black
+  ToMultiValueProperty(), static FromMultiValueProperty()
+
+PrefabData:
+  string PrefabSourcePath  // source prefab asset path
+  string PrefabEntityId    // root entity ID in prefab
+  string InstanceId        // unique instance ID
+
+EntityRefData:
+  static Parse(string refString) -> EntityRefData?
+  // Used with component.Get<EntityRefData>("PropertyName")
+
+AssetRefData:
+  static Parse(string refString) -> AssetRefData?
+  // Used with component.Get<AssetRefData>("PropertyName")
+
+AssetReference:
+  string Id, Name, Path, FilePath
+  AssetType Type
+  string Reference  // "guid:path" format
+
+AssetType: Unknown, Prefab, Model, Material, Texture, Scene, Sound, Animation,
+  Skeleton, SpriteSheet, Sprite, Effect, UIPage, UILibrary, SpriteFont, Skybox,
+  Video, RenderTexture, GameSettings, GraphicsCompositor, Archetype,
+  ColliderShape, ConvexHull, RawAsset, Script
+
+ParentType: Folder (editor organization only), Entity (transform hierarchy)
+ProjectMode: Strict, Loose
+
+================================================================================
+ERROR HANDLING
+================================================================================
+Exceptions:
+  ArgumentNullException - null/whitespace parameters
+  FileNotFoundException - loading non-existent files
+  ArgumentException - invalid arguments (e.g., not a Stride project)
+  InvalidOperationException - Strict mode property validation failure
+
+Null-safe: FindEntity*, GetComponent, FindAsset, Get<T> return null/default if not found
+Pattern: if (entity.HasComponent("X")) { var c = entity.GetComponent("X"); ... }
+
+================================================================================
+QUICK REFERENCE EXAMPLES
+================================================================================
+// Basic workflow
 var project = new StrideProject(@"C:\MyGame");
 var scene = project.LoadScene("Level1");
 var player = scene.FindEntityByName("Player");
-
-var health = player.AddComponent("HealthComponent"); // Assumes custom C# HealthComponent
-health.Set("MaxHealth", 100.0f);
-health.Set("CurrentHealth", 100.0f);
-health.Set("RegenerationRate", 5.0f);
-
-var currentHP = health.Get<float>("CurrentHealth");
-var maxHP = health.Get<float>("MaxHealth");
-
-Console.WriteLine($"Player HP: {currentHP}/{maxHP}");
+player.GetTransform().SetPosition(10, 0, 5);
 scene.Save();
-```
 
----
+// Add component with properties
+var health = player.AddComponent("HealthComponent");
+health.Set("MaxHealth", 100.0f);
 
-#### Typed Component Wrappers (Namespace: `HS.Stride.Editor.Toolkit.Core.Wrappers`)
+// Get entity/asset references from components
+var targetRef = component.Get<EntityRefData>("TargetEntity");
+var materialRef = component.Get<AssetRefData>("MaterialRef");
 
-**Purpose:** Type-safe access and helper methods for **built-in Stride components**.
+// Instantiate prefab
+var prefab = project.FindAsset("Enemy", AssetType.Prefab);
+scene.InstantiatePrefab(prefab, new Vector3Data(10, 0, 5), "Enemies");
 
-##### `TransformWrapper` (via `entity.GetTransform()`)
-*   `SetPosition(float x, float y, float z)`
-*   `SetRotation(float x, float y, float z, float w)`
-*   `SetScale(float x, float y, float z)` / `SetUniformScale(float scale)`
-*   `AddChild(string childEntityId)` / `RemoveChild(string childEntityId)`
+// Add collider with shapes
+var collider = entity.AddStaticCollider();
+collider.AddBoxShape(1.0f, 1.0f, 1.0f);
+collider.Friction = 0.8f;
+collider.RollingFriction = 0.1f;
 
-##### `ModelWrapper` (via `entity.GetModel()`)
-*   `void SetModel(AssetReference modelAsset)`
-*   `void SetMaterial(int slotIndex, AssetReference material)` - Sets material for slot (0, 1, 2, etc.)
-*   `bool Enabled`
-
-##### `StaticColliderWrapper` (via `entity.GetStaticCollider()`)
-*   `void AddBoxShape(float sizeX, ...)`
-*   `void AddSphereShape(float radius, ...)`
-*   `void AddCapsuleShape(float length, radius, orientation, ...)`
-*   `void AddMeshShape(AssetReference modelAsset)` - Uses model geometry directly
-*   `void AddConvexHullShape(AssetReference colliderShapeAsset)` - REQUIRES .sdphy file (use StrideProject.CreateColliderShape first)
-*   `void AddColliderShapeAsset(AssetReference colliderShapeAsset)` - Reference .sdphy asset
-*   `void AddColliderShapeAsset(string assetGuid, string assetPath)` - Reference .sdphy asset by guid/path
-*   `float Friction`, `float Restitution`, `bool IsTrigger`
-
-**CRITICAL: Convex Hull Workflow**
-```csharp
-// Convex hulls MUST be in .sdphy files, cannot be inlined
-var hull = project.FindAsset("Wall_hull", AssetType.ColliderShape);
-if (hull == null) {
-    var modelRef = project.FindAsset("Wall", AssetType.Model);
-    var created = project.CreateColliderShape(modelRef.Reference, "Wall_hull");
-    hull = created.GetReference();
-    project.Rescan();
-}
-collider.AddConvexHullShape(hull); // References .sdphy file
-```
-
-##### `RigidbodyWrapper` (via `entity.GetRigidbody()`)
-*   `float Mass`, `bool IsKinematic`, `float LinearDamping`
-*   Includes all shape methods from `StaticColliderWrapper`.
-
-##### `LightWrapper` (via `entity.GetLight()`)
-*   `void SetColor(float r, float g, float b, float a)`
-*   `float Intensity`
-
----
-
-#### `Prefab` (Namespace: `HS.Stride.Editor.Toolkit.Core.PrefabEditing`)
-
-**Purpose:** Create, load, and manipulate prefabs (`.sdprefab`) programmatically.
-
-**Loading and Creation:**
-
-*   `static Prefab Load(string filePath)`
-*   `static Prefab Create(string name, string? filePath = null)`: Creates new empty prefab with a root entity.
-
-**Properties:**
-
-*   `string Id`, `string FilePath`
-*   `List<Entity> AllEntities`
-
-**Entity Management Methods:**
-
-*   `Entity? GetRootEntity()`
-*   `Entity CreateEntity(string name, string? folder = null)` (within prefab)
-*   `Entity CreateEntity(string name, string parent, ParentType parentType)` (within prefab)
-*   `void RemoveEntity(Entity entity)`
-
-*   **Persistence:** `void Save()`, `void SaveAs(string filePath)`
-*   **Finding Entities:** Similar `Find...` methods as `Scene`.
-
-**Example: Mass Enemy Generation**
-
-```csharp
-var project = new StrideProject(@"C:\MyGame");
-var enemyTypes = new Dictionary<string, (float health, float speed, string model)>
-{
-    ["Goblin"] = (50f, 3f, "GoblinModel"),
-    ["Orc"] = (100f, 2f, "OrcModel"),
-};
-
-foreach (var entry in enemyTypes)
-{
-    var prefab = project.CreatePrefab(entry.Key, $"Prefabs/Enemies/{entry.Key}");
-    var root = prefab.GetRootEntity();
-
-    var modelAsset = project.FindAsset(entry.Value.model, AssetType.Model);
-    if (modelAsset != null) { root.AddModel().SetModel(modelAsset); }
-
-    root.AddStaticCollider().AddCapsuleShape(0.5f, 2.0f);
-
-    var aiScript = root.AddComponent("EnemyAI");
-    aiScript.Set("MaxHealth", entry.Value.health);
-    aiScript.Set("MoveSpeed", entry.Value.speed);
-
-    prefab.Save();
-}
-project.Rescan();
-```
-
----
-
-#### `UIPage` (Namespace: `HS.Stride.Editor.Toolkit.Core.UIPageEditing`)
-
-**Purpose:** Create, modify, and manage Stride UI pages (`.sduipage`).
-
-**Loading and Creation:**
-
-*   `static UIPage Load(string filePath)`
-*   `static UIPage Create(string name, string? filePath = null)`
-*   `project.CreateUIPage(name, relativePath)`
-
-**Properties:**
-
-*   `string Id`, `string FilePath`
-*   `(float X, float Y, float Z)? GetDesignResolution()`, `void SetDesignResolution(x, y, z)`
-*   `List<UIElement> AllElements`, `List<UIElement> RootElements`
-
-**Supported UI Element Types (all 16 Stride types):**
-
-*   TextBlock, Button, ToggleButton, ImageElement, Canvas, Grid, StackPanel, UniformGrid
-*   ScrollViewer, ScrollBar, ScrollingText, EditText, Slider, Border, ContentDecorator, ModalElement
-
-**Element Creation Helpers:**
-
-*   `CreateElement(type, name, parent)`: Generic creator for any UI element type.
-*   `CreateTextBlock(name, text, parent, fontSize, alignment...)`: Text label.
-*   `CreateButton(name, text, parent, width, height)`: Button with text.
-*   `CreateImage(name, spriteSheet, frame, parent, width, height)`: Image from sprite sheet.
-*   `CreateImageFromTexture(name, texture, parent, width, height)`: Image from texture.
-*   `CreateCanvas(name, parent, width, height)`: Canvas container.
-*   `CreateGrid(name, parent)`, `CreateStackPanel(name, parent)`, `CreateScrollViewer(name, content, parent)`
-*   `CreateEditText(name, placeholder, parent, width, height)`: Text input.
-*   `CreateSlider(name, min, max, value, parent, width)`: Slider control.
-*   `CreateToggleButton(name, text, isChecked, parent, width, height)`: Checkbox/toggle.
-*   `CreateScrollBar(name, isVertical, parent, width, height)`: Scrollbar.
-
-**Element Helper Methods (extension methods on UIElement):**
-
-*   **Layout:** `SetSize(w, h)`, `SetMargin(left, top, right, bottom)`, `SetPadding(...)`, `SetAlignment(h, v)`
-*   **Position (v1.6.0):** `GetPosition()` returns `(X, Y)`, `SetPosition(x, y)` sets margin-based position
-*   **Margin (v1.6.0):** `GetMargin()` returns `(Left, Top, Right, Bottom)` tuple
-*   **Colors:** `SetBackgroundColor(r, g, b, a)`, `SetTextColor(r, g, b, a)`, `SetColor(r, g, b, a)`, `SetOpacity(value)`
-*   **Assets:** `SetFont(fontAsset)`, `SetSprite(spriteSheetAsset, frame)`, `SetTexture(textureAsset)`
-*   **Button Images:** `SetPressedImage/SetNotPressedImage/SetMouseOverImage(spriteSheetAsset, frame)`
-*   **Button Textures:** `SetPressedTexture/SetNotPressedTexture/SetMouseOverTexture(textureAsset)`
-*   **Content (v1.6.0):** `SetContent(element)`, `GetContent()` - for Button, ToggleButton, ScrollViewer
-
-**Sprite/Texture Detection (v1.6.0):**
-
-*   `IsSpriteFromSheet(propertyName)`, `IsSpriteFromTexture(propertyName)`: Check sprite source type
-*   `GetSpriteSheet(propertyName)`: Returns `(AssetReference, Frame)` tuple
-*   `GetTextureSource(propertyName)`: Returns texture asset reference
-*   `IsButtonUsingSpriteSheet()`, `IsButtonUsingTexture()`: Button-specific checks
-*   `IsImageUsingSpriteSheet()`: ImageElement sprite check
-*   `GetPressedImageSprite()`, `GetNotPressedImageSprite()`, `GetMouseOverImageSprite()`: Button sprite getters
-*   `GetImageSprite()`, `GetImageTexture()`: ImageElement source getters
-
-**Behavior Properties (v1.6.0):**
-
-*   `SetIsEnabled(bool)`, `GetIsEnabled()`: Enable/disable elements
-*   `SetClickMode("Press"|"Release")`, `GetClickMode()`: Button click mode
-*   `SetWrapText(bool)`, `GetWrapText()`: TextBlock text wrapping
-*   `SetMinimum/SetMaximum/SetValue/SetStep(float)`: Slider value properties
-*   `SetTickFrequency(float)`, `SetSnapToTicks(bool)`, `SetOrientation("Horizontal"|"Vertical")`: Slider behavior
-*   `SetMaxLength(int)`, `SetIsReadOnly(bool)`: EditText properties
-*   `SetIsChecked(bool)`, `SetIsThreeState(bool)`: ToggleButton properties
-
-**ZIndex / Draw Order (v1.8.0):**
-
-*   `int GetZIndex()`: Gets Panel.ZIndex value from DependencyProperties (controls sibling draw order, higher = on top). Returns 0 if not set.
-*   `void SetZIndex(int zIndex)`: Sets Panel.ZIndex value. Setting 0 removes the entry (0 is default).
-
-**Persistence:** `void Save()`, `void SaveAs(string filePath)`
-
-**Finding Elements:** Same as `Scene` - `FindElementById(id)`, `FindElementByName(name)`, `FindElementsByType(type)`, etc.
-
----
-
-#### Positioning System (v1.6.0)
-
-**Purpose:** Accurate element positioning using Stride's 4-margin system.
-
-**How Stride Positioning Works:**
-
-Stride calculates position using all 4 margins: `Left = X`, `Top = Y`, `Right = ParentWidth - (X + Width)`, `Bottom = ParentHeight - (Y + Height)`
-
-**Key Methods:**
-
-*   `SetPosition(x, y)`: Automatically calculates all 4 margins and sets Left/Top alignment
-*   `GetPosition()`: Returns (X, Y) from margins
-*   `GetParentDimensions()`: Returns parent size or design resolution
-*   `SetStretchFill()`: Makes element fill parent (for backgrounds)
-*   `SetImageStretchFill()`: Fill parent with proper image stretch settings
-
-**Example: Positioning Elements**
-
-```csharp
-var project = new StrideProject(@"C:\MyGame");
+// Create UI page
 var page = project.CreateUIPage("Menu", "UI");
 page.SetDesignResolution(1920, 1080, 1000);
 var root = page.RootElements.First();
-
-// Background that fills entire page
-var bg = page.CreateImage("background", parent: root, stretchFill: true);
-bg.SetBackgroundColor(20, 20, 40, 200);
-
-// Button at absolute position (100, 200)
-var button = page.CreateButton("my_btn", "Click Me", root, width: 200f, height: 50f);
-button.SetPosition(100f, 200f);  // Calculates all 4 margins automatically
-
+var btn = page.CreateButton("start", "Start Game", root, 200f, 50f);
+btn.SetPosition(860f, 500f);
+btn.SetBackgroundColor(0.2f, 0.4f, 0.8f, 1.0f);
 page.Save();
-```
 
-**Example: Pause Menu**
+// UI with type-specific methods
+var slider = page.CreateSlider("volume", 0f, 100f, 50f, root, 200f);
+slider.SetTrackBackgroundColor(0.3f, 0.3f, 0.3f, 1.0f);
+slider.SetThumbImage(spriteSheet, 5);
+slider.SetSnapToTicks(true);
 
-```csharp
-var project = new StrideProject(@"C:\MyGame");
-var page = project.CreateUIPage("PauseMenu", "UI/Menus");
-page.SetDesignResolution(1920, 1080, 1000);
+var toggle = page.CreateToggleButton("mute", "Mute", false, root, 100f, 40f);
+toggle.SetCheckedImage(spriteSheet, 10);
+toggle.SetUncheckedImage(spriteSheet, 11);
 
-var rootGrid = page.RootElements.First();
-
-// Full-screen dark overlay
-var bgImage = page.CreateImage("background", parent: rootGrid, stretchFill: true);
-bgImage.SetBackgroundColor(0, 0, 0, 180);
-
-// Centered menu container
-var menuCanvas = page.CreateCanvas("menu_container", parent: rootGrid);
-menuCanvas.SetSize(600f, 500f);
-menuCanvas.SetPosition(660f, 290f);  // Centered in 1920x1080
-
-var title = page.CreateTextBlock("title", "GAME PAUSED", parent: menuCanvas, fontSize: 40f);
-title.SetPosition(100f, 50f);
-title.SetTextColor(255, 255, 255);
-
-var buttons = new[] { ("resume_btn", "Resume", 150f), ("settings_btn", "Settings", 230f) };
-foreach (var (name, text, yPos) in buttons)
-{
-    var btn = page.CreateButton(name, text, parent: menuCanvas, width: 400f, height: 60f);
-    btn.SetPosition(100f, yPos);
-    btn.SetBackgroundColor(60, 60, 80, 255);
-}
-
-page.Save();
-project.Rescan();
-```
-
----
-
-#### Particle System Creation (Namespace: `HS.Stride.Editor.Toolkit.Core.Wrappers`)
-
-**Purpose:** Programmatically create and configure particle effects (smoke, fire, explosions, sparks, trails, etc.) without using Game Studio.
-
-##### Adding Particle System to Entity
-
-*   `entity.AddParticleSystem()`: Returns `ParticleSystemWrapper`
-
-##### `ParticleSystemWrapper` Class
-
-**Properties:**
-
-*   `string Control`: Playback control - `"Play"`, `"Pause"`, or `"Stop"`
-*   `float ResetSeconds`: Loop time in seconds
-*   `float Speed`: Time scale multiplier (1.0 = normal speed)
-*   `Dictionary<string, object> Color`: Overall tint color
-
-**Methods:**
-
-*   `void SetColor(float r, float g, float b, float a = 1.0f)`: Sets overall tint
-*   `void AddEmitter(VFXEmitter emitter)`: Adds an emitter
-*   `List<VFXEmitter> GetEmitters()`: Gets all emitters
-*   `bool RemoveEmitter(string emitterKey)`: Removes emitter by key
-
-**Creating Emitters (extension methods on ParticleSystemWrapper):**
-
-*   `CreateBillboardEmitter(string? name = null, (float min, float max)? lifetime = null)`: Particles face camera. Default lifetime: (1.0, 1.0)
-*   `CreateOrientedQuadEmitter(string? name = null, (float min, float max)? lifetime = null, bool scaleLength = true, float lengthFactor = 1.0f)`: Particles oriented by velocity. Default lifetime: (0.5, 1.5)
-*   `CreateRibbonEmitter(string? name = null, (float min, float max)? lifetime = null, int segments = 15, VFXSmoothingPolicy smoothingPolicy = VFXSmoothingPolicy.Best, int maxParticles = 50)`: Trail/ribbon particles
-
-##### `VFXEmitter` Class
-
-**Properties:**
-
-*   `string? EmitterName`: Emitter name
-*   `(float min, float max) ParticleLifetime`: Particle lifetime range in seconds
-*   `int? MaxParticlesOverride`: Max particles alive at once
-*   `int? DrawPriority`: Draw order (higher = on top)
-*   `string? SimulationSpace`: `"World"` or `"Local"`
-*   `string? SortingPolicy`: `"ByOrder"`, `"ByDepth"`, etc.
-
-**Material Methods (extension methods):**
-
-*   `SetTextureMaterial(AssetReference texture, float hdrMultiplier = 1.0f, float alphaAdditive = 0.0f)`: Set particle texture with HDR and additive blend
-*   `SetTextureMaterial(AssetReference texture, float hdrR, float hdrG, float hdrB, float alphaAdditive = 0.0f)`: Separate RGB HDR multipliers
-*   `SetFlipbookAnimation(int xDivisions, int yDivisions, int startFrame, int animationSpeed)`: Enable spritesheet animation
-
-**Spawner Methods (extension methods):**
-
-*   `SetBurstSpawner(int particleCount, bool oneShot = true, (float min, float max)? delay = null)`: Spawn burst of particles
-*   `SetPerSecondSpawner(float particlesPerSecond, bool looping = true, (float min, float max)? delay = null, (float min, float max)? duration = null)`: Continuous spawning
-*   `SetPerFrameSpawner(float particlesPerFrame, float framerate = 60.0f, bool looping = true)`: Per-frame spawning (for trails)
-
-**Initializer Methods (extension methods):**
-
-*   `AddInitialSize((float min, float max) sizeRange, float? scaleUniform = null)`: Initial particle size
-*   `AddInitialPosition((float x, float y, float z) min, (float x, float y, float z) max)`: Initial position offset
-*   `AddInitialVelocity((float x, float y, float z) min, (float x, float y, float z) max)`: Initial velocity
-*   `AddInitialRotation((float min, float max) angleRange)`: Initial rotation in degrees
-*   `AddInitialColor((float r, float g, float b, float a) colorMin, (float r, float g, float b, float a) colorMax)`: Initial color range
-*   `AddSpawnOrder()`: Add spawn order (required for ribbons)
-
-**Updater Methods (extension methods):**
-
-*   `AddColorFade(params (float time, float r, float g, float b, float a)[] keyframes)`: Animate color over lifetime (time: 0.0-1.0)
-*   `AddSizeOverTime(params (float time, float size)[] keyframes)`: Animate size over lifetime
-*   `AddForceField(VFXFieldShape fieldShape = VFXFieldShape.Sphere, (float x, float y, float z)? scale = null, float forceDirected = 0.0f, float forceVortex = 0.0f, float forceRepulsive = 0.0f, float energyConservation = 0.2f)`: Apply physics forces
-
-**Enums:**
-
-*   `VFXFieldShape`: `Sphere`, `Cylinder`, `Cube`, `Torus`, `Box`, `HollowSphere`
-*   `VFXSmoothingPolicy`: `None`, `Fast`, `Best`
-
-**Example - Smoke Effect:**
-
-```csharp
-var project = new StrideProject(@"C:\MyGame");
-var scene = project.LoadScene("Level1");
-
-var smokeEntity = scene.CreateEntity("Smoke");
-var vfx = smokeEntity.AddParticleSystem();
+// Create particle effect
+var vfx = entity.AddParticleSystem();
 vfx.Control = "Play";
-
-var smoke = vfx.CreateBillboardEmitter("smoke", (5.0f, 7.0f));
-var texture = project.FindAsset("SMO001", AssetType.Texture);
-smoke.SetTextureMaterial(texture, hdrMultiplier: 1.0f, alphaAdditive: 0.5f);
-smoke.SetFlipbookAnimation(8, 8, 0, 64);
-smoke.SetPerSecondSpawner(10.0f, looping: true);
-smoke.AddInitialSize((0.7f, 1.5f));
-smoke.AddInitialPosition((-0.1f, 0.0f, -0.1f), (0.1f, 0.2f, 0.1f));
-smoke.AddInitialVelocity((-0.1f, 0.5f, -0.1f), (0.1f, 0.7f, 0.1f));
-smoke.AddInitialRotation((-360.0f, 360.0f));
-smoke.AddColorFade(
-    (0.0f, 1.0f, 1.0f, 1.0f, 0.0f),
-    (0.5f, 1.0f, 1.0f, 1.0f, 0.5f),
-    (1.0f, 1.0f, 1.0f, 1.0f, 0.0f));
+var smoke = vfx.CreateBillboardEmitter("smoke", (3.0f, 5.0f));
+var tex = project.FindAsset("SmokeTexture", AssetType.Texture);
+smoke.SetTextureMaterial(tex, hdrMultiplier: 1.0f, alphaAdditive: 0.5f);
+smoke.SetPerSecondSpawner(10.0f);
+smoke.AddInitialSize((0.5f, 1.5f));
+smoke.AddInitialVelocity((0, 0.5f, 0), (0, 1.0f, 0));
 vfx.AddEmitter(smoke);
-scene.Save();
-```
-
-**Example - Explosion with Multiple Emitters:**
-
-```csharp
-var vfx = scene.CreateEntity("Explosion").AddParticleSystem();
-vfx.ResetSeconds = 3.0f;
-vfx.Control = "Play";
-
-// Fire flash
-var fire = vfx.CreateBillboardEmitter("fire", (1.0f, 1.3f));
-fire.SetTextureMaterial(project.FindAsset("EXP001", AssetType.Texture), 50.0f);
-fire.SetBurstSpawner(10, oneShot: true);
-fire.AddInitialSize((1.0f, 2.0f));
-fire.AddInitialVelocity((-0.5f, -0.2f, -0.5f), (0.5f, 0.5f, 0.5f));
-fire.AddColorFade((0.0f, 1.0f, 1.0f, 1.0f, 1.0f), (1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
-vfx.AddEmitter(fire);
-
-// Sparks
-var sparks = vfx.CreateBillboardEmitter("sparks", (0.7f, 1.4f));
-sparks.SetTextureMaterial(project.FindAsset("dota", AssetType.Texture), hdrR: 50.0f, hdrG: 20.0f, hdrB: 20.0f);
-sparks.SetBurstSpawner(50, oneShot: true, delay: (0.5f, 0.5f));
-sparks.AddForceField(VFXFieldShape.Sphere, (2.0f, 2.0f, 2.0f), forceRepulsive: -0.3f);
-vfx.AddEmitter(sparks);
-
-scene.Save();
-```
-
----
-
-#### Direct Asset Editing
-
-Interfaces for `IStrideAsset` (`Id`, `FilePath`, `Save()`, `SaveAs(filePath)`).
-
-##### `MaterialAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
-*   `static MaterialAsset Load(string filePath)`
-*   `object? Get(string propertyName)` / `void Set(string propertyName, object value)` (dot notation)
-*   `string? GetDiffuseTexture()` / `void SetDiffuseTexture(string textureReference)`
-*   `(float X, float Y)? GetUVScale()` / `void SetUVScale(float x, float y)`
-
-##### `TextureAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
-*   `static TextureAsset Load(string filePath)`
-*   `string? GetSource()` / `void SetSource(string sourcePath)`
-*   `bool IsStreamable`, `bool? PremultiplyAlpha`
-*   `object? Get(string propertyName)` / `void Set(string propertyName, object value)`
-
-##### `AnimationAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
-*   `static AnimationAsset Load(string filePath)`
-*   `string? RepeatMode`, `bool RootMotion`
-*   `string? GetSource()` / `void SetSource(string sourcePath)`
-*   `string? GetSkeletonReference()` / `void SetSkeletonReference(string skeletonReference)`
-*   `string? GetPreviewModel()` / `void SetPreviewModel(string modelReference)`
-*   `object? Get(string propertyName)` / `void Set(string propertyName, object value)`
-
-##### `ColliderShapeAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
-*   Created via `StrideProject.CreateColliderShape(modelNameOrPath, name, relativePath)` - Creates and saves a convex hull collider shape asset
-*   Loaded via `StrideProject.LoadColliderShape(nameOrPath)` - Loads by name or relative path
-*   `void Save()` / `void SaveAs(string filePath)` - Must have .sdphy extension
-*   `AssetReference GetReference()` - Must be called after saving
-*   **Workflow:** Use `project.CreateColliderShape()` or `project.LoadColliderShape()` → Get reference → Add to entity collider via `AddColliderShapeAsset()`
-
-##### `SoundAsset`, `SkeletonAsset`, `SpriteSheetAsset`, `EffectAsset` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
-*   `static XxxAsset Load(string filePath)`
-*   These assets primarily use the generic `object? Get(string propertyName)` and `void Set(string propertyName, object value)` for property manipulation.
-
----
-
-#### Data Types & Utilities (Namespace: `HS.Stride.Editor.Toolkit.Core`)
-
-##### `Vector3Data` (X, Y, Z float components)
-*   `ToMultiValueProperty()` / `FromMultiValueProperty(Dictionary<string, object>? dict)`
-*   `Zero`, `One` (static properties)
-
-##### `QuaternionData` (X, Y, Z, W float components)
-*   `ToMultiValueProperty()` / `FromMultiValueProperty(Dictionary<string, object>? dict)`
-*   `Identity` (static property)
-
-##### `ColorData` (R, G, B, A float components)
-*   `ToMultiValueProperty()` / `FromMultiValueProperty(Dictionary<string, object>? dict)`
-*   `White`, `Black` (static properties)
-
----
-
-#### `AssetReference` (Namespace: `HS.Stride.Editor.Toolkit.Core.AssetEditing`)
-
-**Purpose:** Reference to any Stride asset.
-
-**Properties:**
-
-*   `string Id`, `string Name`, `string Path`, `string FilePath`
-*   `AssetType Type`
-*   `string Reference`: Stride's internal `"{Id}:{Path}"` string.
-
-##### `AssetType` Enum
-*   `Unknown`, `Prefab`, `Model`, `Material`, `Texture`, `Scene`, `Sound`, `Animation`, `Skeleton`, `SpriteSheet`, `Effect`, `UIPage`, `RawAsset`
-
-##### `ParentType` Enum (for entity parenting)
-*   `Folder`: Editor organization only (no transform hierarchy).
-*   `Entity`: Transform hierarchy (children follow parent).
-
----
-
-### ERROR HANDLING
-
-**Exceptions:**
-
-*   `ArgumentNullException`: For null/whitespace string parameters.
-*   `FileNotFoundException`: When loading non-existent files.
-*   `ArgumentException`: For invalid arguments (e.g., non-Stride project path).
-*   `InvalidOperationException`: In `ProjectMode.Strict` for invalid component property sets.
-
----
-
-### Advanced Workflows & Examples
-
-#### Procedural Level Generation
-
-Automate the creation of complex scenes using prefab instantiation and entity manipulation.
-
-```csharp
-var project = new StrideProject(@"C:\MyGame");
-
-var scene = project.LoadScene("ProcGenLevel"); // Load an empty or template scene
-
-var tilePrefab = project.FindAsset("FloorTile", AssetType.Prefab);
-var wallPrefab = project.FindAsset("Wall", AssetType.Prefab);
-
-// Generate a 10x10 grid level
-for (int x = 0; x < 10; x++)
-{
-    for (int z = 0; z < 10; z++)
-    {
-        // Place floor tiles
-        var pos = new Vector3Data(x * 2.0f, 0, z * 2.0f);
-        scene.InstantiatePrefab(tilePrefab, pos, "FloorTiles"); // Parent under a "FloorTiles" folder
-
-        // Place walls on the edges of the grid
-        if (x == 0 || x == 9 || z == 0 || z == 9)
-        {
-            var wallPos = new Vector3Data(x * 2.0f, 1.0f, z * 2.0f);
-            scene.InstantiatePrefab(wallPrefab, wallPos, "Walls"); // Parent under a "Walls" folder
-        }
-    }
-}
-
-scene.Save();
-Console.WriteLine("Procedurally generated level saved!");
-```
-
-**Safe Operations:**
-
-*   Many `Find` and `Get` methods return `null` if not found (e.g., `GetComponent`, `FindEntityById`).
-*   Always check for `null` or use null-coalescing (`??`) for defaults.
-*   Wrap file operations in `try-catch` blocks.
-
-#### Batch Operations - Add Colliders
-
-```csharp
-var project = new StrideProject(@"C:\MyGame");
-var scene = project.LoadScene("Level1");
-
-var targets = scene.FindEntities(e =>
-    e.HasComponent("ModelComponent") && !e.HasComponent("StaticColliderComponent"));
-
-foreach (var entity in targets)
-{
-    var collider = entity.AddStaticCollider();
-    collider.AddBoxShape(1.0f, 1.0f, 1.0f);
-}
-scene.Save();
-```
-
-#### Basic Usage - Code Snippets
-
-```csharp
-using HS.Stride.Editor.Toolkit.Core;
-using HS.Stride.Editor.Toolkit.Core.AssetEditing;
-
-var project = new StrideProject(@"C:\MyGame");
-
-var scene = project.LoadScene("Level1");
-var player = scene.FindEntityByName("Player");
-
-var transform = player.GetTransform();
-transform.SetPosition(10, 0, 5);
-
-var enemyPrefabRef = project.FindAsset("Enemy", AssetType.Prefab);
-if (enemyPrefabRef != null)
-{
-    scene.InstantiatePrefab(enemyPrefabRef, new Vector3Data(10, 0, 5));
-}
-
-var material = project.LoadMaterial("PlayerMat");
-var newTexture = project.FindAsset("NewSkin", AssetType.Texture);
-material.SetDiffuseTexture(newTexture.Reference);
-material.Save(); // Save modified material
-
-scene.Save(); // Save modified scene
-```
-
-#### Complete Workflow Example
-
-```csharp
-using HS.Stride.Editor.Toolkit.Core;
-using HS.Stride.Editor.Toolkit.Core.AssetEditing;
-
-// Initialize project
-var project = new StrideProject(@"C:\MyGame");
-
-// Load and modify scene
-var scene = project.LoadScene("Level1");
-var player = scene.FindEntityByName("Player");
-
-var transform = player.GetTransform();
-transform.SetPosition(0, 10, 0);
-
-// Use asset references
-var enemyPrefab = project.FindAsset("Enemy", AssetType.Prefab);
-if (enemyPrefab != null)
-{
-    scene.InstantiatePrefab(enemyPrefab, new Vector3Data(5, 0, 5));
-}
-
-// Load and modify material
-var material = project.LoadMaterial("PlayerMat");
-var newTexture = project.FindAsset("NewSkin", AssetType.Texture);
-material.SetDiffuseTexture(newTexture.Reference);
-material.Save();
-
-// Save scene
-scene.Save();
-
-// Work with multiple scenes
-foreach (var sceneRef in project.GetScenes())
-{
-    var s = project.LoadScene(sceneRef.Name);
-    // Batch modify...
-    s.Save();
-}
-```
