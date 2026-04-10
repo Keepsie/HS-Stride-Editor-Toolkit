@@ -194,6 +194,162 @@ namespace HS.Stride.Editor.Toolkit.Tests
         }
 
         [Test]
+        public void AddChild_ShouldAssignSequentialZIndices()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
+            var root = page.RootElements.First();
+            var canvas = page.CreateCanvas("z_canvas", parent: root);
+
+            // Act
+            var first = page.CreateTextBlock("first", "First", canvas);
+            var second = page.CreateTextBlock("second", "Second", canvas);
+
+            // Assert
+            first.GetZIndex().Should().Be(0);
+            second.GetZIndex().Should().Be(1);
+            UIPageManager.GetZIndex(first).Should().Be(0);
+            UIPageManager.GetZIndex(second).Should().Be(1);
+        }
+
+        [Test]
+        public void RemoveChild_ShouldReindexRemainingChildrenZIndices()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
+            var root = page.RootElements.First();
+            var canvas = page.CreateCanvas("remove_z_canvas", parent: root);
+            var first = page.CreateTextBlock("first", "First", canvas);
+            var middle = page.CreateTextBlock("middle", "Middle", canvas);
+            var last = page.CreateTextBlock("last", "Last", canvas);
+
+            // Act
+            var removed = canvas.RemoveChild(middle);
+
+            // Assert
+            removed.Should().BeTrue();
+            middle.Parent.Should().BeNull();
+            first.GetZIndex().Should().Be(0);
+            last.GetZIndex().Should().Be(1);
+        }
+
+        [Test]
+        public void AddChild_ShouldReparentAndReindexOldAndNewParents()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
+            var root = page.RootElements.First();
+            var source = page.CreateCanvas("source_canvas", parent: root);
+            var target = page.CreateCanvas("target_canvas", parent: root);
+
+            var sourceChild1 = page.CreateTextBlock("source_child_1", "A", source);
+            var sourceChild2 = page.CreateTextBlock("source_child_2", "B", source);
+            var targetChild1 = page.CreateTextBlock("target_child_1", "C", target);
+
+            // Act
+            target.AddChild(sourceChild1);
+
+            // Assert
+            sourceChild1.Parent.Should().Be(target);
+            source.Children.Should().NotContainValue(sourceChild1);
+            source.Children.Values.Should().ContainSingle().Which.Should().Be(sourceChild2);
+
+            target.GetChildren().Should().ContainInOrder(targetChild1, sourceChild1);
+
+            sourceChild2.GetZIndex().Should().Be(0);
+            targetChild1.GetZIndex().Should().Be(0);
+            sourceChild1.GetZIndex().Should().Be(1);
+        }
+
+        [Test]
+        public void SetZIndex_Extension_ShouldWritePanelZIndexAndClearLegacyAliases()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
+            var element = page.CreateElement("TextBlock", "z_test");
+
+            element.Set("Canvas.ZIndex", 9);
+            element.Set("Grid.ZIndex", 7);
+
+            // Act
+            UIPageManager.SetZIndex(element, 4);
+
+            // Assert
+            element.GetZIndex().Should().Be(4);
+            UIPageManager.GetZIndex(element).Should().Be(4);
+            element.Properties.ContainsKey("Canvas.ZIndex").Should().BeFalse();
+            element.Properties.ContainsKey("Grid.ZIndex").Should().BeFalse();
+        }
+
+        [Test]
+        public void GetZIndex_Extension_ShouldFallbackToLegacyCanvasZIndex_WhenPanelZIndexMissing()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var page = project.CreateUIPage("TestPage", "UI/TestPage");
+            var element = page.CreateElement("TextBlock", "legacy_z");
+            element.SetZIndex(0); // Ensure Panel.ZIndex is absent
+            element.Set("Canvas.ZIndex", 6);
+
+            // Act
+            var zIndex = UIPageManager.GetZIndex(element);
+
+            // Assert
+            zIndex.Should().Be(6);
+        }
+
+        [Test]
+        public void Load_ShouldNormalizeHierarchyZIndices_FromSavedOutOfOrderValues()
+        {
+            // Arrange
+            var project = new StrideProject(_testProjectPath);
+            var testPageName = $"test_zindex_normalize_{Guid.NewGuid()}.sduipage";
+            var tempPath = Path.Combine(project.AssetsPath, testPageName);
+
+            try
+            {
+                var page = project.CreateUIPage("ZIndexNormalize", tempPath);
+                var root = page.RootElements.First();
+                var canvas = page.CreateCanvas("normalize_canvas", parent: root);
+                var first = page.CreateTextBlock("normalize_first", "First", canvas);
+                var second = page.CreateTextBlock("normalize_second", "Second", canvas);
+
+                // Force out-of-order values prior to save
+                root.SetZIndex(99);
+                canvas.SetZIndex(42);
+                first.SetZIndex(17);
+                second.SetZIndex(3);
+
+                page.Save();
+
+                // Act
+                var loaded = UIPage.Load(tempPath);
+                var loadedRoot = loaded.RootElements.First();
+                var loadedCanvas = loaded.FindElementByName("normalize_canvas");
+
+                // Assert
+                loadedCanvas.Should().NotBeNull();
+                loadedRoot.GetZIndex().Should().Be(0);
+
+                var loadedChildren = loadedCanvas!.GetChildren();
+                loadedChildren.Should().HaveCount(2);
+                loadedChildren[0].Name.Should().Be("normalize_first");
+                loadedChildren[1].Name.Should().Be("normalize_second");
+                loadedChildren[0].GetZIndex().Should().Be(0);
+                loadedChildren[1].GetZIndex().Should().Be(1);
+            }
+            finally
+            {
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+            }
+        }
+
+        [Test]
         public void RemoveElement_ExistingElement_ShouldRemoveElement()
         {
             // Arrange
