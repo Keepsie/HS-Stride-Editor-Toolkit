@@ -1879,7 +1879,7 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         public static bool GetCanBeHitByUser(this UIElement element)
         {
             var value = element.Get<object>("CanBeHitByUser");
-            if (value == null) return true;
+            if (value == null) return false;
             return Convert.ToBoolean(value);
         }
 
