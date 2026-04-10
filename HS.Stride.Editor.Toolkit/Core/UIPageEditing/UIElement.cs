@@ -99,9 +99,38 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// </summary>
         public void AddChild(UIElement child)
         {
+            if (child == null)
+                throw new ArgumentNullException(nameof(child));
+
+            // Reparent safely: detach from previous parent first
+            if (child.Parent != null && !ReferenceEquals(child.Parent, this))
+            {
+                child.Parent.RemoveChild(child);
+            }
+
+            // Prevent duplicate references in this parent (same object or same ID)
+            var existingKeys = Children
+                .Where(kvp => ReferenceEquals(kvp.Value, child) ||
+                             (!string.IsNullOrEmpty(child.Id) && kvp.Value.Id == child.Id))
+                .Select(kvp => kvp.Key)
+                .ToList();
+
+            foreach (var key in existingKeys)
+            {
+                Children.Remove(key);
+            }
+
             var hash = Guid.NewGuid().ToString("N");
             Children[hash] = child;
             child.Parent = this;
+
+            // Keep page references in sync when attaching through hierarchy operations
+            if (ParentPage != null)
+            {
+                child.ParentPage = ParentPage;
+            }
+
+            RecalculateDirectChildZIndices();
         }
 
         /// <summary>
@@ -109,14 +138,43 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// </summary>
         public bool RemoveChild(UIElement child)
         {
-            var entry = Children.FirstOrDefault(kvp => kvp.Value.Id == child.Id);
+            if (child == null)
+                return false;
+
+            var entry = Children.FirstOrDefault(kvp =>
+                ReferenceEquals(kvp.Value, child) ||
+                (!string.IsNullOrEmpty(child.Id) && kvp.Value.Id == child.Id));
+
             if (!string.IsNullOrEmpty(entry.Key))
             {
                 Children.Remove(entry.Key);
-                child.Parent = null;
+
+                // Clear parent reference on the removed child instance
+                if (ReferenceEquals(entry.Value.Parent, this))
+                    entry.Value.Parent = null;
+
+                // Also clear caller instance if it was pointing at this parent
+                if (ReferenceEquals(child.Parent, this))
+                    child.Parent = null;
+
+                RecalculateDirectChildZIndices();
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Recalculates direct child ZIndex values based on current child order.
+        /// Child at index 0 gets ZIndex 0, index 1 gets ZIndex 1, etc.
+        /// </summary>
+        private void RecalculateDirectChildZIndices()
+        {
+            int index = 0;
+            foreach (var child in Children.Values)
+            {
+                child.SetZIndex(index);
+                index++;
+            }
         }
 
         /// <summary>
@@ -144,6 +202,19 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         }
 
         #region ZIndex (Panel.ZIndexPropertyKey) Helpers
+
+        /// <summary>
+        /// Returns true if a Panel.ZIndexPropertyKey entry exists in DependencyProperties.
+        /// Note: ZIndex 0 is the default and is stored implicitly (key absent), so this
+        /// returns false for elements that have never had SetZIndex called or whose ZIndex is 0.
+        /// Use in combination with GetZIndex() when you need to distinguish "explicitly set to 0" from "never set".
+        /// </summary>
+        public bool HasExplicitZIndexKey()
+        {
+            var depProps = Get<Dictionary<string, object>>("DependencyProperties");
+            if (depProps == null) return false;
+            return depProps.Keys.Any(k => k.EndsWith("~Panel.ZIndexPropertyKey"));
+        }
 
         /// <summary>
         /// Gets the ZIndex (Panel.ZIndex) value from DependencyProperties.
@@ -186,12 +257,16 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
             }
 
             // Add new ZIndex entry (format: "<guid>~Panel.ZIndexPropertyKey": value)
-            // Only add if non-zero (0 is the default)
+            // Only add if non-zero (0 is the default in Stride serialization)
             if (zIndex != 0)
             {
                 var zIndexKey = $"{Guid.NewGuid():N}~Panel.ZIndexPropertyKey";
                 depProps[zIndexKey] = zIndex;
             }
+
+            // Clear legacy Canvas.ZIndex / Grid.ZIndex aliases to keep a single source of truth
+            Properties.Remove("Canvas.ZIndex");
+            Properties.Remove("Grid.ZIndex");
 
             // Update or remove DependencyProperties based on whether it has entries
             if (depProps.Count > 0)

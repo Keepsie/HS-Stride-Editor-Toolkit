@@ -1940,22 +1940,32 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         }
 
         /// <summary>
-        /// Gets the Grid.Z Index or Canvas.Z Index for z-ordering within parent.
+        /// Gets the Panel.ZIndex value for z-ordering within parent.
+        /// Falls back to legacy Canvas.ZIndex / Grid.ZIndex properties if needed.
         /// </summary>
         public static int GetZIndex(this UIElement element)
         {
-            // Try Canvas.ZIndex first, then Grid.ZIndex
+            // Check Panel.ZIndex first (authoritative source)
+            if (element.HasExplicitZIndexKey())
+                return element.GetZIndex();
+
+            // Legacy fallback for elements never processed by the new Z-index system
             var value = element.Get<object>("Canvas.ZIndex") ?? element.Get<object>("Grid.ZIndex");
-            if (value == null) return 0;
-            return Convert.ToInt32(value);
+            if (value != null)
+                return Convert.ToInt32(value);
+
+            // Default: Panel.ZIndex returns 0 when key absent (first-child / unset)
+            return element.GetZIndex();
         }
 
         /// <summary>
-        /// Sets the Z Index for z-ordering within parent (works for both Canvas and Grid).
+        /// Sets Panel.ZIndex for z-ordering within parent.
+        /// Removes legacy Canvas.ZIndex / Grid.ZIndex properties to keep a single source of truth.
         /// </summary>
         public static void SetZIndex(this UIElement element, int zIndex)
         {
-            element.Set("Canvas.ZIndex", zIndex);
+            // Instance SetZIndex handles both Panel.ZIndex and legacy key cleanup
+            element.SetZIndex(zIndex);
         }
 
         // ===== ClickMode Property (Button, ToggleButton, ModalElement) =====

@@ -57,7 +57,11 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// Root UI elements (top-level elements in hierarchy)
         /// </summary>
         public List<UIElement> RootElements =>
-            _content.Elements.Where(e => _content.RootElementIds.Contains(e.Id)).ToList();
+            _content.RootElementIds
+                .Select(rootId => _content.Elements.FirstOrDefault(e => e.Id == rootId))
+                .Where(e => e != null)
+                .Cast<UIElement>()
+                .ToList();
 
         private UIPage(UIPageContent content)
         {
@@ -68,6 +72,9 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
             {
                 element.ParentPage = this;
             }
+
+            // Normalize z-order by hierarchy order to match editor behavior
+            NormalizeHierarchyZIndices();
         }
 
         /// <summary>
@@ -463,6 +470,32 @@ namespace HS.Stride.Editor.Toolkit.Core.UIPageEditing
         /// Gets the internal content object (for writer access)
         /// </summary>
         internal UIPageContent GetContent() => _content;
+
+        /// <summary>
+        /// Normalizes ZIndex values for the full hierarchy based on element order.
+        /// Root elements are indexed by RootElementIds order.
+        /// Children are indexed by each parent's Children dictionary order.
+        /// </summary>
+        private void NormalizeHierarchyZIndices()
+        {
+            var roots = RootElements;
+            for (int i = 0; i < roots.Count; i++)
+            {
+                roots[i].SetZIndex(i);
+                NormalizeChildZIndicesRecursive(roots[i]);
+            }
+        }
+
+        private static void NormalizeChildZIndicesRecursive(UIElement parent)
+        {
+            int index = 0;
+            foreach (var child in parent.Children.Values)
+            {
+                child.SetZIndex(index);
+                NormalizeChildZIndicesRecursive(child);
+                index++;
+            }
+        }
 
         /// <summary>
         /// Sets the parent project for this UI page (enables path resolution and validation)
