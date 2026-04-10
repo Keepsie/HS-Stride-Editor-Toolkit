@@ -6,16 +6,16 @@
     <Nullable>enable</Nullable>
 
     <!-- Package Metadata -->
-    <Version>1.8.1</Version>
-    <AssemblyVersion>1.8.1.0</AssemblyVersion>
-    <FileVersion>1.8.1.0</FileVersion>
+    <Version>1.9.0</Version>
+    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <FileVersion>1.9.0.0</FileVersion>
     <PackageId>HS.Stride.Editor.Toolkit</PackageId>
     <Title>HS Stride Editor Toolkit</Title>
     <Authors>Happenstance Games LLC</Authors>
     <Company>Happenstance Games LLC</Company>
     <Product>HS Stride Editor Toolkit</Product>
     <Description>A library for creating custom editor tools for Stride. Batch task automation for scenes. Create UI and prefabs via code. Edit assets programmatically. Build CLI or GUI tools for repetitive editor work.</Description>
-    <Copyright>Copyright © 2025 Happenstance Games LLC</Copyright>
+    <Copyright>Copyright © 2025-2026 Happenstance Games LLC</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Keepsie/HS-Stride-Editor-Toolkit</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Keepsie/HS-Stride-Editor-Toolkit</RepositoryUrl>
@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <None Include="../README.md" Pack="true" PackagePath="/" />
+    <None Include="../API.md" Pack="true" PackagePath="/" />
+    <None Include="../hs_stride_editor_api_for_llms.txt" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
